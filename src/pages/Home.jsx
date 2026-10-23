@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { LaptopDB, MACOS_VERSIONS, PRIORITY_LABELS } from '../data/laptops.js';
 import { Icon } from '../lib/icons.jsx';
@@ -8,6 +9,7 @@ import LaptopCard from '../components/LaptopCard.jsx';
 import { DeviceTile, ScoreBar } from '../components/LaptopBits.jsx';
 import Accordion from '../components/Accordion.jsx';
 import Glass from '../components/Glass.jsx';
+import { cpuFamily } from '../lib/buildPlan.js';
 
 const LAPTOPS = LaptopDB.all().sort((a, b) => b.score - a.score);
 
@@ -28,7 +30,7 @@ const STEPS = [
 ];
 
 const GUIDES = [
-    ['book', 'Build Guide', 'A step-by-step guide for every laptop, with every kext it needs.', '/build-guide'],
+    ['book', 'Guides', 'Every stage of a build, plus a tailored guide with every kext for each laptop.', '/guides'],
     ['cpu', 'Component Checker', 'Which CPUs, GPUs, Wi-Fi cards and SSDs work.', '/components'],
     ['tag', 'Buying Used', 'Where to look and what to check before paying.', '/buy-used'],
     ['lifebuoy', 'Troubleshooting', 'Fixes for boot hangs, sleep, Wi-Fi, audio and more.', '/troubleshooting']
@@ -60,6 +62,113 @@ const FAQ = [
     ['What does “Unverified” mean on a laptop?', "Those values come from typical configurations or community lists and haven't been confirmed against a working build. Treat them as a starting point and check them for your exact model."]
 ];
 
+const TRENDING = ['ThinkPad T480', 'Dell XPS 13', 'X1 Carbon', 'EliteBook', 'UHD 620'];
+
+// "Can your laptop run macOS?" — a summary of Dortania's support rules per CPU family.
+const ASSISTANT = [
+    {
+        key: 'modern', label: 'Intel 8th–10th gen', verdict: 'Recommended', tone: 'good',
+        title: 'Intel 8th–10th gen (Kaby Lake R, Whiskey Lake, Coffee Lake, Comet Lake, Ice Lake)',
+        points: [
+            'Graphics: UHD 617/620/630 and Iris Plus G4/G7 get full acceleration with WhateverGreen.',
+            'macOS: High Sierra or later (Comet Lake and Ice Lake from Catalina) up to Sequoia. 45W H-series and Ice Lake laptops can also run Tahoe, which loses built-in audio.',
+            'The sweet spot: the best-documented laptops and the longest macOS support. Disable any NVIDIA dGPU.'
+        ]
+    },
+    {
+        key: 'mid', label: 'Intel 6th–7th gen', verdict: 'Good', tone: 'good',
+        title: 'Intel 6th–7th gen (Skylake, Kaby Lake)',
+        points: [
+            'Graphics: HD 520/530/620/630 are supported.',
+            'macOS: Skylake runs up to Monterey, or Ventura with its graphics presented as Kaby Lake. Kaby Lake runs up to Ventura, and Sonoma or Sequoia with a 2018 SMBIOS.',
+            'Cheap and well understood, but with fewer macOS versions ahead.'
+        ]
+    },
+    {
+        key: 'legacy', label: 'Intel 4th–5th gen', verdict: 'Legacy', tone: 'mid',
+        title: 'Intel 4th–5th gen (Haswell, Broadwell)',
+        points: [
+            'Graphics: HD 4400/4600/5500/6000 work up to Monterey.',
+            'macOS Ventura and later dropped these GPUs. Getting them back needs OpenCore Legacy Patcher, which Dortania doesn\'t support on Hackintoshes.',
+            'Fine for learning, but stuck on older macOS.'
+        ]
+    },
+    {
+        key: 'new', label: 'Intel 11th gen+', verdict: 'No iGPU support', tone: 'bad',
+        title: 'Intel 11th gen and newer (Tiger Lake, Alder Lake and later)',
+        points: [
+            'Graphics: Iris Xe has no acceleration in macOS, so the system is too slow to use.',
+            'Laptops can rarely switch the iGPU off in favour of a supported GPU, so these aren\'t practical Hackintoshes.'
+        ]
+    },
+    {
+        key: 'amd', label: 'AMD Ryzen', verdict: 'Experimental', tone: 'mid',
+        title: 'AMD Ryzen laptops',
+        points: [
+            'Dortania\'s guide doesn\'t support AMD laptops. Graphics need experimental community patches.',
+            'Power management, sleep and battery life are often unreliable. Expect a lot of tinkering.'
+        ]
+    }
+];
+
+const TONE_STYLE = {
+    good: 'bg-emerald-500/15 text-emerald-800 ring-emerald-500/25 dark:text-emerald-200',
+    mid: 'bg-amber-400/20 text-amber-900 ring-amber-500/30 dark:text-amber-200',
+    bad: 'bg-rose-500/15 text-rose-800 ring-rose-500/25 dark:text-rose-200'
+};
+
+const BY_FAMILY = LAPTOPS.reduce((acc, l) => {
+    (acc[cpuFamily(l)] ||= []).push(l);
+    return acc;
+}, {});
+
+function Assistant() {
+    const [active, setActive] = useState('modern');
+    const item = ASSISTANT.find(a => a.key === active);
+    const examples = (BY_FAMILY[active] || []).slice(0, 4);
+    return (
+        <section className="mt-14" aria-labelledby="assistant-heading">
+            <div className="text-center">
+                <p className="eyebrow">Interactive check</p>
+                <h2 id="assistant-heading" className="mt-1 text-2xl md:text-3xl font-bold">Can your laptop run macOS?</h2>
+                <p className="mt-2 text-gray-600 dark:text-gray-300">Pick your processor family for a quick verdict and the macOS versions to expect.</p>
+            </div>
+            <div role="tablist" aria-label="Processor family" className="mt-6 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 max-w-4xl mx-auto">
+                {ASSISTANT.map(a => (
+                    <button key={a.key} type="button" role="tab" id={`tab-${a.key}`} aria-selected={active === a.key} aria-controls="assistant-panel"
+                            onClick={() => setActive(a.key)}
+                            className={`card !rounded-2xl px-3 py-3 text-center transition ${active === a.key ? 'ring-2 !ring-blue-500' : 'hover:-translate-y-0.5'}`}>
+                        <span className={`inline-block px-2 py-0.5 rounded-full text-[0.65rem] font-semibold ring-1 ${TONE_STYLE[a.tone]}`}>{a.verdict}</span>
+                        <span className="block mt-1.5 text-sm font-semibold">{a.label}</span>
+                    </button>
+                ))}
+            </div>
+            <div id="assistant-panel" role="tabpanel" aria-labelledby={`tab-${active}`} className="card p-5 sm:p-7 mt-4 max-w-4xl mx-auto">
+                <div className="flex flex-wrap items-center gap-3">
+                    <h3 className="text-lg font-bold">{item.title}</h3>
+                    <span className={`px-2.5 py-0.5 rounded-full text-xs font-semibold ring-1 ${TONE_STYLE[item.tone]}`}>{item.verdict}</span>
+                </div>
+                <ul className="mt-3 space-y-2 text-sm text-gray-700 dark:text-gray-300 list-disc pl-5">
+                    {item.points.map(p => <li key={p}>{p}</li>)}
+                </ul>
+                {examples.length > 0 ? (
+                    <div className="mt-5">
+                        <p className="text-sm font-semibold">Top picks in this family</p>
+                        <div className="mt-2 flex flex-wrap gap-2">
+                            {examples.map(l => (
+                                <Link key={l.id} to={laptopPath(l.id)} className="chip">{l.name} <span className="text-xs tabular-nums opacity-70">{l.score.toFixed(1)}</span></Link>
+                            ))}
+                        </div>
+                        <Link to={`/explorer?gen=${active}`} className="btn-primary mt-4">See all {BY_FAMILY[active].length} laptops <Icon name="arrowRight" /></Link>
+                    </div>
+                ) : (
+                    <p className="mt-5 text-sm text-gray-600 dark:text-gray-300">The guide doesn't list any laptops in this family, because they don't make good Hackintoshes. <Link to="/components" className="text-blue-700 dark:text-blue-300 hover:underline">Check the Component Checker</Link> for details.</p>
+                )}
+            </div>
+        </section>
+    );
+}
+
 function SectionHeading({ eyebrow, title, id, action }) {
     return (
         <div className="flex items-end justify-between gap-4 mb-5">
@@ -84,8 +193,15 @@ function Hero() {
     const navigate = useNavigate();
     return (
         <section className="card mt-6 md:mt-10 px-5 py-10 sm:px-10 md:py-16 text-center animate-in">
-            <p className="eyebrow">OpenCore laptop guide</p>
-            <h1 className="mt-3 text-4xl md:text-6xl font-bold tracking-tight">Build your dream<br className="hidden sm:block" /> macOS laptop</h1>
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass text-xs font-semibold">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px] shadow-emerald-500" aria-hidden="true" />
+                The laptop Hackintosh hub
+                <span className="px-2 py-0.5 rounded-full bg-blue-500/15 text-blue-800 dark:text-blue-200">OpenCore</span>
+            </span>
+            <h1 className="mt-5 text-4xl md:text-6xl font-bold tracking-tight">
+                Turn your PC laptop into<br className="hidden sm:block" />{' '}
+                <span className="bg-gradient-to-r from-blue-600 via-violet-600 to-pink-500 dark:from-blue-300 dark:via-violet-300 dark:to-pink-300 bg-clip-text text-transparent">a macOS machine</span>
+            </h1>
             <p className="mt-5 text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
                 Pick a laptop that's known to work, check its parts, and follow a proven setup.
             </p>
@@ -100,6 +216,12 @@ function Hero() {
                        placeholder="Search laptops, CPUs, Wi-Fi…" />
                 <button type="submit" className="btn-primary absolute right-1.5 top-1/2 -translate-y-1/2">Search</button>
             </form>
+            <div className="mt-4 flex flex-wrap justify-center items-center gap-2 text-sm">
+                <span className="text-gray-500 dark:text-gray-400">Trending:</span>
+                {TRENDING.map(t => (
+                    <Link key={t} to={`/explorer?search=${encodeURIComponent(t)}`} className="px-3 py-1 rounded-full bg-white/50 dark:bg-white/5 ring-1 ring-gray-900/10 dark:ring-white/10 hover:ring-blue-500/50 transition">{t}</Link>
+                ))}
+            </div>
             <div className="mt-6 flex flex-wrap justify-center gap-2">
                 {Object.entries(PRIORITY_LABELS).map(([key, label]) => (
                     <Link key={key} to={`/explorer?priority=${key}`} className="chip"><Icon name={PRIORITY_ICONS[key]} />{label}</Link>
@@ -176,6 +298,8 @@ export default function Home() {
             <div className="callout callout-warn mt-6">
                 <p><strong>Heads-up:</strong> Apple has said macOS 26 Tahoe is the last macOS release for Intel Macs. Hackintoshes will keep working on Tahoe and earlier, but there won't be newer versions to upgrade to. Plan for that before you buy.</p>
             </div>
+
+            <Assistant />
 
             <section className="mt-12" aria-labelledby="picks-heading">
                 <SectionHeading eyebrow="Editor's shortlist" title="Best pick for every priority" id="picks-heading" />

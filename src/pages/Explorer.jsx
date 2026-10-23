@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useSearchParams } from 'react-router';
 import { LaptopDB, PRIORITY_LABELS } from '../data/laptops.js';
+import { CPU_FAMILIES, cpuFamily } from '../lib/buildPlan.js';
 import { Icon } from '../lib/icons.jsx';
 import { compareList, favoriteList, useList } from '../lib/stores.js';
 import { useTitle } from '../components/Layout.jsx';
@@ -9,6 +10,7 @@ import Glass from '../components/Glass.jsx';
 
 const ALL = LaptopDB.all();
 const BRANDS = LaptopDB.brands();
+const FAMILY = new Map(ALL.map(l => [l.id, cpuFamily(l)]));
 const MACOS_FILTERS = ['Monterey', 'Ventura', 'Sonoma', 'Sequoia', 'Tahoe'];
 const SORTS = {
     'score-desc': ['Score (high to low)', (a, b) => b.score - a.score],
@@ -39,6 +41,7 @@ function readFilters(params) {
         priorities: (params.get('priority') || '').split(',').filter(p => p in PRIORITY_LABELS),
         macos: MACOS_FILTERS.includes(macos) ? macos : '',
         brand: BRANDS.includes(brand) ? brand : '',
+        gen: params.get('gen') in CPU_FAMILIES ? params.get('gen') : '',
         favorites: params.get('fav') === '1',
         minScore: parseFloat(params.get('min')) || 0,
         sort: sort in SORTS ? sort : 'score-desc'
@@ -51,6 +54,7 @@ function toParams(f) {
     if (f.priorities.length) params.set('priority', f.priorities.join(','));
     if (f.macos) params.set('macos', f.macos);
     if (f.brand) params.set('brand', f.brand);
+    if (f.gen) params.set('gen', f.gen);
     if (f.favorites) params.set('fav', '1');
     if (f.minScore) params.set('min', f.minScore);
     if (f.sort !== 'score-desc') params.set('sort', f.sort);
@@ -101,6 +105,7 @@ export default function Explorer() {
             filters.priorities.every(p => l.priority.includes(p)) &&
             (!filters.macos || LaptopDB.supportsMacos(l, filters.macos)) &&
             (!filters.brand || l.brand === filters.brand) &&
+            (!filters.gen || FAMILY.get(l.id) === filters.gen) &&
             (!filters.favorites || favorites.includes(l.id)) &&
             l.score >= filters.minScore &&
             terms.every(t => SEARCH_TEXT.get(l.id).includes(t))
@@ -108,7 +113,7 @@ export default function Explorer() {
     }, [params, favorites]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const activeCount = (filters.search ? 1 : 0) + filters.priorities.length + (filters.macos ? 1 : 0) +
-        (filters.brand ? 1 : 0) + (filters.favorites ? 1 : 0) + (filters.minScore ? 1 : 0);
+        (filters.brand ? 1 : 0) + (filters.gen ? 1 : 0) + (filters.favorites ? 1 : 0) + (filters.minScore ? 1 : 0);
     const reset = () => setParams({}, { replace: true });
 
     const searchInput = id => (
@@ -166,6 +171,16 @@ export default function Explorer() {
                                 {MACOS_FILTERS.map(v => (
                                     <button key={v} type="button" className="chip" aria-pressed={filters.macos === v}
                                             onClick={() => update({ macos: filters.macos === v ? '' : v })}>{v}</button>
+                                ))}
+                            </div>
+                        </fieldset>
+
+                        <fieldset>
+                            <legend className="label">CPU generation</legend>
+                            <div className="flex flex-wrap gap-2">
+                                {Object.entries(CPU_FAMILIES).map(([value, label]) => (
+                                    <button key={value} type="button" className="chip" aria-pressed={filters.gen === value}
+                                            onClick={() => update({ gen: filters.gen === value ? '' : value })}>{label.replace('Intel ', '')}</button>
                                 ))}
                             </div>
                         </fieldset>

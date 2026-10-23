@@ -8,12 +8,14 @@ A guide to picking a laptop that runs macOS well with [OpenCore](https://github.
 
 ## Features
 
-- **95 laptops** with compatibility scores, macOS version ranges, hardware details and known issues, from 22 brands, with links to maintained OpenCore repositories where one exists.
-- **Explorer**: search everything (model, CPU, Wi-Fi card…), and filter by priority, macOS version, brand, minimum score or favorites. Filters live in the URL, so a filtered view can be shared as a link.
+- **95 laptops** with compatibility scores, macOS version ranges, hardware details and known issues, from 22 brands.
+- **Can your laptop run macOS?**: pick a CPU family on the home page for a quick verdict, the macOS versions to expect, and matching laptops.
+- **Explorer**: search everything (model, CPU, Wi-Fi card…), and filter by priority, macOS version, CPU generation, brand, minimum score or favorites. Filters live in the URL, so a filtered view can be shared as a link.
 - **Compare** up to three laptops side by side, with an overlaid ratings chart and a spec table. Comparison links can be shared too.
 - **Favorites and recently viewed**, saved on your device.
 - **Component Checker**: which CPUs, GPUs, Wi-Fi cards, RAM and SSDs work with macOS.
 - **A build guide for every laptop**: the OpenCore config section, SMBIOS, iGPU framebuffer values, SSDTs and every kext it needs (with download links), plus BIOS settings, boot arguments and the AppleALC layout-ids for its audio codec. Pick your exact CPU, Wi-Fi card, trackpad and target macOS, and the guide adapts. A checklist tracks the kexts you've collected.
+- **Guides page**: every guide in one place, searchable, with General/Laptop tabs and a Beginner/Intermediate/Advanced difficulty for each laptop.
 - **Guides**: a general build guide, a buying-used checklist, a searchable troubleshooting page, and the essential tools and kexts.
 - **Works well on phones**, in light and dark mode, with a "liquid glass" look.
 - **No tracking and no outside requests**: fonts and libraries are bundled with the site.
@@ -22,10 +24,10 @@ A guide to picking a laptop that runs macOS well with [OpenCore](https://github.
 
 Laptop information is a starting point, not a guarantee. Check everything against your exact model before you buy.
 
-- **32 curated laptops** are the core of the guide. Hardware for the newer additions comes from each model's maintained OpenCore repository, which is linked from its page. Any field that hasn't been confirmed against a real build is marked **Unverified** on the site.
+- **32 curated laptops** are the core of the guide. Hardware for the newer additions was taken from public OpenCore projects for each model. Any field that hasn't been confirmed against a real build is marked **Unverified** on the site.
 - **63 community laptops** were imported from a community-submitted list. Their pages say so, their ratings are estimated from that list's compatibility scores, and their macOS ranges are marked Unverified.
 
-Every guide link points to a repository confirmed to exist. Corrections are welcome. See [Adding or correcting a laptop](#adding-or-correcting-a-laptop).
+Corrections are welcome. See [Adding or correcting a laptop](#adding-or-correcting-a-laptop).
 
 ## Pages
 
@@ -37,7 +39,8 @@ Every guide link points to a repository confirmed to exist. Corrections are welc
 | `/laptop/:id/build` | Step-by-step OpenCore build guide for that laptop |
 | `/compare` | Side-by-side comparison (`?ids=a,b,c`) |
 | `/components` | Component Checker (`?tab=Wi-Fi` and so on) |
-| `/build-guide` | Installing macOS with OpenCore, step by step |
+| `/guides` | All guides: search, filter by type and difficulty |
+| `/build-guide` | Installing macOS with OpenCore, step by step, plus a laptop picker |
 | `/buy-used` | Where to buy used and what to check |
 | `/troubleshooting` | Fixes for common problems |
 | `/essentials` | Tools, kexts and community resources |
@@ -118,7 +121,7 @@ thinkpad_t480: {
         chartData: { ease: 90, performance: 85, battery: 80, stability: 95 },  // 0-100
         knownIssues: ["Fingerprint reader not supported"]
         // ...plus optional ram, storage, wifiBluetooth, audioCodec, trackpad, ports,
-        // displayFeatures, batteryLife, thermals, guides and more
+        // displayFeatures, batteryLife, thermals and more
     },
     needsVerification: ["details.maxMacosSupport"]
 }

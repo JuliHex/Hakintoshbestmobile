@@ -85,3 +85,13 @@ export function CompareButton({ id, labels = ['Compare', 'Comparing'] }) {
         </button>
     );
 }
+
+const DIFFICULTY_STYLE = {
+    Beginner: 'bg-emerald-500/15 text-emerald-800 ring-emerald-500/25 dark:text-emerald-200',
+    Intermediate: 'bg-amber-400/20 text-amber-900 ring-amber-500/30 dark:text-amber-200',
+    Advanced: 'bg-rose-500/15 text-rose-800 ring-rose-500/25 dark:text-rose-200'
+};
+
+export function DifficultyBadge({ level }) {
+    return <span className={`inline-flex px-2 py-0.5 rounded-full text-xs font-semibold ring-1 ${DIFFICULTY_STYLE[level]}`}>{level}</span>;
+}

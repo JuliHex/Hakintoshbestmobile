@@ -6,6 +6,7 @@ import Explorer from './pages/Explorer.jsx';
 import ComponentsPage from './pages/Components.jsx';
 import Essentials from './pages/Essentials.jsx';
 import BuildGuide from './pages/BuildGuide.jsx';
+import Guides from './pages/Guides.jsx';
 import BuyUsed from './pages/BuyUsed.jsx';
 import Troubleshooting from './pages/Troubleshooting.jsx';
 import NotFound from './pages/NotFound.jsx';
@@ -45,6 +46,7 @@ export default function App() {
                 <Route path="compare" element={<Suspense fallback={<Loading />}><Compare /></Suspense>} />
                 <Route path="components" element={<ComponentsPage />} />
                 <Route path="essentials" element={<Essentials />} />
+                <Route path="guides" element={<Guides />} />
                 <Route path="build-guide" element={<BuildGuide />} />
                 <Route path="buy-used" element={<BuyUsed />} />
                 <Route path="troubleshooting" element={<Troubleshooting />} />

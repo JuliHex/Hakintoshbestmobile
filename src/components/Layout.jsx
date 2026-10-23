@@ -8,7 +8,7 @@ export const NAV_ITEMS = [
     { to: '/', label: 'Home' },
     { to: '/explorer', label: 'Explorer' },
     { to: '/compare', label: 'Compare' },
-    { to: '/build-guide', label: 'Build Guide' },
+    { to: '/guides', label: 'Guides' },
     { to: '/components', label: 'Components' },
     { to: '/essentials', label: 'Essentials' },
     { to: '/buy-used', label: 'Buy Used' },

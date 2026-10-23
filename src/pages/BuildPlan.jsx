@@ -2,7 +2,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router';
 import { LaptopDB } from '../data/laptops.js';
 import { DRIVERS, KEXTS, LINKS, SSDTS, TOOLS } from '../data/kexts.js';
-import { buildPlan, defaultTarget, detectOptions, targetVersions } from '../lib/buildPlan.js';
+import { buildPlan, defaultTarget, detectOptions, guideDifficulty, targetVersions } from '../lib/buildPlan.js';
+import { DifficultyBadge } from '../components/LaptopBits.jsx';
 import { laptopPath } from '../lib/format.js';
 import { Icon } from '../lib/icons.jsx';
 import { useTitle } from '../components/Layout.jsx';
@@ -137,7 +138,7 @@ function Guide({ laptop }) {
     return (
         <>
             <header className="card p-5 sm:p-8 animate-in">
-                <p className="eyebrow">OpenCore build guide</p>
+                <p className="eyebrow flex items-center gap-2">OpenCore build guide <DifficultyBadge level={guideDifficulty(laptop)} /></p>
                 <h1 className="mt-1 text-3xl sm:text-4xl font-bold tracking-tight">{laptop.name}</h1>
                 <p className="mt-3 text-gray-600 dark:text-gray-300 max-w-3xl">
                     Every kext, SSDT and config.plist value this laptop needs, worked out from its hardware using the rules in Dortania's OpenCore guide. Adjust the choices below to match your exact unit, and the guide updates.
