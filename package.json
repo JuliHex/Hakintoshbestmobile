@@ -4,7 +4,7 @@
   "description": "Hackintosh Laptop Guide: a React app for picking a laptop that runs macOS well with OpenCore",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && node scripts/spa-fallback.js",
+    "build": "node scripts/clean-build.js && vite build && node scripts/spa-fallback.js",
     "preview": "vite preview"
   },
   "keywords": [],
