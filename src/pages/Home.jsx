@@ -28,7 +28,7 @@ const STEPS = [
 ];
 
 const GUIDES = [
-    ['book', 'Build Guide', 'From BIOS settings to a working EFI, step by step.', '/build-guide'],
+    ['book', 'Build Guide', 'A step-by-step guide for every laptop, with every kext it needs.', '/build-guide'],
     ['cpu', 'Component Checker', 'Which CPUs, GPUs, Wi-Fi cards and SSDs work.', '/components'],
     ['tag', 'Buying Used', 'Where to look and what to check before paying.', '/buy-used'],
     ['lifebuoy', 'Troubleshooting', 'Fixes for boot hangs, sleep, Wi-Fi, audio and more.', '/troubleshooting']
