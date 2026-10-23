@@ -1,234 +1,104 @@
 <!DOCTYPE html>
-<html lang="en" class="">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laptop Explorer - Hackintosh Guide</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Laptop Explorer - Hackintosh Laptop Guide</title>
+    <meta name="description" content="Search and filter Hackintosh-compatible laptops by priority, macOS version and compatibility score.">
+    <meta name="theme-color" content="#4A90E2">
+    <script>try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme: dark)').matches))document.documentElement.classList.add('dark')}catch(e){}</script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        /* Base styles (Light Mode) - Consistent with other pages */
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #F8F9FA;
-            color: #212529;
-            transition: background-color 0.3s, color 0.3s;
-        }
-        .bg-primary { background-color: #4A90E2; }
-        .text-primary { color: #4A90E2; }
-        .border-primary { border-color: #4A90E2; }
-        .bg-secondary { background-color: #f0f4f8; }
-        .text-dark { color: #212529; }
-        .text-medium { color: #495057; }
-        .text-light { color: #adb5bd; }
-        .card-shadow { box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
-        .nav-link { transition: color 0.2s, border-color 0.2s; padding-top: 0.5rem; padding-bottom: 0.5rem; }
-        .nav-link.active { color: #4A90E2; border-bottom-width: 2px; border-color: #4A90E2; }
-        .nav-link:not(.active) { border-bottom-width: 2px; border-color: transparent; }
-        .priority-btn, .priority-btn-all {
-            font-weight: bold;
-            padding: 0.75rem 1.5rem; 
-            border-radius: 0.5rem; 
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,.1), 0 2px 4px -1px rgba(0,0,0,.06); 
-            transition-property: background-color, border-color, color, transform, box-shadow;
-            transition-duration: .15s;
-            transition-timing-function: cubic-bezier(.4,0,.2,1);
-        }
-        .priority-btn:hover, .priority-btn-all:hover {
-            transform: scale(1.05);
-        }
-        .priority-btn.active-filter, .priority-btn-all.active-filter {
-            background-color: #4A90E2; 
-            color: white;
-        }
-         .priority-btn:not(.active-filter), .priority-btn-all:not(.active-filter) {
-            background-color: white;
-            color: #4A90E2; 
-            border-width: 2px;
-            border-color: #4A90E2; 
-        }
-
-        /* Dark Mode Styles - Consistent with other pages */
-        .dark body {
-            background-color: #1a202c;
-            color: #e2e8f0;
-        }
-        .dark .bg-white { background-color: #2d3748; }
-        .dark .text-dark { color: #e2e8f0; }
-        .dark .text-medium { color: #a0aec0; }
-        .dark .text-light { color: #718096; }
-        .dark .bg-secondary { background-color: #2d3748; }
-        .dark .card-shadow { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3), 0 2px 4px -2px rgba(0,0,0,0.2); }
-        .dark .border-primary { border-color: #63b3ed; }
-        .dark .text-primary { color: #63b3ed; }
-        .dark .bg-primary { background-color: #3182ce; }
-        .dark .nav-link.active { color: #63b3ed; border-color: #63b3ed; }
-        .dark .priority-btn.active-filter, .dark .priority-btn-all.active-filter {
-             background-color: #3182ce; 
-        }
-        .dark .priority-btn:not(.active-filter), .dark .priority-btn-all:not(.active-filter) {
-            background-color: #4a5568; 
-            color: #e2e8f0; 
-            border-color: #63b3ed; 
-        }
-        .dark #find-bar-header, .dark #find-bar-explorer { background-color: #4a5568; border-color: #6b7280; color: #e2e8f0; }
-        .dark #find-bar-header::placeholder, .dark #find-bar-explorer::placeholder { color: #a0aec0; }
-        .dark #compare-action-bar { background-color: #1f2937; }
-    </style>
-    <!-- Add this after other stylesheets -->
-    <link rel="stylesheet" href="assets/css/animations.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
 </head>
-<body class="text-dark" data-page-id="explorer">
+<body>
+    <div id="site-header"></div>
 
-    <header class="bg-white shadow-md sticky top-0 z-40 slide-in-right">
-        <nav class="container mx-auto px-6 py-2 flex justify-between items-center">
-            <a href="index.html" class="text-xl font-bold text-primary fade-in">Hackintosh Laptop Guide</a>
-            <div class="flex items-center">
-                 <div class="relative mr-4">
-                    <input type="search" id="find-bar-header" placeholder="Find a laptop..." class="px-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-primary focus:border-primary dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+    <main id="main" class="page pb-28">
+        <h1 class="page-title">Laptop Explorer</h1>
+        <p class="page-lead">Filter by what matters to you, then tap <strong>+ Compare</strong> on up to three laptops to see them side by side.</p>
+
+        <div class="mt-6 lg:grid lg:grid-cols-[17rem,1fr] lg:gap-8 lg:items-start">
+            <aside class="lg:sticky lg:top-24">
+                <div class="flex gap-2 lg:hidden">
+                    <div class="relative flex-1">
+                        <label for="search-input-mobile" class="sr-only">Search laptops</label>
+                        <input type="search" id="search-input-mobile" class="input" placeholder="Search name, CPU, Wi-Fi…" data-search>
+                    </div>
+                    <button type="button" id="filters-toggle" class="btn-secondary shrink-0" aria-expanded="false" aria-controls="filters-panel">
+                        Filters <span id="active-filter-count" class="tag" hidden></span>
+                    </button>
                 </div>
-                <div class="hidden md:flex space-x-3 lg:space-x-4 mr-4">
-                    <a href="index.html" class="nav-link text-sm lg:text-base">Home</a>
-                    <a href="explorer.html" class="nav-link text-sm lg:text-base">Explorer</a>
-                    <a href="build_guide.html" class="nav-link text-sm lg:text-base">Laptop Builds</a>
-                    <a href="components.html" class="nav-link text-sm lg:text-base">Components</a>
-                    <a href="essentials.html" class="nav-link text-sm lg:text-base">Essentials</a>
-                    <a href="buy_used.html" class="nav-link text-sm lg:text-base">Buy Used</a>
-                    <a href="troubleshooting.html" class="nav-link text-sm lg:text-base">Troubleshoot</a>
-                </div>
-                <button id="theme-toggle" aria-label="Toggle theme" title="Toggle dark mode" class="text-xl">
-                    ☀️
-                </button>
-                <button id="mobile-menu-button" class="md:hidden focus:outline-none ml-2">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
-                </button>
-            </div>
-        </nav>
-        <div id="mobile-menu" class="hidden md:hidden bg-white">
-            <a href="index.html" class="block py-2 px-6 text-sm nav-link">Home</a>
-            <a href="explorer.html" class="block py-2 px-6 text-sm nav-link">Laptop Explorer</a>
-            <a href="build_guide.html" class="block py-2 px-6 text-sm nav-link">Laptop Builds</a>
-            <a href="components.html" class="block py-2 px-6 text-sm nav-link">Component Checker</a>
-            <a href="essentials.html" class="block py-2 px-6 text-sm nav-link">The Essentials</a>
-            <a href="buy_used.html" class="block py-2 px-6 text-sm nav-link">Where to Buy Used</a>
-            <a href="troubleshooting.html" class="block py-2 px-6 text-sm nav-link">Troubleshooting Guide</a>
-        </div>
-    </header>
 
-    <main class="container mx-auto p-4 md:p-8 fade-in">
-        <section id="explorer" class="py-12">
-            <div class="text-center mb-8 slide-up">
-                <h2 class="text-3xl font-bold mb-2">Laptop Explorer</h2>
-                <p class="text-medium max-w-2xl mx-auto">Browse highly recommended models. Use the filters below or the search bar to narrow your results.</p>
-            </div>
-
-            <div class="mb-8 p-4 bg-white dark:bg-gray-800 rounded-lg shadow slide-up">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Search Bar -->
-                    <div class="fade-in">
-                        <label for="search-input" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Search:</label>
-                        <input type="search" id="search-input" 
-                               class="w-full px-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-                               placeholder="Search by name, CPU, GPU...">
+                <form id="filters-panel" class="card p-4 mt-3 lg:mt-0 space-y-5 hidden lg:block" onsubmit="return false">
+                    <div class="hidden lg:block">
+                        <label for="search-input" class="label">Search</label>
+                        <input type="search" id="search-input" class="input" placeholder="Name, CPU, Wi-Fi…" data-search>
                     </div>
 
-                    <!-- Sort Options -->
-                    <div class="fade-in">
-                        <label for="sort-select" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Sort By:</label>
-                        <select id="sort-select" class="w-full px-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
-                            <option value="score-desc">Score (High to Low)</option>
-                            <option value="score-asc">Score (Low to High)</option>
+                    <div>
+                        <label for="sort-select" class="label">Sort by</label>
+                        <select id="sort-select" class="input">
+                            <option value="score-desc">Score (high to low)</option>
+                            <option value="score-asc">Score (low to high)</option>
                             <option value="name-asc">Name (A to Z)</option>
                             <option value="name-desc">Name (Z to A)</option>
                         </select>
                     </div>
 
-                    <!-- Priority Filters -->
-                    <div class="fade-in">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Priority:</label>
-                        <div id="priority-filter-buttons-explorer" class="flex flex-wrap gap-2">
-                            <button data-priority="all" class="priority-btn-all">All Laptops</button>
-                            <button data-priority="ease" class="priority-btn">Ease of Setup</button>
-                            <button data-priority="performance" class="priority-btn">Max Performance</button>
-                            <button data-priority="budget" class="priority-btn">Budget-Friendly</button>
-                            <button data-priority="portability" class="priority-btn">Portability</button>
-                        </div>
+                    <fieldset>
+                        <legend class="label">Priorities</legend>
+                        <div id="priority-filters" class="flex flex-wrap gap-2"></div>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend class="label">Runs macOS</legend>
+                        <div id="macos-filters" class="flex flex-wrap gap-2"></div>
+                    </fieldset>
+
+                    <div>
+                        <label for="min-score" class="label">Minimum score</label>
+                        <select id="min-score" class="input">
+                            <option value="0">Any</option>
+                            <option value="7">7.0+</option>
+                            <option value="8">8.0+</option>
+                            <option value="8.5">8.5+</option>
+                            <option value="9">9.0+</option>
+                        </select>
                     </div>
 
-                    <!-- macOS Version Filter -->
-                    <div class="fade-in">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">macOS Version:</label>
-                        <div id="macos-filter-buttons" class="flex flex-wrap gap-2">
-                            <button data-macos="all" class="macos-btn-all">All Versions</button>
-                            <button data-macos="Sonoma" class="macos-btn">Sonoma</button>
-                            <button data-macos="Ventura" class="macos-btn">Ventura</button>
-                            <button data-macos="Monterey" class="macos-btn">Monterey</button>
-                        </div>
-                    </div>
+                    <button type="button" id="reset-filters" class="btn-secondary w-full">Reset filters</button>
+                </form>
+            </aside>
 
-                    <!-- Performance Filters -->
-                    <div class="fade-in col-span-2">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Performance Filters:</label>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label for="min-score" class="block text-xs text-gray-600 dark:text-gray-400">Minimum Score</label>
-                                <input type="range" id="min-score" min="0" max="10" step="0.5" value="0" 
-                                       class="w-full">
-                                <span id="min-score-value" class="text-sm">0</span>
-                            </div>
-                            <div>
-                                <label for="max-score" class="block text-xs text-gray-600 dark:text-gray-400">Maximum Score</label>
-                                <input type="range" id="max-score" min="0" max="10" step="0.5" value="10" 
-                                       class="w-full">
-                                <span id="max-score-value" class="text-sm">10</span>
-                            </div>
-                        </div>
-                    </div>
+            <section aria-labelledby="results-heading" class="mt-6 lg:mt-0">
+                <h2 id="results-heading" class="sr-only">Results</h2>
+                <p id="result-count" class="text-sm text-gray-600 dark:text-gray-400 mb-4" aria-live="polite"></p>
+                <div id="laptop-grid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5"></div>
+                <div id="no-results" class="card p-8 text-center" hidden>
+                    <p class="font-medium">No laptops match these filters.</p>
+                    <button type="button" class="btn-secondary mt-4" data-reset>Reset filters</button>
                 </div>
-            </div>
-
-            <div id="laptop-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Laptops will be rendered here -->
-                <!-- Example of a laptop card with a score bar -->
-                <div class="laptop-card bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4">
-                    <img src="assets/images/laptops/placeholder.jpg" alt="Laptop Name" class="w-full h-48 object-cover rounded-lg mb-4">
-                    <h3 class="text-lg font-bold mb-2">Laptop Name</h3>
-                    <p class="text-medium mb-3">Laptop summary goes here...</p>
-                    <div class="score-bar-container">
-                        <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Score:</span>
-                        <div class="score-bar bg-gray-300 dark:bg-gray-600 rounded-full overflow-hidden mt-1">
-                            <div class="score-bar-fill bg-primary h-2 rounded-full" style="width: 80%;"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <p id="no-results" class="text-center text-medium py-8 hidden">No laptops match your current filters.</p>
-        </section>
+            </section>
+        </div>
     </main>
 
-    <div id="compare-action-bar" class="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 p-4 shadow-lg z-30 hidden slide-up">
-        <button id="compare-selected-btn" class="bg-primary text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed hover-scale">
-            Compare Selected (<span id="selected-count">0</span>)
-        </button>
-        <button id="clear-selection-btn" class="ml-4 bg-gray-300 dark:bg-gray-600 text-gray-800 dark:text-gray-200 font-bold py-3 px-4 rounded-lg shadow hover:bg-gray-400 dark:hover:bg-gray-500 hover-scale">
-            Clear
-        </button>
+    <div id="compare-bar" class="fixed inset-x-0 bottom-0 z-30 border-t border-gray-200 dark:border-gray-700 bg-white/95 dark:bg-gray-800/95 backdrop-blur" style="padding-bottom: env(safe-area-inset-bottom)" hidden>
+        <div class="container mx-auto px-4 sm:px-6 py-3 flex items-center gap-3">
+            <p class="flex-1 min-w-0 text-sm">
+                <strong id="compare-count"></strong>
+                <span id="compare-names" class="hidden sm:inline text-gray-600 dark:text-gray-300"></span>
+            </p>
+            <button type="button" id="compare-clear" class="btn-secondary">Clear</button>
+            <a href="comparison.html" id="compare-go" class="btn-primary">Compare</a>
+        </div>
     </div>
 
-    <footer class="text-center py-8 border-t dark:border-gray-700 fade-in">
-        <p class="text-sm text-medium">&copy; <span id="current-year"></span> Hackintosh Laptop Guide. For educational purposes only.</p>
-    </footer>
+    <div id="site-footer"></div>
 
-    <!-- Scripts - Updated order -->
     <script src="js/data.js"></script>
+    <script src="js/layout.js"></script>
     <script src="js/explorer_page.js"></script>
-    <script src="js/animations.js"></script>
-    <script src="js/navigation.js"></script>
-    <script src="js/charts.js"></script>
-    <script src="js/gemini_api.js"></script>
-    <script src="js/main.js"></script>
-    <script src="js/theme.js"></script>
 </body>
 </html>

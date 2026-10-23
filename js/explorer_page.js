@@ -1,354 +1,171 @@
 const ExplorerPage = (() => {
-    // Module-level variables
-    let currentPriorityFilters = new Set(["all"]);
-    let currentMacOSFilter = "all";
-    let currentSearchQuery = "";
-    let currentSortOption = "score-desc";
-    let minScore = 0;
-    let maxScore = 10;
-    let laptopGrid = null;
-    let priorityFilterButtonsContainer = null;
-    let macOSFilterButtons = null;
-    let searchInput = null;
-    let sortSelect = null;
-    let minScoreRange = null;
-    let maxScoreRange = null;
+    const MACOS_FILTERS = ['Monterey', 'Ventura', 'Sonoma', 'Sequoia', 'Tahoe'];
+    const DEFAULTS = { search: '', priorities: [], macos: '', minScore: 0, sort: 'score-desc' };
+    const state = { ...DEFAULTS, priorities: [] };
 
-    function createLaptopCard(laptop) {
-        return `
-            <a href="laptop_detail.html?id=${laptop.id}" 
-               class="laptop-card bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
-                <div class="flex flex-col h-full">
-                    <img src="${laptop.image || 'assets/images/laptops/placeholder.jpg'}" 
-                         alt="${laptop.name}" 
-                         class="w-full h-48 object-cover rounded-lg mb-4">
-                    
-                    <h3 class="text-lg font-bold mb-2 text-gray-900 dark:text-white">${laptop.name}</h3>
-                    <p class="text-gray-600 dark:text-gray-300 mb-3">${laptop.summary}</p>
-                    
-                    <!-- Score Bar -->
-                    <div class="score-bar-container mb-4">
-                        <div class="flex justify-between mb-1">
-                            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Score:</span>
-                            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">${laptop.score}/10</span>
-                        </div>
-                        <div class="score-bar bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                            <div class="score-bar-fill bg-primary h-2 rounded-full" 
-                                 style="width: ${laptop.score * 10}%"></div>
-                        </div>
-                    </div>
+    const el = id => document.getElementById(id);
+    const searchInputs = () => document.querySelectorAll('[data-search]');
 
-                    <!-- Display Features -->
-                    ${laptop.details.displayFeatures ? `
-                        <div class="mb-4">
-                            <h4 class="text-sm font-semibold mb-2 text-gray-800 dark:text-gray-200">Display</h4>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">
-                                ${laptop.details.displayFeatures.type} - ${laptop.details.displayFeatures.brightness}
-                            </p>
-                        </div>
-                    ` : ''}
-
-                    <!-- Battery -->
-                    ${laptop.details.batteryLife ? `
-                        <div class="mb-4">
-                            <h4 class="text-sm font-semibold mb-2 text-gray-800 dark:text-gray-200">Battery</h4>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">
-                                ${laptop.details.batteryLife.average} - ${laptop.details.batteryLife.capacity}
-                            </p>
-                        </div>
-                    ` : ''}
-
-                    <!-- Known Issues -->
-                    ${laptop.details.knownIssues ? `
-                        <div class="mb-4">
-                            <h4 class="text-sm font-semibold mb-2 text-gray-800 dark:text-gray-200">Known Issues</h4>
-                            <ul class="text-sm text-gray-600 dark:text-gray-400 list-disc pl-4">
-                                ${laptop.details.knownIssues.slice(0, 2).map(issue => 
-                                    `<li>${issue}</li>`
-                                ).join('')}
-                                ${laptop.details.knownIssues.length > 2 ? `<li>+ ${laptop.details.knownIssues.length - 2} more...</li>` : ''}
-                            </ul>
-                        </div>
-                    ` : ''}
-
-                    <!-- Ports Summary -->
-                    ${laptop.details.ports ? `
-                        <div class="mb-4">
-                            <h4 class="text-sm font-semibold mb-2 text-gray-800 dark:text-gray-200">Ports</h4>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">
-                                ${Object.entries(laptop.details.ports)
-                                    .filter(([key, value]) => value && value !== "No")
-                                    .slice(0, 2)
-                                    .map(([key, value]) => 
-                                        Array.isArray(value) ? value[0] : value
-                                    ).join(', ')}...
-                            </p>
-                        </div>
-                    ` : ''}
-
-                    <!-- Priority Tags -->
-                    <div class="mt-auto pt-4 flex flex-wrap gap-2">
-                        ${laptop.priority.map(p => `
-                            <span class="px-2 py-1 text-xs font-medium rounded-full bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-100">
-                                ${p}
-                            </span>
-                        `).join('')}
-                    </div>
-                </div>
-            </a>
-        `;
+    // Flattens a laptop's details into one lowercase string for free-text search.
+    function searchText(laptop) {
+        const parts = [laptop.name, laptop.summary];
+        (function collect(value) {
+            if (typeof value === 'string') parts.push(value);
+            else if (Array.isArray(value)) value.forEach(collect);
+            else if (value && typeof value === 'object') Object.values(value).forEach(collect);
+        })(laptop.details);
+        return parts.join(' ').toLowerCase();
     }
 
-    function filterLaptops(laptops) {
-        return laptops.filter(laptop => {
-            // Priority filter
-            const priorityMatch = currentPriorityFilters.has("all") || 
-                laptop.priority.some(p => currentPriorityFilters.has(p.toLowerCase()));
-
-            // macOS filter
-            const macOSMatch = currentMacOSFilter === "all" || 
-                laptop.details.macosSupport.toLowerCase() === currentMacOSFilter.toLowerCase();
-
-            // Score filter
-            const scoreMatch = laptop.score >= minScore && laptop.score <= maxScore;
-
-            // Search filter
-            const searchMatch = !currentSearchQuery || 
-                Object.values(laptop.details)
-                    .concat([laptop.name, laptop.summary])
-                    .some(value => 
-                        typeof value === 'string' && 
-                        value.toLowerCase().includes(currentSearchQuery.toLowerCase())
-                    );
-
-            return priorityMatch && macOSMatch && scoreMatch && searchMatch;
-        });
-    }
-
-    function sortLaptops(laptops) {
-        return laptops.sort((a, b) => {
-            switch (currentSortOption) {
-                case "score-desc":
-                    return b.score - a.score;
-                case "score-asc":
-                    return a.score - b.score;
-                case "name-asc":
-                    return a.name.localeCompare(b.name);
-                case "name-desc":
-                    return b.name.localeCompare(a.name);
-                default:
-                    return 0;
-            }
-        });
-    }
-
-    function renderLaptopsExplorer() {
-        if (!laptopGrid || !window.laptopData) {
-            console.error("Required elements not found");
-            return;
+    function matches(laptop) {
+        if (state.priorities.some(p => !laptop.priority.includes(p))) return false;
+        if (state.macos && !LaptopDB.supportsMacos(laptop, state.macos)) return false;
+        if (laptop.score < state.minScore) return false;
+        if (state.search) {
+            const text = searchText(laptop);
+            return state.search.toLowerCase().split(/\s+/).every(term => text.includes(term));
         }
-
-        const allLaptops = Object.entries(window.laptopData).map(([id, data]) => ({
-            id,
-            ...data
-        }));
-
-        let filteredLaptops = filterLaptops(allLaptops);
-        filteredLaptops = sortLaptops(filteredLaptops);
-
-        if (filteredLaptops.length === 0) {
-            laptopGrid.innerHTML = `
-                <p class="col-span-3 text-center text-gray-500 dark:text-gray-400 py-8">
-                    No laptops found matching your criteria
-                </p>`;
-            return;
-        }
-
-        laptopGrid.innerHTML = filteredLaptops.map(laptop => createLaptopCard(laptop)).join('');
+        return true;
     }
 
-    function updateURL() {
-        const url = new URL(window.location.href);
-        
-        // Update priority filters
-        const priorities = Array.from(currentPriorityFilters);
-        if (priorities.length === 1 && priorities[0] === "all") {
-            url.searchParams.delete("priority");
-        } else {
-            url.searchParams.set("priority", priorities.join(","));
-        }
+    function sort(laptops) {
+        const [key, dir] = state.sort.split('-');
+        const sign = dir === 'asc' ? 1 : -1;
+        return laptops.sort((a, b) => sign * (key === 'name' ? a.name.localeCompare(b.name) : a.score - b.score));
+    }
 
-        // Update other filters
-        if (currentMacOSFilter !== "all") url.searchParams.set("macos", currentMacOSFilter);
-        else url.searchParams.delete("macos");
+    function activeFilterCount() {
+        return (state.search ? 1 : 0) + state.priorities.length + (state.macos ? 1 : 0) + (state.minScore ? 1 : 0);
+    }
 
-        if (currentSearchQuery) url.searchParams.set("search", currentSearchQuery);
-        else url.searchParams.delete("search");
+    function render() {
+        const results = sort(LaptopDB.all().filter(matches));
+        el('laptop-grid').innerHTML = results.map(l => UI.laptopCard(l, { compare: true })).join('');
+        el('no-results').hidden = results.length > 0;
+        el('result-count').textContent = `${results.length} of ${Object.keys(laptopData).length} laptops`;
 
-        if (currentSortOption !== "score-desc") url.searchParams.set("sort", currentSortOption);
-        else url.searchParams.delete("sort");
+        const count = activeFilterCount();
+        el('active-filter-count').hidden = count === 0;
+        el('active-filter-count').textContent = count;
 
-        if (minScore > 0) url.searchParams.set("min", minScore);
-        else url.searchParams.delete("min");
+        el('priority-filters').querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', state.priorities.includes(b.dataset.value)));
+        el('macos-filters').querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', b.dataset.value === state.macos));
+        searchInputs().forEach(input => { if (input.value !== state.search) input.value = state.search; });
+        el('sort-select').value = state.sort;
+        el('min-score').value = String(state.minScore);
 
-        if (maxScore < 10) url.searchParams.set("max", maxScore);
-        else url.searchParams.delete("max");
+        renderCompareBar();
+        syncUrl();
+    }
 
-        window.history.pushState({}, '', url);
+    function renderCompareBar() {
+        const ids = CompareStore.ids();
+        el('compare-bar').hidden = ids.length === 0;
+        el('compare-count').textContent = `${ids.length}/${CompareStore.MAX} selected`;
+        el('compare-names').textContent = ' · ' + ids.map(id => LaptopDB.get(id).name).join(', ');
+        el('compare-go').classList.toggle('pointer-events-none', ids.length < 2);
+        el('compare-go').classList.toggle('opacity-50', ids.length < 2);
+        el('compare-go').setAttribute('aria-disabled', String(ids.length < 2));
+        el('compare-go').textContent = ids.length < 2 ? 'Pick 1 more' : 'Compare';
+    }
+
+    function syncUrl() {
+        const params = new URLSearchParams();
+        if (state.search) params.set('search', state.search);
+        if (state.priorities.length) params.set('priority', state.priorities.join(','));
+        if (state.macos) params.set('macos', state.macos);
+        if (state.minScore) params.set('min', state.minScore);
+        if (state.sort !== DEFAULTS.sort) params.set('sort', state.sort);
+        const query = params.toString();
+        history.replaceState(null, '', query ? `?${query}` : location.pathname);
+    }
+
+    function readUrl() {
+        const params = new URLSearchParams(location.search);
+        state.search = params.get('search') || '';
+        state.priorities = (params.get('priority') || '').split(',').filter(p => p in PRIORITY_LABELS);
+        state.macos = MACOS_FILTERS.includes(params.get('macos')) ? params.get('macos') : '';
+        state.minScore = parseFloat(params.get('min')) || 0;
+        const sortValue = params.get('sort');
+        state.sort = [...el('sort-select').options].some(o => o.value === sortValue) ? sortValue : DEFAULTS.sort;
+    }
+
+    function reset() {
+        Object.assign(state, DEFAULTS, { priorities: [] });
+        render();
+    }
+
+    function buildChips() {
+        el('priority-filters').innerHTML = Object.entries(PRIORITY_LABELS)
+            .map(([value, label]) => `<button type="button" class="chip" data-value="${value}" aria-pressed="false">${label}</button>`)
+            .join('');
+        el('macos-filters').innerHTML = MACOS_FILTERS
+            .map(v => `<button type="button" class="chip" data-value="${v}" aria-pressed="false">${v}</button>`)
+            .join('');
     }
 
     function init() {
-        // Get DOM elements
-        laptopGrid = document.getElementById('laptop-grid');
-        priorityFilterButtonsContainer = document.getElementById('priority-filter-buttons-explorer');
-        macOSFilterButtons = document.getElementById('macos-filter-buttons');
-        searchInput = document.getElementById('search-input');
-        sortSelect = document.getElementById('sort-select');
-        minScoreRange = document.getElementById('min-score');
-        maxScoreRange = document.getElementById('max-score');
+        buildChips();
+        readUrl();
 
-        if (!laptopGrid || !priorityFilterButtonsContainer || !macOSFilterButtons) {
-            console.error("Required elements not found");
-            return;
-        }
+        let debounce;
+        searchInputs().forEach(input => input.addEventListener('input', () => {
+            clearTimeout(debounce);
+            debounce = setTimeout(() => {
+                state.search = input.value.trim();
+                render();
+            }, 150);
+        }));
 
-        // Set up priority filter buttons
-        priorityFilterButtonsContainer.querySelectorAll('button').forEach(button => {
-            button.addEventListener('click', () => {
-                const priority = button.dataset.priority;
-                
-                // Toggle active state
-                if (priority === "all") {
-                    currentPriorityFilters.clear();
-                    currentPriorityFilters.add("all");
-                    priorityFilterButtonsContainer.querySelectorAll('button').forEach(btn => {
-                        btn.classList.remove('active-filter');
-                    });
-                    button.classList.add('active-filter');
-                } else {
-                    currentPriorityFilters.delete("all");
-                    button.classList.toggle('active-filter');
-                    
-                    if (button.classList.contains('active-filter')) {
-                        currentPriorityFilters.add(priority);
-                    } else {
-                        currentPriorityFilters.delete(priority);
-                    }
-
-                    // If no filters selected, default to "all"
-                    if (currentPriorityFilters.size === 0) {
-                        currentPriorityFilters.add("all");
-                        const allButton = priorityFilterButtonsContainer.querySelector('[data-priority="all"]');
-                        if (allButton) allButton.classList.add('active-filter');
-                    }
-                }
-
-                updateURL();
-                renderLaptopsExplorer();
-            });
+        el('priority-filters').addEventListener('click', e => {
+            const value = e.target.closest('button')?.dataset.value;
+            if (!value) return;
+            state.priorities = state.priorities.includes(value)
+                ? state.priorities.filter(p => p !== value)
+                : [...state.priorities, value];
+            render();
         });
 
-        // macOS filter buttons
-        macOSFilterButtons.querySelectorAll('button').forEach(button => {
-            button.addEventListener('click', () => {
-                currentMacOSFilter = button.dataset.macos;
-                macOSFilterButtons.querySelectorAll('button').forEach(btn => {
-                    btn.classList.remove('active-filter');
-                });
-                button.classList.add('active-filter');
-                updateURL();
-                renderLaptopsExplorer();
-            });
+        el('macos-filters').addEventListener('click', e => {
+            const value = e.target.closest('button')?.dataset.value;
+            if (!value) return;
+            state.macos = state.macos === value ? '' : value;
+            render();
         });
 
-        // Score range inputs
-        minScoreRange.addEventListener('input', (e) => {
-            minScore = parseFloat(e.target.value);
-            document.getElementById('min-score-value').textContent = minScore;
-            if (minScore > maxScore) {
-                maxScore = minScore;
-                maxScoreRange.value = minScore;
-                document.getElementById('max-score-value').textContent = maxScore;
+        el('sort-select').addEventListener('change', e => { state.sort = e.target.value; render(); });
+        el('min-score').addEventListener('change', e => { state.minScore = parseFloat(e.target.value) || 0; render(); });
+        el('reset-filters').addEventListener('click', reset);
+        document.querySelector('[data-reset]').addEventListener('click', reset);
+
+        el('filters-toggle').addEventListener('click', () => {
+            const panel = el('filters-panel');
+            const open = panel.classList.toggle('hidden') === false;
+            el('filters-toggle').setAttribute('aria-expanded', String(open));
+        });
+
+        el('laptop-grid').addEventListener('click', e => {
+            const button = e.target.closest('[data-compare-id]');
+            if (!button) return;
+            if (!CompareStore.toggle(button.dataset.compareId)) {
+                alert(`You can compare up to ${CompareStore.MAX} laptops. Remove one first.`);
+                return;
             }
-            updateURL();
-            renderLaptopsExplorer();
+            const selected = CompareStore.has(button.dataset.compareId);
+            button.setAttribute('aria-pressed', String(selected));
+            button.textContent = selected ? '✓ Comparing' : '+ Compare';
+            renderCompareBar();
         });
 
-        maxScoreRange.addEventListener('input', (e) => {
-            maxScore = parseFloat(e.target.value);
-            document.getElementById('max-score-value').textContent = maxScore;
-            if (maxScore < minScore) {
-                minScore = maxScore;
-                minScoreRange.value = maxScore;
-                document.getElementById('min-score-value').textContent = minScore;
-            }
-            updateURL();
-            renderLaptopsExplorer();
+        el('compare-clear').addEventListener('click', () => {
+            CompareStore.clear();
+            render();
         });
 
-        // Handle initial URL parameters
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.has('priority')) {
-            currentPriorityFilters = new Set(urlParams.get('priority').split(','));
-            currentPriorityFilters.forEach(priority => {
-                const button = priorityFilterButtonsContainer.querySelector(`[data-priority="${priority}"]`);
-                if (button) button.classList.add('active-filter');
-            });
-        }
-
-        if (urlParams.has('macos')) {
-            currentMacOSFilter = urlParams.get('macos');
-            const button = macOSFilterButtons.querySelector(`[data-macos="${currentMacOSFilter}"]`);
-            if (button) button.classList.add('active-filter');
-        }
-
-        if (urlParams.has('search')) {
-            currentSearchQuery = urlParams.get('search');
-            searchInput.value = currentSearchQuery;
-        }
-
-        if (urlParams.has('sort')) {
-            currentSortOption = urlParams.get('sort');
-            sortSelect.value = currentSortOption;
-        }
-
-        if (urlParams.has('min')) {
-            minScore = parseFloat(urlParams.get('min'));
-            minScoreRange.value = minScore;
-            document.getElementById('min-score-value').textContent = minScore;
-        }
-
-        if (urlParams.has('max')) {
-            maxScore = parseFloat(urlParams.get('max'));
-            maxScoreRange.value = maxScore;
-            document.getElementById('max-score-value').textContent = maxScore;
-        }
-
-        // Initial render
-        renderLaptopsExplorer();
-    }
-
-    // Helper function for debouncing
-    function debounce(func, wait) {
-        let timeout;
-        return function executedFunction(...args) {
-            const later = () => {
-                clearTimeout(timeout);
-                func(...args);
-            };
-            clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
-        };
+        render();
     }
 
     return { init };
 })();
 
-// Initialize when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-    if (!window.laptopData) {
-        console.error('laptopData is not available');
-        return;
-    }
-    ExplorerPage.init();
-});
+ExplorerPage.init();

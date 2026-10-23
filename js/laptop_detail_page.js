@@ -1,257 +1,189 @@
-function initLaptopDetailPage() {
-    console.log("Initializing laptop detail page...");
+const LaptopDetailPage = (() => {
+    const esc = UI.escape;
 
-    const laptopDetailContent = document.getElementById('laptop-detail-content');
-    const loadingMessage = document.getElementById('loading-laptop-details');
-    const urlParams = new URLSearchParams(window.location.search);
-    const laptopId = urlParams.get('id');
-
-    console.log("Laptop ID from URL:", laptopId);
-
-    // Ensure laptopData is loaded
-    if (typeof laptopData === 'undefined') {
-        console.error("laptopData is undefined");
-        showError('Error: Core application data (laptopData) could not be loaded.');
-        return;
+    // Renders a <dl> of [label, value, verificationPath] rows, skipping empty values.
+    function specList(laptop, rows) {
+        const items = rows
+            .filter(([, value]) => value !== undefined && value !== null && value !== '')
+            .map(([label, value, path]) => `
+                <div class="spec-row">
+                    <dt>${esc(label)}</dt>
+                    <dd>${formatValue(value)}${path ? UI.unverifiedBadge(laptop, path) : ''}</dd>
+                </div>`)
+            .join('');
+        return `<dl class="spec-list">${items}</dl>`;
     }
 
-    // Check for valid laptopId and corresponding data entry
-    if (!laptopId || !laptopData[laptopId]) {
-        console.error("Invalid laptop ID or laptop not found:", laptopId);
-        showError(`Error: Laptop with ID "${laptopId || 'none provided'}" not found.`);
-        return;
+    function formatValue(value) {
+        if (Array.isArray(value)) return value.map(esc).join(', ');
+        if (typeof value === 'boolean') return value ? 'Yes' : 'No';
+        return esc(value);
     }
 
-    console.log("Found laptop data:", laptopData[laptopId]);
-
-    // Hide loading message if present
-    if (loadingMessage) {
-        loadingMessage.style.display = 'none';
+    function section(title, body, extraClass = '') {
+        return `
+            <section class="card p-5 ${extraClass}">
+                <h2 class="section-title">${esc(title)}</h2>
+                ${body}
+            </section>`;
     }
 
-    const data = laptopData[laptopId];
-
-    renderLaptopDetails(data);
-}
-
-function renderLaptopDetails(data) {
-    const details = {
-        ...data.details,
-        displayFeatures: data.details.displayFeatures || {
-            type: "Not specified",
-            brightness: "Not specified",
-            colorGamut: "Not specified",
-            panel: "Not specified"
-        },
-        batteryLife: data.details.batteryLife || {
-            average: "Not specified",
-            capacity: "Not specified",
-            type: "Not specified"
-        },
-        knownIssues: data.details.knownIssues || ["No known issues documented"],
-        ports: data.details.ports || {
-            usb: ["Not specified"],
-            thunderbolt: "Not specified",
-            video: ["Not specified"],
-            network: "Not specified",
-            others: ["Not specified"]
+    function linkLabel(url) {
+        try {
+            const u = new URL(url);
+            return u.hostname === 'github.com' ? `GitHub: ${u.pathname.slice(1)}` : u.hostname + u.pathname.replace(/\/$/, '');
+        } catch (e) {
+            return url;
         }
-    };
+    }
 
-    // Render main content
-    document.getElementById('laptop-detail-content').innerHTML = `
-        <!-- Hero Section -->
-        <div class="bg-gradient-to-r from-blue-600 to-blue-800 dark:from-blue-800 dark:to-blue-900 p-8 md:p-12 rounded-lg">
-            <a href="explorer.html" class="inline-block mb-6 text-white hover:underline slide-in-right">
-                &larr; Back to Explorer
-            </a>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                <div class="space-y-4 slide-up">
-                    <h1 class="text-4xl font-bold text-white">${data.name}</h1>
-                    <p class="text-xl text-blue-100">${data.summary}</p>
-                    <div class="flex items-center space-x-2">
-                        <span class="text-3xl font-bold text-white">${data.score}</span>
-                        <span class="text-blue-200">/10</span>
+    function render(laptop) {
+        const d = laptop.details;
+        const ports = d.ports || {};
+        const display = d.displayFeatures || {};
+        const battery = d.batteryLife || {};
+        const thermals = d.thermals || {};
+        const keyboard = d.keyboard || {};
+        const bios = d.biosVersion || {};
+        const community = d.communitySupport || {};
+        const guides = d.guides || {};
+        const guideLinks = [guides.installation, ...(guides.additional || [])].filter(Boolean);
+        const dims = d.dimensions ? `${d.dimensions.width} × ${d.dimensions.depth} × ${d.dimensions.height}` : '';
+
+        document.title = `${laptop.name} - Hackintosh Laptop Guide`;
+
+        return `
+            <div class="card overflow-hidden md:grid md:grid-cols-2 animate-in">
+                <img src="${esc(laptop.image)}" alt="" width="600" height="400" class="w-full h-full aspect-[3/2] object-cover bg-gray-100 dark:bg-gray-700">
+                <div class="p-5 sm:p-8 flex flex-col gap-4">
+                    <div>
+                        <h1 class="text-3xl sm:text-4xl font-bold tracking-tight">${esc(laptop.name)}</h1>
+                        <p class="mt-2 text-gray-600 dark:text-gray-300">${esc(laptop.summary)}</p>
+                    </div>
+                    <div class="max-w-xs">${UI.scoreBar(laptop.score)}</div>
+                    <div class="flex flex-wrap gap-1.5">${UI.priorityTags(laptop)}</div>
+                    <p class="text-sm"><span class="text-gray-500 dark:text-gray-400">macOS:</span> <strong>${UI.macosRange(laptop)}</strong>${UI.unverifiedBadge(laptop, 'details.maxMacosSupport')}</p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <button type="button" id="compare-toggle" class="chip" aria-pressed="false"></button>
+                        <a href="comparison.html" id="compare-link" class="btn-secondary" hidden>Open comparison &rarr;</a>
                     </div>
                 </div>
-                <div class="scale-in">
-                    <img src="${data.image}" alt="${data.name}" 
-                         class="rounded-lg shadow-2xl transform hover:scale-105 transition-transform duration-300"
-                         onerror="this.src='assets/images/placeholder.jpg'">
-                </div>
             </div>
-        </div>
-    `;
 
-    // Render Hardware Details
-    document.getElementById('hardware-content').innerHTML = `
-        <div class="grid grid-cols-1 gap-4">
-            <p><span class="font-medium">CPU:</span> ${details.cpu}</p>
-            <p><span class="font-medium">GPU:</span> ${details.igpu}</p>
-            <p><span class="font-medium">RAM:</span> ${details.ram}</p>
-            <p><span class="font-medium">Storage:</span> ${details.storage}</p>
-            <p><span class="font-medium">Wi-Fi/Bluetooth:</span> ${details.wifiBluetooth || 'Not specified'}</p>
-            <p><span class="font-medium">Audio:</span> ${details.audioCodec || 'Not specified'}</p>
-            <p><span class="font-medium">Trackpad:</span> ${details.trackpad || 'Not specified'}</p>
-        </div>
-    `;
+            ${laptop.needsVerification && laptop.needsVerification.length ? `
+                <div class="callout callout-warn mt-6">
+                    <p>Fields marked <span class="badge-unverified !ml-0">Unverified</span> come from typical configurations and haven't been confirmed against a working build yet. Check them for your exact model before buying.</p>
+                </div>` : ''}
 
-    // Render Display Features
-    document.getElementById('display-content').innerHTML = `
-        <div class="grid grid-cols-1 gap-4">
-            <p><span class="font-medium">Type:</span> ${details.displayFeatures.type}</p>
-            <p><span class="font-medium">Brightness:</span> ${details.displayFeatures.brightness}</p>
-            <p><span class="font-medium">Color Gamut:</span> ${details.displayFeatures.colorGamut}</p>
-            ${details.displayFeatures.panel ? `
-                <p><span class="font-medium">Panel:</span> ${details.displayFeatures.panel}</p>
-            ` : ''}
-        </div>
-    `;
+            <div class="mt-6 grid grid-cols-1 lg:grid-cols-3 gap-5">
+                ${section('Ratings', '<div class="relative h-72"><canvas id="rating-chart" aria-label="Ratings radar chart" role="img"></canvas></div>')}
 
-    // Render Battery Information
-    document.getElementById('battery-content').innerHTML = `
-        <div class="grid grid-cols-1 gap-4">
-            <p><span class="font-medium">Average Life:</span> ${details.batteryLife.average}</p>
-            <p><span class="font-medium">Capacity:</span> ${details.batteryLife.capacity}</p>
-            <p><span class="font-medium">Type:</span> ${details.batteryLife.type}</p>
-        </div>
-    `;
+                ${section('Hardware', specList(laptop, [
+                    ['CPU', d.cpu, 'details.cpu'],
+                    ['iGPU', d.igpu, 'details.igpu'],
+                    ['dGPU', d.dgpu, 'details.dgpu'],
+                    ['RAM', d.ram, 'details.ram'],
+                    ['Storage', d.storage, 'details.storage'],
+                    ['Wi-Fi / Bluetooth', d.wifiBluetooth, 'details.wifiBluetooth'],
+                    ['Audio codec', d.audioCodec, 'details.audioCodec'],
+                    ['Trackpad', d.trackpad, 'details.trackpad']
+                ]), 'lg:col-span-2')}
 
-    // Render macOS Compatibility
-    document.getElementById('macos-content').innerHTML = `
-        <div class="grid grid-cols-1 gap-4">
-            <p><span class="font-medium">Current Support:</span> ${details.macosSupport}</p>
-            <p><span class="font-medium">Minimum Version:</span> ${details.minMacosSupport}</p>
-            <p><span class="font-medium">Maximum Version:</span> ${details.maxMacosSupport}</p>
-        </div>
-    `;
+                ${section('macOS compatibility', specList(laptop, [
+                    ['Oldest', d.minMacosSupport, 'details.minMacosSupport'],
+                    ['Newest', d.maxMacosSupport, 'details.maxMacosSupport'],
+                    ['Commonly run', d.macosSupport, 'details.macosSupport'],
+                    ['BIOS', bios.recommended, 'details.biosVersion'],
+                    ['BIOS notes', bios.notes, 'details.biosVersion']
+                ]))}
 
-    // Render Known Issues
-    document.getElementById('issues-content').innerHTML = `
-        <ul class="list-disc pl-5 space-y-2">
-            ${details.knownIssues.map(issue => 
-                `<li class="text-gray-700 dark:text-gray-300">${issue}</li>`
-            ).join('')}
-        </ul>
-    `;
+                ${section('Known issues', `
+                    <ul class="list-disc pl-5 space-y-1.5 text-sm">
+                        ${(d.knownIssues || ['None documented']).map(i => `<li>${esc(i)}</li>`).join('')}
+                    </ul>`)}
 
-    // Render Ports
-    document.getElementById('ports-content').innerHTML = `
-        <div class="grid grid-cols-1 gap-4">
-            ${Object.entries(details.ports).map(([type, ports]) => `
-                <p class="text-gray-700 dark:text-gray-300">
-                    <span class="font-medium capitalize">${type}:</span> 
-                    ${Array.isArray(ports) ? ports.join(', ') : ports}
-                </p>
-            `).join('')}
-        </div>
-    `;
-}
+                ${section('Install guides', guideLinks.length ? `
+                    <ul class="space-y-2 text-sm">
+                        ${guideLinks.map(url => `<li><a href="${esc(url)}" target="_blank" rel="noopener" class="text-primary dark:text-blue-300 hover:underline break-all">${esc(linkLabel(url))} ↗</a></li>`).join('')}
+                    </ul>
+                    ${community.rating ? `<p class="mt-4 text-sm"><span class="text-gray-500 dark:text-gray-400">Community support:</span> <strong>${esc(community.rating)}</strong></p>` : ''}
+                    ${community.resources ? `<ul class="mt-1 list-disc pl-5 text-sm text-gray-600 dark:text-gray-300">${community.resources.map(r => `<li>${esc(r)}</li>`).join('')}</ul>` : ''}
+                ` : '<p class="text-sm">No model-specific guide yet. Start with the <a class="text-primary hover:underline" href="build_guide.html">Build Guide</a>.</p>')}
 
-function showError(message) {
-    const laptopDetailContent = document.getElementById('laptop-detail-content');
-    const loadingMessage = document.getElementById('loading-laptop-details');
+                ${section('Display', specList(laptop, [
+                    ['Resolution', d.screenResolution, 'details.screenResolution'],
+                    ['Panel type', display.type, 'details.displayFeatures'],
+                    ['Brightness', display.brightness, 'details.displayFeatures'],
+                    ['Color gamut', display.colorGamut, 'details.displayFeatures'],
+                    ['Touchscreen', display.touchscreen, 'details.displayFeatures']
+                ]))}
 
-    if (loadingMessage) {
-        loadingMessage.style.display = 'none';
-    }
-    
-    if (laptopDetailContent) {
-        laptopDetailContent.innerHTML = `
-            <div class="p-6">
-                <p class="text-center text-xl text-red-500 py-10">${message}</p>
-                <a href="explorer.html" class="block text-center text-primary hover:underline mt-4">
-                    &larr; Back to Explorer
-                </a>
-            </div>
-        `;
-    }
-}
+                ${section('Ports', specList(laptop, [
+                    ['USB', ports.usb, 'details.ports'],
+                    ['Thunderbolt', ports.thunderbolt, 'details.ports'],
+                    ['Video', ports.video, 'details.ports'],
+                    ['Network', ports.network, 'details.ports'],
+                    ['Other', ports.others, 'details.ports']
+                ]))}
 
-function initializeChart(data) {
-    const chartCtx = document.getElementById('laptopChart');
-    if (!chartCtx) {
-        console.error('Chart canvas element not found');
-        return;
+                ${section('Battery & build', specList(laptop, [
+                    ['Battery life', battery.average, 'details.batteryLife'],
+                    ['Capacity', battery.capacity, 'details.batteryLife'],
+                    ['Weight', d.weight, 'details.weight'],
+                    ['Dimensions', dims, 'details.dimensions'],
+                    ['Keyboard', keyboard.type ? `${keyboard.type}${keyboard.backlit ? ', backlit' : ''}` : '', 'details.keyboard']
+                ]))}
+
+                ${section('Thermals', specList(laptop, [
+                    ['Idle', thermals.idleTemp, 'details.thermals'],
+                    ['Load', thermals.loadTemp, 'details.thermals'],
+                    ['Cooling', thermals.coolingSystem, 'details.thermals'],
+                    ['Undervolting', thermals.undervolting, 'details.thermals']
+                ]))}
+            </div>`;
     }
 
-    const chartData = {
-        labels: ['Ease', 'Performance', 'Battery', 'Stability'],
-        datasets: [{
-            label: data.name,
-            data: [
-                data.details.chartData.ease,
-                data.details.chartData.performance,
-                data.details.chartData.battery,
-                data.details.chartData.stability
-            ],
-            fill: true,
-            backgroundColor: 'rgba(74, 144, 226, 0.2)',
-            borderColor: '#4A90E2',
-            borderWidth: 2,
-            pointBackgroundColor: '#4A90E2',
-            pointBorderColor: '#fff',
-            pointHoverBackgroundColor: '#fff',
-            pointHoverBorderColor: '#4A90E2'
-        }]
-    };
+    function renderNotFound(id) {
+        return `
+            <div class="card p-8 text-center">
+                <h1 class="text-2xl font-bold">Laptop not found</h1>
+                <p class="mt-2 text-gray-600 dark:text-gray-300">${id ? `There's no laptop with the ID “${esc(id)}”.` : 'No laptop was specified.'}</p>
+                <a href="explorer.html" class="btn-primary mt-6">Browse all laptops</a>
+            </div>`;
+    }
 
-    const chartOptions = {
-        scales: {
-            r: {
-                min: 0,
-                max: 100,
-                beginAtZero: true,
-                grid: {
-                    color: document.documentElement.classList.contains('dark') ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'
-                },
-                angleLines: {
-                    color: document.documentElement.classList.contains('dark') ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'
-                },
-                pointLabels: {
-                    color: document.documentElement.classList.contains('dark') ? '#e2e8f0' : '#1a202c',
-                    font: {
-                        size: 12,
-                        family: "'Inter', sans-serif"
-                    }
-                }
-            }
-        },
-        plugins: {
-            legend: {
-                display: true,
-                labels: {
-                    color: document.documentElement.classList.contains('dark') ? '#e2e8f0' : '#1a202c',
-                    font: {
-                        family: "'Inter', sans-serif"
-                    }
-                }
-            }
+    function updateCompareButton(id) {
+        const button = document.getElementById('compare-toggle');
+        const selected = CompareStore.has(id);
+        button.setAttribute('aria-pressed', String(selected));
+        button.textContent = selected ? '✓ In comparison' : '+ Add to comparison';
+        document.getElementById('compare-link').hidden = CompareStore.ids().length < 2;
+    }
+
+    function init() {
+        const id = new URLSearchParams(location.search).get('id');
+        const laptop = id && LaptopDB.get(id);
+        const container = document.getElementById('laptop-detail');
+
+        if (!laptop) {
+            container.innerHTML = renderNotFound(id);
+            return;
         }
-    };
 
-    // Destroy any existing chart
-    if (window.laptopChart instanceof Chart) {
-        window.laptopChart.destroy();
+        container.innerHTML = render(laptop);
+        updateCompareButton(id);
+        document.getElementById('compare-toggle').addEventListener('click', () => {
+            if (!CompareStore.toggle(id)) {
+                alert(`You can compare up to ${CompareStore.MAX} laptops. Remove one on the Compare page first.`);
+            }
+            updateCompareButton(id);
+        });
+
+        // Chart.js is deferred, so wait for it before drawing.
+        window.addEventListener('load', () => ChartManager.radar(document.getElementById('rating-chart'), [laptop]));
     }
 
-    window.laptopChart = new Chart(chartCtx, {
-        type: 'radar',
-        data: chartData,
-        options: chartOptions
-    });
-}
+    return { init };
+})();
 
-// Initialize when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    initLaptopDetailPage();
-
-    // Update chart on theme change
-    document.addEventListener('themeChanged', (e) => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const laptopId = urlParams.get('id');
-        if (laptopId && laptopData[laptopId] && window.laptopChart) {
-            initializeChart(laptopData[laptopId]);
-        }
-    });
-});
+LaptopDetailPage.init();

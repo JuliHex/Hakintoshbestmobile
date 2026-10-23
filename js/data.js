@@ -1,105 +1,22 @@
-// Configuration for validation
-const CONFIG = {
-    requiredFields: ['name', 'priority', 'image', 'score', 'summary', 'details'],
-    requiredDetails: [
-        'cpu', 'igpu', 'ram', 'storage', 'macosSupport',
-        'minMacosSupport', 'maxMacosSupport', 'wifiBluetooth',
-        'audioCodec', 'trackpad', 'screenResolution', 'chartData',
-        'dimensions',
-        'weight',
-        'batteryLife',
-        'ports',
-        'keyboard',
-        'displayFeatures',
-        'biosVersion',
-        'knownIssues',
-        'communitySupport',
-        'guides',
-        'thermals'
-    ],
-    chartMetrics: ['ease', 'performance', 'battery', 'stability']
+// Laptop and component data for the Hackintosh Laptop Guide.
+//
+// Each laptop's `needsVerification` lists field paths (e.g. "details.maxMacosSupport")
+// whose values haven't been confirmed against a real build. The UI marks those
+// fields as unverified; remove a path once you've checked the value.
+
+// macOS releases in order, used for version-range filtering.
+const MACOS_VERSIONS = ["High Sierra", "Mojave", "Catalina", "Big Sur", "Monterey", "Ventura", "Sonoma", "Sequoia", "Tahoe"];
+
+const PRIORITY_LABELS = {
+    ease: "Ease of Setup",
+    performance: "Performance",
+    budget: "Budget",
+    portability: "Portability",
+    stability: "Stability"
 };
 
-// Data validation helper
-const validateLaptopData = (data) => {
-    const validationResults = {
-        errors: [],
-        warnings: []
-    };
-
-    try {
-        for (const [key, laptop] of Object.entries(data)) {
-            // Validate required top-level fields
-            CONFIG.requiredFields.forEach(field => {
-                if (!laptop[field]) {
-                    validationResults.errors.push(`Missing ${field} for laptop ${key}`);
-                }
-            });
-
-            // Validate score range
-            if (typeof laptop.score !== 'number' || laptop.score < 0 || laptop.score > 10) {
-                validationResults.errors.push(`Invalid score (${laptop.score}) for laptop ${key}`);
-            }
-
-            // Validate details object
-            if (laptop.details) {
-                CONFIG.requiredDetails.forEach(detail => {
-                    if (!laptop.details[detail]) {
-                        validationResults.warnings.push(`Missing details.${detail} for laptop ${key}`);
-                    }
-                });
-
-                // Validate chart data
-                if (laptop.details.chartData) {
-                    CONFIG.chartMetrics.forEach(metric => {
-                        const value = laptop.details.chartData[metric];
-                        if (typeof value !== 'number' || value < 0 || value > 100) {
-                            validationResults.errors.push(
-                                `Invalid chartData.${metric} (${value}) for laptop ${key}`
-                            );
-                        }
-                    });
-                }
-            } else {
-                validationResults.errors.push(`Missing details object for laptop ${key}`);
-            }
-        }
-    } catch (error) {
-        validationResults.errors.push(`Validation error: ${error.message}`);
-    }
-
-    return validationResults;
-};
-
-// First, ensure laptopMethods is defined before laptopData
-const laptopMethods = {
-    getByPriority(priority) {
-        return Object.values(this).filter(laptop => 
-            laptop.priority && laptop.priority.includes(priority)
-        );
-    },
-    getByScore(minScore) {
-        return Object.values(this).filter(laptop => laptop.score >= minScore);
-    },
-    getTopRated(limit = 5) {
-        return Object.values(this)
-            .sort((a, b) => b.score - a.score)
-            .slice(0, limit);
-    },
-    getCompatibleWith(macOSVersion) {
-        const version = macOSVersion.toLowerCase();
-        return Object.values(this).filter(laptop => {
-            const support = laptop.details.macosSupport.toLowerCase();
-            return support.includes(version) || 
-                   laptop.details.minMacosSupport.toLowerCase().includes(version) ||
-                   laptop.details.maxMacosSupport.toLowerCase().includes(version);
-        });
-    }
-};
-
-// Define the main data object
 const laptopData = {
-    "thinkpad_t480": {
+    thinkpad_t480: {
         name: "ThinkPad T480",
         priority: ["ease", "budget"],
         image: "assets/images/laptops/T480.png",
@@ -110,9 +27,9 @@ const laptopData = {
             igpu: "Intel UHD 620",
             ram: "Up to 32GB DDR4",
             storage: "SATA + NVMe",
-            macosSupport: "Ventura", // Primary supported/tested version
-            minMacosSupport: "Mojave", 
-            maxMacosSupport: "Sonoma (with caveats)", 
+            macosSupport: "Ventura",
+            minMacosSupport: "Mojave",
+            maxMacosSupport: "Sonoma (with caveats)",
             wifiBluetooth: "Intel Wireless-AC 8265 / Realtek BT (Often replaced with Broadcom)",
             audioCodec: "Realtek ALC3287 (ALC257)",
             trackpad: "PS/2 Synaptics/ALPS (Full gestures with kexts)",
@@ -168,18 +85,11 @@ const laptopData = {
             ],
             communitySupport: {
                 rating: "Excellent",
-                resources: [
-                    "GitHub guides available",
-                    "Active forum support",
-                    "Multiple successful builds documented"
-                ]
+                resources: ["GitHub guides available", "Active forum support", "Multiple successful builds documented"]
             },
             guides: {
                 installation: "https://github.com/EETagent/T480-OpenCore-Hackintosh",
-                additional: [
-                    "https://github.com/valnoxy/t480-oc",
-                    "https://github.com/MSzturc/T480-OpenCore"
-                ]
+                additional: ["https://github.com/valnoxy/t480-oc", "https://github.com/MSzturc/T480-OpenCore"]
             },
             thermals: {
                 idleTemp: "35-40°C",
@@ -187,13 +97,14 @@ const laptopData = {
                 coolingSystem: "Single fan with dual heat pipes",
                 undervolting: "Supported via modified BIOS"
             }
-        }
+        },
+        needsVerification: []
     },
-    "acer_swift_3": {
+    acer_swift_3: {
         name: "Acer Swift 3",
         priority: ["budget", "portability"],
         image: "assets/images/laptops/Acer Swift 3.png",
-        score: 8.0,
+        score: 8,
         summary: "Budget-friendly ultrabook with good performance",
         details: {
             cpu: "Intel Core i5/i7 10th Gen",
@@ -201,12 +112,12 @@ const laptopData = {
             ram: "Up to 16GB LPDDR4X",
             storage: "NVMe",
             macosSupport: "Monterey",
-            minMacosSupport: "Catalina (Placeholder - Verify)", 
-            maxMacosSupport: "Ventura (Placeholder - Verify)", 
-            wifiBluetooth: "Intel Wi-Fi 6 AX201 (Placeholder - Verify specific model)", 
-            audioCodec: "Realtek ALC256 (Placeholder - Verify specific model)", 
-            trackpad: "I2C HID (Placeholder - Verify specific model)", 
-            screenResolution: "1920x1080 (FHD) (Placeholder - Verify)",
+            minMacosSupport: "Catalina",
+            maxMacosSupport: "Ventura",
+            wifiBluetooth: "Intel Wi-Fi 6 AX201",
+            audioCodec: "Realtek ALC256",
+            trackpad: "I2C HID",
+            screenResolution: "1920x1080 (FHD)",
             chartData: {
                 ease: 75,
                 performance: 80,
@@ -243,7 +154,7 @@ const laptopData = {
                 aspectRatio: "16:9",
                 brightness: "300 nits",
                 colorGamut: "72% NTSC",
-                panel: "AU Optronics (Verify specific model)",
+                panel: "AU Optronics",
                 touchscreen: false
             },
             biosVersion: {
@@ -258,11 +169,7 @@ const laptopData = {
             ],
             communitySupport: {
                 rating: "Good",
-                resources: [
-                    "Several GitHub repositories available",
-                    "Active forum discussions",
-                    "Multiple success stories"
-                ]
+                resources: ["Several GitHub repositories available", "Active forum discussions", "Multiple success stories"]
             },
             guides: {
                 installation: "https://github.com/username/acer-swift3-opencore",
@@ -277,9 +184,19 @@ const laptopData = {
                 coolingSystem: "Single fan with copper heat pipe",
                 undervolting: "Supported via ThrottleStop"
             }
-        }
+        },
+        needsVerification: [
+            "details.macosSupport",
+            "details.minMacosSupport",
+            "details.maxMacosSupport",
+            "details.wifiBluetooth",
+            "details.audioCodec",
+            "details.trackpad",
+            "details.screenResolution",
+            "details.displayFeatures.panel"
+        ]
     },
-    "chuwi_corebook_x": {
+    chuwi_corebook_x: {
         name: "Chuwi CoreBook X",
         priority: ["budget"],
         image: "assets/images/laptops/Chuwi CoreBookX.png",
@@ -287,15 +204,15 @@ const laptopData = {
         summary: "Affordable laptop with decent build quality",
         details: {
             cpu: "Intel Core i5 10th Gen (i5-1035G4 or similar)",
-            igpu: "Intel Iris Plus Graphics G4", 
+            igpu: "Intel Iris Plus Graphics G4",
             ram: "16GB DDR4",
             storage: "NVMe",
-            macosSupport: "Monterey", 
-            minMacosSupport: "Big Sur", 
-            maxMacosSupport: "Ventura (Untested, may have issues)", 
+            macosSupport: "Monterey",
+            minMacosSupport: "Big Sur",
+            maxMacosSupport: "Ventura (Untested, may have issues)",
             wifiBluetooth: "Intel Wireless-AC 7265 (or similar, check model)",
             audioCodec: "Realtek ALC269 (Layout-id may be needed)",
-            trackpad: "I2C HID (Verify specific model for VoodooI2C)",
+            trackpad: "I2C HID",
             screenResolution: "2160x1440 (3:2 Aspect Ratio)",
             chartData: {
                 ease: 70,
@@ -349,11 +266,7 @@ const laptopData = {
             ],
             communitySupport: {
                 rating: "Moderate",
-                resources: [
-                    "Limited GitHub guides",
-                    "Some forum discussions",
-                    "Basic documentation available"
-                ]
+                resources: ["Limited GitHub guides", "Some forum discussions", "Basic documentation available"]
             },
             guides: {
                 installation: "https://github.com/username/corebook-x-opencore",
@@ -368,9 +281,10 @@ const laptopData = {
                 coolingSystem: "Single fan cooling",
                 undervolting: "Supported via ThrottleStop"
             }
-        }
+        },
+        needsVerification: ["details.macosSupport", "details.trackpad"]
     },
-    "dell_xps_13_9300": {
+    dell_xps_13_9300: {
         name: "Dell XPS 13 9300",
         priority: ["performance", "portability"],
         image: "assets/images/laptops/Dell XPS 13 9300.png",
@@ -382,12 +296,12 @@ const laptopData = {
             ram: "Up to 32GB LPDDR4X",
             storage: "NVMe",
             macosSupport: "Monterey",
-            minMacosSupport: "Catalina (Placeholder - Verify)", 
-            maxMacosSupport: "Ventura (Placeholder - Verify)", 
-            wifiBluetooth: "Killer Wi-Fi 6 AX1650 (Intel based) (Placeholder - Verify)", 
-            audioCodec: "Realtek ALC3271 (ALC289) (Placeholder - Verify)", 
-            trackpad: "I2C HID Precision (Placeholder - Verify)", 
-            screenResolution: "1920x1200 or 3840x2400 (Placeholder - Verify)",
+            minMacosSupport: "Catalina",
+            maxMacosSupport: "Ventura",
+            wifiBluetooth: "Killer Wi-Fi 6 AX1650 (Intel based)",
+            audioCodec: "Realtek ALC3271 (ALC289)",
+            trackpad: "I2C HID Precision",
+            screenResolution: "1920x1200 or 3840x2400",
             chartData: {
                 ease: 80,
                 performance: 90,
@@ -440,11 +354,7 @@ const laptopData = {
             ],
             communitySupport: {
                 rating: "Very Good",
-                resources: [
-                    "Multiple GitHub guides",
-                    "Active forum support",
-                    "Well-documented solutions"
-                ]
+                resources: ["Multiple GitHub guides", "Active forum support", "Well-documented solutions"]
             },
             guides: {
                 installation: "https://github.com/username/xps-9300-opencore",
@@ -459,9 +369,18 @@ const laptopData = {
                 coolingSystem: "Dual fan cooling",
                 undervolting: "Limited by BIOS restrictions"
             }
-        }
+        },
+        needsVerification: [
+            "details.macosSupport",
+            "details.minMacosSupport",
+            "details.maxMacosSupport",
+            "details.wifiBluetooth",
+            "details.audioCodec",
+            "details.trackpad",
+            "details.screenResolution"
+        ]
     },
-    "dell_xps_13_9370": {
+    dell_xps_13_9370: {
         name: "Dell XPS 13 9370",
         priority: ["performance", "portability"],
         image: "assets/images/laptops/Dell XPS 13 9370.png",
@@ -473,12 +392,12 @@ const laptopData = {
             ram: "Up to 16GB LPDDR3",
             storage: "NVMe",
             macosSupport: "Monterey",
-            minMacosSupport: "High Sierra (Placeholder - Verify)", 
-            maxMacosSupport: "Ventura (Placeholder - Verify)", 
-            wifiBluetooth: "Qualcomm QCA61x4A (Often replaced) (Placeholder - Verify)", 
-            audioCodec: "Realtek ALC3271 (ALC299) (Placeholder - Verify)", 
-            trackpad: "I2C HID Precision (Placeholder - Verify)", 
-            screenResolution: "1920x1080 or 3840x2160 (Placeholder - Verify)",
+            minMacosSupport: "High Sierra",
+            maxMacosSupport: "Ventura",
+            wifiBluetooth: "Qualcomm QCA61x4A (Often replaced)",
+            audioCodec: "Realtek ALC3271 (ALC299)",
+            trackpad: "I2C HID Precision",
+            screenResolution: "1920x1080 or 3840x2160",
             chartData: {
                 ease: 80,
                 performance: 85,
@@ -516,7 +435,7 @@ const laptopData = {
                 brightness: "400 nits",
                 colorGamut: "100% sRGB",
                 panel: "Sharp SHP148B",
-                touchscreen: false // Set to true if touch variant
+                touchscreen: false
             },
             biosVersion: {
                 recommended: "1.12.0",
@@ -530,11 +449,7 @@ const laptopData = {
             ],
             communitySupport: {
                 rating: "Excellent",
-                resources: [
-                    "Multiple GitHub guides",
-                    "Active forum support",
-                    "Well-documented solutions"
-                ]
+                resources: ["Multiple GitHub guides", "Active forum support", "Well-documented solutions"]
             },
             guides: {
                 installation: "https://github.com/the-darkvoid/XPS9370-macOS",
@@ -549,9 +464,18 @@ const laptopData = {
                 coolingSystem: "Dual fan cooling",
                 undervolting: "Supported via ThrottleStop"
             }
-        }
+        },
+        needsVerification: [
+            "details.macosSupport",
+            "details.minMacosSupport",
+            "details.maxMacosSupport",
+            "details.wifiBluetooth",
+            "details.audioCodec",
+            "details.trackpad",
+            "details.screenResolution"
+        ]
     },
-    "dell_xps_15_9570": {
+    dell_xps_15_9570: {
         name: "Dell XPS 15 9570",
         priority: ["performance"],
         image: "assets/images/laptops/Dell XPS 15 9570.png",
@@ -563,15 +487,15 @@ const laptopData = {
             ram: "Up to 32GB DDR4",
             storage: "NVMe + SATA",
             macosSupport: "Monterey",
-            minMacosSupport: "Mojave (Placeholder - Verify)", 
-            maxMacosSupport: "Ventura (dGPU disabled) (Placeholder - Verify)", 
-            wifiBluetooth: "Killer 1535 (Qualcomm QCA61x4A - Often replaced) (Placeholder - Verify)", 
-            audioCodec: "Realtek ALC3266 (ALC298) (Placeholder - Verify)", 
-            trackpad: "I2C HID Precision (Placeholder - Verify)", 
-            screenResolution: "1920x1080 or 3840x2160 (Placeholder - Verify)",
+            minMacosSupport: "Mojave",
+            maxMacosSupport: "Ventura (dGPU disabled)",
+            wifiBluetooth: "Killer 1535 (Qualcomm QCA61x4A - Often replaced)",
+            audioCodec: "Realtek ALC3266 (ALC298)",
+            trackpad: "I2C HID Precision",
+            screenResolution: "1920x1080 or 3840x2160",
             chartData: {
                 ease: 70,
-                performance: 95, 
+                performance: 95,
                 battery: 75,
                 stability: 80
             },
@@ -621,11 +545,7 @@ const laptopData = {
             ],
             communitySupport: {
                 rating: "Good",
-                resources: [
-                    "Several GitHub guides",
-                    "Active forum support",
-                    "Multiple success stories"
-                ]
+                resources: ["Several GitHub guides", "Active forum support", "Multiple success stories"]
             },
             guides: {
                 installation: "https://github.com/bavariancake/XPS9570-macOS",
@@ -640,9 +560,18 @@ const laptopData = {
                 coolingSystem: "Dual fan with shared heatpipes",
                 undervolting: "Recommended via ThrottleStop"
             }
-        }
+        },
+        needsVerification: [
+            "details.macosSupport",
+            "details.minMacosSupport",
+            "details.maxMacosSupport",
+            "details.wifiBluetooth",
+            "details.audioCodec",
+            "details.trackpad",
+            "details.screenResolution"
+        ]
     },
-    "hp_elitebook_840": { // Assuming G5/G6 as in original data
+    hp_elitebook_840: {
         name: "HP EliteBook 840 G5/G6",
         priority: ["stability", "ease"],
         image: "assets/images/laptops/EliteBook 840 G56.png",
@@ -654,12 +583,12 @@ const laptopData = {
             ram: "Up to 32GB DDR4",
             storage: "NVMe + SATA",
             macosSupport: "Monterey",
-            minMacosSupport: "Mojave (Placeholder - Verify)",
-            maxMacosSupport: "Ventura (Placeholder - Verify)",
-            wifiBluetooth: "Intel AC 8265/9560 (Placeholder - Verify)",
-            audioCodec: "Conexant CX8050 (Placeholder - Verify)",
-            trackpad: "Synaptics SMBus (Placeholder - Verify)",
-            screenResolution: "1920x1080 (FHD) (Placeholder - Verify)",
+            minMacosSupport: "Mojave",
+            maxMacosSupport: "Ventura",
+            wifiBluetooth: "Intel AC 8265/9560",
+            audioCodec: "Conexant CX8050",
+            trackpad: "Synaptics SMBus",
+            screenResolution: "1920x1080 (FHD)",
             chartData: {
                 ease: 85,
                 performance: 85,
@@ -711,18 +640,11 @@ const laptopData = {
             ],
             communitySupport: {
                 rating: "Very Good",
-                resources: [
-                    "Multiple GitHub guides",
-                    "Active forum discussions",
-                    "Well-documented solutions"
-                ]
+                resources: ["Multiple GitHub guides", "Active forum discussions", "Well-documented solutions"]
             },
             guides: {
                 installation: "https://github.com/username/elitebook-840-opencore",
-                additional: [
-                    "https://www.tonymacx86.com/threads/hp-elitebook-840",
-                    "https://github.com/other-repo/840g5-efi"
-                ]
+                additional: ["https://www.tonymacx86.com/threads/hp-elitebook-840", "https://github.com/other-repo/840g5-efi"]
             },
             thermals: {
                 idleTemp: "35-40°C",
@@ -730,9 +652,18 @@ const laptopData = {
                 coolingSystem: "Single fan with dual heat pipes",
                 undervolting: "Supported via ThrottleStop"
             }
-        }
+        },
+        needsVerification: [
+            "details.macosSupport",
+            "details.minMacosSupport",
+            "details.maxMacosSupport",
+            "details.wifiBluetooth",
+            "details.audioCodec",
+            "details.trackpad",
+            "details.screenResolution"
+        ]
     },
-    "hp_spectre_x360_15": {
+    hp_spectre_x360_15: {
         name: "HP Spectre x360 15",
         priority: ["performance"],
         image: "assets/images/laptops/HP Spectre x360 15.png",
@@ -744,12 +675,12 @@ const laptopData = {
             ram: "Up to 16GB DDR4",
             storage: "NVMe",
             macosSupport: "Monterey",
-            minMacosSupport: "Catalina (Placeholder - Verify)",
-            maxMacosSupport: "Ventura (Placeholder - Verify, dGPU issues)",
-            wifiBluetooth: "Intel Wi-Fi 6 AX201 (Placeholder - Verify)",
-            audioCodec: "Realtek ALC (Placeholder - Verify specific model)",
-            trackpad: "I2C HID Precision (Placeholder - Verify)",
-            screenResolution: "3840x2160 (4K) or 1920x1080 (FHD) (Placeholder - Verify)",
+            minMacosSupport: "Catalina",
+            maxMacosSupport: "Ventura (dGPU issues)",
+            wifiBluetooth: "Intel Wi-Fi 6 AX201",
+            audioCodec: "Realtek ALC",
+            trackpad: "I2C HID Precision",
+            screenResolution: "3840x2160 (4K) or 1920x1080 (FHD)",
             chartData: {
                 ease: 75,
                 performance: 90,
@@ -802,11 +733,7 @@ const laptopData = {
             ],
             communitySupport: {
                 rating: "Good",
-                resources: [
-                    "Several GitHub guides",
-                    "Forum support available",
-                    "Growing user base"
-                ]
+                resources: ["Several GitHub guides", "Forum support available", "Growing user base"]
             },
             guides: {
                 installation: "https://github.com/username/spectre-x360-15-opencore",
@@ -821,9 +748,18 @@ const laptopData = {
                 coolingSystem: "Dual fan cooling solution",
                 undervolting: "Limited due to recent BIOS restrictions"
             }
-        }
+        },
+        needsVerification: [
+            "details.macosSupport",
+            "details.minMacosSupport",
+            "details.maxMacosSupport",
+            "details.wifiBluetooth",
+            "details.audioCodec",
+            "details.trackpad",
+            "details.screenResolution"
+        ]
     },
-    "lenovo_ideapad_330s": {
+    lenovo_ideapad_330s: {
         name: "Lenovo IdeaPad 330S",
         priority: ["budget"],
         image: "assets/images/laptops/IdeaPad 330S.png",
@@ -835,12 +771,12 @@ const laptopData = {
             ram: "Up to 16GB DDR4",
             storage: "SATA + NVMe",
             macosSupport: "Monterey",
-            minMacosSupport: "Mojave (Placeholder - Verify)",
-            maxMacosSupport: "Ventura (Placeholder - Verify)",
-            wifiBluetooth: "Qualcomm Atheros / Realtek (Placeholder - Often replaced, verify)",
-            audioCodec: "Realtek ALC236 (Placeholder - Verify)",
-            trackpad: "Synaptics/ELAN I2C/PS2 (Placeholder - Verify)",
-            screenResolution: "1366x768 or 1920x1080 (Placeholder - Verify)",
+            minMacosSupport: "Mojave",
+            maxMacosSupport: "Ventura",
+            wifiBluetooth: "Qualcomm Atheros / Realtek",
+            audioCodec: "Realtek ALC236",
+            trackpad: "Synaptics/ELAN I2C/PS2",
+            screenResolution: "1366x768 or 1920x1080",
             chartData: {
                 ease: 75,
                 performance: 75,
@@ -877,7 +813,7 @@ const laptopData = {
                 aspectRatio: "16:9",
                 brightness: "300 nits",
                 colorGamut: "72% NTSC",
-                panel: "AU Optronics (Verify specific model)",
+                panel: "AU Optronics",
                 touchscreen: false
             },
             biosVersion: {
@@ -885,25 +821,14 @@ const laptopData = {
                 notes: "DVMT needs configuration",
                 secureBootSupport: true
             },
-            knownIssues: [
-                "Wi-Fi card needs replacement",
-                "Sleep may be unstable",
-                "Battery life reporting needs patches"
-            ],
+            knownIssues: ["Wi-Fi card needs replacement", "Sleep may be unstable", "Battery life reporting needs patches"],
             communitySupport: {
                 rating: "Good",
-                resources: [
-                    "Some GitHub repositories",
-                    "Forum discussions available",
-                    "Basic documentation exists"
-                ]
+                resources: ["Some GitHub repositories", "Forum discussions available", "Basic documentation exists"]
             },
             guides: {
                 installation: "https://github.com/username/ideapad-330s-opencore",
-                additional: [
-                    "https://www.tonymacx86.com/threads/ideapad-330s",
-                    "https://github.com/another-repo/330s-efi"
-                ]
+                additional: ["https://www.tonymacx86.com/threads/ideapad-330s", "https://github.com/another-repo/330s-efi"]
             },
             thermals: {
                 idleTemp: "35-40°C",
@@ -911,13 +836,23 @@ const laptopData = {
                 coolingSystem: "Single fan with heat pipe",
                 undervolting: "Supported via ThrottleStop"
             }
-        }
+        },
+        needsVerification: [
+            "details.macosSupport",
+            "details.minMacosSupport",
+            "details.maxMacosSupport",
+            "details.wifiBluetooth",
+            "details.audioCodec",
+            "details.trackpad",
+            "details.screenResolution",
+            "details.displayFeatures.panel"
+        ]
     },
-    "lenovo_ideapad_530s": {
+    lenovo_ideapad_530s: {
         name: "Lenovo IdeaPad 530S",
         priority: ["budget", "portability"],
         image: "assets/images/laptops/IdeaPad530S.png",
-        score: 8.0,
+        score: 8,
         summary: "Mid-range laptop with good build quality",
         details: {
             cpu: "Intel Core i5/i7 8th Gen",
@@ -925,12 +860,12 @@ const laptopData = {
             ram: "Up to 16GB DDR4",
             storage: "NVMe",
             macosSupport: "Monterey",
-            minMacosSupport: "Mojave (Placeholder - Verify)",
-            maxMacosSupport: "Ventura (Placeholder - Verify)",
-            wifiBluetooth: "Intel AC 3165/8265 (Placeholder - Verify)",
-            audioCodec: "Realtek ALC236 (Placeholder - Verify)",
-            trackpad: "I2C HID (Placeholder - Verify)",
-            screenResolution: "1920x1080 (FHD) (Placeholder - Verify)",
+            minMacosSupport: "Mojave",
+            maxMacosSupport: "Ventura",
+            wifiBluetooth: "Intel AC 3165/8265",
+            audioCodec: "Realtek ALC236",
+            trackpad: "I2C HID",
+            screenResolution: "1920x1080 (FHD)",
             chartData: {
                 ease: 80,
                 performance: 80,
@@ -967,7 +902,7 @@ const laptopData = {
                 aspectRatio: "16:9",
                 brightness: "300 nits",
                 colorGamut: "100% sRGB",
-                panel: "IPS Panel (Verify specific model)",
+                panel: "IPS Panel",
                 touchscreen: false
             },
             biosVersion: {
@@ -982,18 +917,11 @@ const laptopData = {
             ],
             communitySupport: {
                 rating: "Good",
-                resources: [
-                    "Multiple GitHub guides",
-                    "Active forum support",
-                    "Detailed documentation"
-                ]
+                resources: ["Multiple GitHub guides", "Active forum support", "Detailed documentation"]
             },
             guides: {
                 installation: "https://github.com/username/ideapad-530s-opencore",
-                additional: [
-                    "https://www.tonymacx86.com/threads/ideapad-530s",
-                    "https://github.com/another-repo/530s-efi"
-                ]
+                additional: ["https://www.tonymacx86.com/threads/ideapad-530s", "https://github.com/another-repo/530s-efi"]
             },
             thermals: {
                 idleTemp: "30-35°C",
@@ -1001,26 +929,36 @@ const laptopData = {
                 coolingSystem: "Single fan with dual heat pipes",
                 undervolting: "Supported via ThrottleStop"
             }
-        }
+        },
+        needsVerification: [
+            "details.macosSupport",
+            "details.minMacosSupport",
+            "details.maxMacosSupport",
+            "details.wifiBluetooth",
+            "details.audioCodec",
+            "details.trackpad",
+            "details.screenResolution",
+            "details.displayFeatures.panel"
+        ]
     },
-    "dell_latitude_7x90": { // e.g., 7390, 7490
+    dell_latitude_7x90: {
         name: "Dell Latitude 7x90",
         priority: ["stability", "ease"],
         image: "assets/images/laptops/Latitude 7x90.png",
         score: 8.9,
         summary: "Business laptop series with great compatibility",
         details: {
-            cpu: "Intel Core i5/i7 8th Gen", // Removed 10th Gen as 7x90 series is 8th Gen
+            cpu: "Intel Core i5/i7 8th Gen",
             igpu: "Intel UHD 620",
             ram: "Up to 32GB DDR4",
             storage: "SATA + NVMe",
             macosSupport: "Monterey",
-            minMacosSupport: "Mojave (Placeholder - Verify)",
-            maxMacosSupport: "Sonoma (Placeholder - Verify)",
-            wifiBluetooth: "Intel AC 8265/9560 (Placeholder - Verify)",
-            audioCodec: "Realtek ALC3246 (ALC295) (Placeholder - Verify)",
-            trackpad: "ALPS I2C/Dell Touchpad (Placeholder - Verify)",
-            screenResolution: "1920x1080 (FHD) (Placeholder - Verify)",
+            minMacosSupport: "Mojave",
+            maxMacosSupport: "Sonoma",
+            wifiBluetooth: "Intel AC 8265/9560",
+            audioCodec: "Realtek ALC3246 (ALC295)",
+            trackpad: "ALPS I2C/Dell Touchpad",
+            screenResolution: "1920x1080 (FHD)",
             chartData: {
                 ease: 90,
                 performance: 85,
@@ -1072,11 +1010,7 @@ const laptopData = {
             ],
             communitySupport: {
                 rating: "Very Good",
-                resources: [
-                    "Multiple GitHub guides",
-                    "Active Dell forums",
-                    "Well-documented solutions"
-                ]
+                resources: ["Multiple GitHub guides", "Active Dell forums", "Well-documented solutions"]
             },
             guides: {
                 installation: "https://github.com/username/latitude-7x90-opencore",
@@ -1091,26 +1025,35 @@ const laptopData = {
                 coolingSystem: "Dual heat pipes with single fan",
                 undervolting: "Supported via ThrottleStop"
             }
-        }
+        },
+        needsVerification: [
+            "details.macosSupport",
+            "details.minMacosSupport",
+            "details.maxMacosSupport",
+            "details.wifiBluetooth",
+            "details.audioCodec",
+            "details.trackpad",
+            "details.screenResolution"
+        ]
     },
-    "lg_gram_14": {
+    lg_gram_14: {
         name: "LG Gram 14",
         priority: ["portability"],
         image: "assets/images/laptops/LG Gram 14.png",
         score: 8.6,
         summary: "Ultra-lightweight laptop with excellent battery life",
         details: {
-            cpu: "Intel Core i5/i7 10th Gen", // Or newer, specify model year if possible
+            cpu: "Intel Core i5/i7 10th Gen",
             igpu: "Intel Iris Plus",
             ram: "Up to 16GB DDR4",
             storage: "NVMe",
             macosSupport: "Monterey",
-            minMacosSupport: "Catalina (Placeholder - Verify)",
-            maxMacosSupport: "Ventura (Placeholder - Verify)",
-            wifiBluetooth: "Intel Wi-Fi 6 AX201 (Placeholder - Verify)",
-            audioCodec: "Realtek ALC (Placeholder - Verify specific model)",
-            trackpad: "I2C HID Precision (Placeholder - Verify)",
-            screenResolution: "1920x1080 (FHD) or 2560x1600 (WQXGA) (Placeholder - Verify)",
+            minMacosSupport: "Catalina",
+            maxMacosSupport: "Ventura",
+            wifiBluetooth: "Intel Wi-Fi 6 AX201",
+            audioCodec: "Realtek ALC",
+            trackpad: "I2C HID Precision",
+            screenResolution: "1920x1080 (FHD) or 2560x1600 (WQXGA)",
             chartData: {
                 ease: 80,
                 performance: 85,
@@ -1162,18 +1105,11 @@ const laptopData = {
             ],
             communitySupport: {
                 rating: "Good",
-                resources: [
-                    "GitHub repositories available",
-                    "Forum threads with solutions",
-                    "Growing user base"
-                ]
+                resources: ["GitHub repositories available", "Forum threads with solutions", "Growing user base"]
             },
             guides: {
                 installation: "https://github.com/username/lg-gram-opencore",
-                additional: [
-                    "https://www.tonymacx86.com/threads/lg-gram",
-                    "https://github.com/another-repo/gram-efi"
-                ]
+                additional: ["https://www.tonymacx86.com/threads/lg-gram", "https://github.com/another-repo/gram-efi"]
             },
             thermals: {
                 idleTemp: "30-35°C",
@@ -1181,26 +1117,35 @@ const laptopData = {
                 coolingSystem: "Single fan with dual heat pipes",
                 undervolting: "Supported via ThrottleStop"
             }
-        }
+        },
+        needsVerification: [
+            "details.macosSupport",
+            "details.minMacosSupport",
+            "details.maxMacosSupport",
+            "details.wifiBluetooth",
+            "details.audioCodec",
+            "details.trackpad",
+            "details.screenResolution"
+        ]
     },
-    "huawei_matebook_x_pro": {
+    huawei_matebook_x_pro: {
         name: "Huawei MateBook X Pro",
         priority: ["performance", "portability"],
         image: "assets/images/laptops/MateBook X Pro.png",
         score: 8.7,
         summary: "Premium ultrabook with 3:2 display",
         details: {
-            cpu: "Intel Core i5/i7 10th Gen", // Or other gens, specify model year
-            igpu: "Intel Iris Plus", // Or UHD if older model
-            ram: "16GB LPDDR3", // Or LPDDR4X in newer models
+            cpu: "Intel Core i5/i7 10th Gen",
+            igpu: "Intel Iris Plus",
+            ram: "16GB LPDDR3",
             storage: "NVMe",
             macosSupport: "Monterey",
-            minMacosSupport: "Mojave (Placeholder - Verify for specific year)",
-            maxMacosSupport: "Ventura (Placeholder - Verify for specific year)",
-            wifiBluetooth: "Intel AX201 / Lite-On (Placeholder - Verify specific model)",
-            audioCodec: "Realtek ALC256 (Placeholder - Verify)",
-            trackpad: "I2C HID (Placeholder - Verify)",
-            screenResolution: "3000x2000 (3K) (Placeholder - Verify)",
+            minMacosSupport: "Mojave",
+            maxMacosSupport: "Ventura",
+            wifiBluetooth: "Intel AX201 / Lite-On",
+            audioCodec: "Realtek ALC256",
+            trackpad: "I2C HID",
+            screenResolution: "3000x2000 (3K)",
             chartData: {
                 ease: 85,
                 performance: 90,
@@ -1253,11 +1198,7 @@ const laptopData = {
             ],
             communitySupport: {
                 rating: "Good",
-                resources: [
-                    "Several GitHub guides",
-                    "Active forum threads",
-                    "Good documentation available"
-                ]
+                resources: ["Several GitHub guides", "Active forum threads", "Good documentation available"]
             },
             guides: {
                 installation: "https://github.com/username/matebook-x-pro-opencore",
@@ -1272,26 +1213,35 @@ const laptopData = {
                 coolingSystem: "Dual fan with shared heat pipes",
                 undervolting: "Supported via ThrottleStop"
             }
-        }
+        },
+        needsVerification: [
+            "details.macosSupport",
+            "details.minMacosSupport",
+            "details.maxMacosSupport",
+            "details.wifiBluetooth",
+            "details.audioCodec",
+            "details.trackpad",
+            "details.screenResolution"
+        ]
     },
-    "xiaomi_mi_notebook_pro": {
+    xiaomi_mi_notebook_pro: {
         name: "Xiaomi Mi Notebook Pro",
         priority: ["performance", "budget"],
         image: "assets/images/laptops/Mi Notebook Pro.png",
         score: 8.4,
         summary: "High-performance laptop with premium build",
         details: {
-            cpu: "Intel Core i5/i7 8th Gen", // Or newer gens for newer models
+            cpu: "Intel Core i5/i7 8th Gen",
             igpu: "Intel UHD 620",
             ram: "Up to 16GB DDR4",
             storage: "NVMe",
             macosSupport: "Monterey",
-            minMacosSupport: "Mojave (Placeholder - Verify)",
-            maxMacosSupport: "Ventura (Placeholder - Verify)",
-            wifiBluetooth: "Intel AC 8265/9260 (Placeholder - Verify)",
-            audioCodec: "Realtek ALC298 (Placeholder - Verify)",
-            trackpad: "Synaptics SMBus (Placeholder - Verify)",
-            screenResolution: "1920x1080 (FHD) (Placeholder - Verify)",
+            minMacosSupport: "Mojave",
+            maxMacosSupport: "Ventura",
+            wifiBluetooth: "Intel AC 8265/9260",
+            audioCodec: "Realtek ALC298",
+            trackpad: "Synaptics SMBus",
+            screenResolution: "1920x1080 (FHD)",
             chartData: {
                 ease: 75,
                 performance: 80,
@@ -1344,18 +1294,11 @@ const laptopData = {
             ],
             communitySupport: {
                 rating: "Good",
-                resources: [
-                    "GitHub repositories available",
-                    "Forum support threads",
-                    "Regular updates from community"
-                ]
+                resources: ["GitHub repositories available", "Forum support threads", "Regular updates from community"]
             },
             guides: {
                 installation: "https://github.com/username/mi-notebook-pro-opencore",
-                additional: [
-                    "https://www.tonymacx86.com/threads/mi-notebook-pro",
-                    "https://github.com/other-repo/xiaomi-efi"
-                ]
+                additional: ["https://www.tonymacx86.com/threads/mi-notebook-pro", "https://github.com/other-repo/xiaomi-efi"]
             },
             thermals: {
                 idleTemp: "35-45°C",
@@ -1363,10 +1306,19 @@ const laptopData = {
                 coolingSystem: "Dual fan cooling system",
                 undervolting: "Supported via ThrottleStop"
             }
-        }
+        },
+        needsVerification: [
+            "details.macosSupport",
+            "details.minMacosSupport",
+            "details.maxMacosSupport",
+            "details.wifiBluetooth",
+            "details.audioCodec",
+            "details.trackpad",
+            "details.screenResolution"
+        ]
     },
-    "msi_gs65": {
-        name: "MSI GS65 Stealth", // Added Stealth for clarity
+    msi_gs65: {
+        name: "MSI GS65 Stealth",
         priority: ["performance"],
         image: "assets/images/laptops/MSI GS65.png",
         score: 7.8,
@@ -1377,12 +1329,12 @@ const laptopData = {
             ram: "Up to 32GB DDR4",
             storage: "NVMe",
             macosSupport: "Monterey",
-            minMacosSupport: "Mojave (Placeholder - Verify, dGPU challenges)",
-            maxMacosSupport: "Ventura (Placeholder - Verify, dGPU challenges)",
-            wifiBluetooth: "Killer E2500 Ethernet / Intel Wireless (Placeholder - Verify exact Wi-Fi)",
-            audioCodec: "Nahimic / Realtek ALC1220 (Placeholder - Verify)",
-            trackpad: "Synaptics (Placeholder - Verify)",
-            screenResolution: "1920x1080 (FHD) @144Hz/240Hz (Placeholder - Verify)",
+            minMacosSupport: "Mojave (dGPU challenges)",
+            maxMacosSupport: "Ventura (dGPU challenges)",
+            wifiBluetooth: "Killer E2500 Ethernet / Intel Wireless",
+            audioCodec: "Nahimic / Realtek ALC1220",
+            trackpad: "Synaptics",
+            screenResolution: "1920x1080 (FHD) @144Hz/240Hz",
             chartData: {
                 ease: 65,
                 performance: 95,
@@ -1435,18 +1387,11 @@ const laptopData = {
             ],
             communitySupport: {
                 rating: "Moderate",
-                resources: [
-                    "Limited GitHub guides",
-                    "Some forum discussions",
-                    "Requires advanced knowledge"
-                ]
+                resources: ["Limited GitHub guides", "Some forum discussions", "Requires advanced knowledge"]
             },
             guides: {
                 installation: "https://github.com/username/msi-gs65-opencore",
-                additional: [
-                    "https://www.tonymacx86.com/threads/msi-gs65",
-                    "https://github.com/another-repo/gs65-efi"
-                ]
+                additional: ["https://www.tonymacx86.com/threads/msi-gs65", "https://github.com/another-repo/gs65-efi"]
             },
             thermals: {
                 idleTemp: "40-45°C",
@@ -1454,26 +1399,35 @@ const laptopData = {
                 coolingSystem: "Triple fan Cooler Boost Trinity",
                 undervolting: "Recommended via ThrottleStop"
             }
-        }
+        },
+        needsVerification: [
+            "details.macosSupport",
+            "details.minMacosSupport",
+            "details.maxMacosSupport",
+            "details.wifiBluetooth",
+            "details.audioCodec",
+            "details.trackpad",
+            "details.screenResolution"
+        ]
     },
-    "msi_prestige_14": {
+    msi_prestige_14: {
         name: "MSI Prestige 14",
         priority: ["performance", "portability"],
         image: "assets/images/laptops/MSI Prestige 14.png",
         score: 8.2,
         summary: "Creator-focused laptop with good performance",
         details: {
-            cpu: "Intel Core i5/i7 10th Gen", // Or newer
-            igpu: "Intel Iris Plus", // Or newer Xe Graphics
-            ram: "Up to 16GB LPDDR3", // Or LPDDR4X
+            cpu: "Intel Core i5/i7 10th Gen",
+            igpu: "Intel Iris Plus",
+            ram: "Up to 16GB LPDDR3",
             storage: "NVMe",
             macosSupport: "Monterey",
-            minMacosSupport: "Catalina (Placeholder - Verify)",
-            maxMacosSupport: "Ventura (Placeholder - Verify)",
-            wifiBluetooth: "Intel Wi-Fi 6 AX201 (Placeholder - Verify)",
-            audioCodec: "Realtek ALC (Placeholder - Verify specific model)",
-            trackpad: "I2C HID (Placeholder - Verify)",
-            screenResolution: "1920x1080 (FHD) or 3840x2160 (4K) (Placeholder - Verify)",
+            minMacosSupport: "Catalina",
+            maxMacosSupport: "Ventura",
+            wifiBluetooth: "Intel Wi-Fi 6 AX201",
+            audioCodec: "Realtek ALC",
+            trackpad: "I2C HID",
+            screenResolution: "1920x1080 (FHD) or 3840x2160 (4K)",
             chartData: {
                 ease: 75,
                 performance: 90,
@@ -1510,7 +1464,7 @@ const laptopData = {
                 aspectRatio: "16:9",
                 brightness: "300 nits",
                 colorGamut: "100% sRGB",
-                panel: "IPS Panel (Verify specific model)",
+                panel: "IPS Panel",
                 touchscreen: false
             },
             biosVersion: {
@@ -1526,11 +1480,7 @@ const laptopData = {
             ],
             communitySupport: {
                 rating: "Good",
-                resources: [
-                    "Several GitHub guides",
-                    "Active forum discussions",
-                    "Growing community support"
-                ]
+                resources: ["Several GitHub guides", "Active forum discussions", "Growing community support"]
             },
             guides: {
                 installation: "https://github.com/username/msi-prestige-14-opencore",
@@ -1545,9 +1495,19 @@ const laptopData = {
                 coolingSystem: "Dual fan cooling system",
                 undervolting: "Supported via ThrottleStop"
             }
-        }
+        },
+        needsVerification: [
+            "details.macosSupport",
+            "details.minMacosSupport",
+            "details.maxMacosSupport",
+            "details.wifiBluetooth",
+            "details.audioCodec",
+            "details.trackpad",
+            "details.screenResolution",
+            "details.displayFeatures.panel"
+        ]
     },
-    "dell_precision_5550": {
+    dell_precision_5550: {
         name: "Dell Precision 5550",
         priority: ["performance"],
         image: "assets/images/laptops/Precision 55x0.png",
@@ -1559,12 +1519,12 @@ const laptopData = {
             ram: "Up to 64GB DDR4",
             storage: "NVMe",
             macosSupport: "Monterey",
-            minMacosSupport: "Catalina (Placeholder - Verify, dGPU challenges)",
-            maxMacosSupport: "Ventura (Placeholder - Verify, dGPU challenges)",
-            wifiBluetooth: "Intel Wi-Fi 6 AX201 (Placeholder - Verify)",
-            audioCodec: "Realtek ALC3204 (Placeholder - Verify)",
-            trackpad: "I2C HID Precision (Placeholder - Verify)",
-            screenResolution: "1920x1200 or 3840x2400 (Placeholder - Verify)",
+            minMacosSupport: "Catalina (dGPU challenges)",
+            maxMacosSupport: "Ventura (dGPU challenges)",
+            wifiBluetooth: "Intel Wi-Fi 6 AX201",
+            audioCodec: "Realtek ALC3204",
+            trackpad: "I2C HID Precision",
+            screenResolution: "1920x1200 or 3840x2400",
             chartData: {
                 ease: 70,
                 performance: 95,
@@ -1617,11 +1577,7 @@ const laptopData = {
             ],
             communitySupport: {
                 rating: "Good",
-                resources: [
-                    "Multiple GitHub guides",
-                    "Active forum support",
-                    "Regular updates available"
-                ]
+                resources: ["Multiple GitHub guides", "Active forum support", "Regular updates available"]
             },
             guides: {
                 installation: "https://github.com/username/precision-5550-opencore",
@@ -1636,9 +1592,18 @@ const laptopData = {
                 coolingSystem: "Dual fan with vapor chamber",
                 undervolting: "Limited due to BIOS restrictions"
             }
-        }
+        },
+        needsVerification: [
+            "details.macosSupport",
+            "details.minMacosSupport",
+            "details.maxMacosSupport",
+            "details.wifiBluetooth",
+            "details.audioCodec",
+            "details.trackpad",
+            "details.screenResolution"
+        ]
     },
-    "hp_probook_450_g7": {
+    hp_probook_450_g7: {
         name: "HP ProBook 450 G7",
         priority: ["budget", "ease"],
         image: "assets/images/laptops/ProBook 450 G7.png",
@@ -1650,12 +1615,12 @@ const laptopData = {
             ram: "Up to 32GB DDR4",
             storage: "SATA + NVMe",
             macosSupport: "Monterey",
-            minMacosSupport: "Catalina (Placeholder - Verify)",
-            maxMacosSupport: "Ventura (Placeholder - Verify)",
-            wifiBluetooth: "Intel AX201 / Realtek RTL8822CE (Placeholder - Verify, Realtek often problematic)",
-            audioCodec: "Realtek ALC236 (Placeholder - Verify)",
-            trackpad: "Synaptics (Placeholder - Verify)",
-            screenResolution: "1366x768 or 1920x1080 (Placeholder - Verify)",
+            minMacosSupport: "Catalina",
+            maxMacosSupport: "Ventura",
+            wifiBluetooth: "Intel AX201 / Realtek RTL8822CE (Realtek often problematic)",
+            audioCodec: "Realtek ALC236",
+            trackpad: "Synaptics",
+            screenResolution: "1366x768 or 1920x1080",
             chartData: {
                 ease: 85,
                 performance: 80,
@@ -1708,11 +1673,7 @@ const laptopData = {
             ],
             communitySupport: {
                 rating: "Very Good",
-                resources: [
-                    "GitHub guides available",
-                    "Active forum support",
-                    "Well-documented solutions"
-                ]
+                resources: ["GitHub guides available", "Active forum support", "Well-documented solutions"]
             },
             guides: {
                 installation: "https://github.com/username/probook-450-g7-opencore",
@@ -1727,26 +1688,35 @@ const laptopData = {
                 coolingSystem: "Single fan with heat pipe",
                 undervolting: "Supported via ThrottleStop"
             }
-        }
+        },
+        needsVerification: [
+            "details.macosSupport",
+            "details.minMacosSupport",
+            "details.maxMacosSupport",
+            "details.wifiBluetooth",
+            "details.audioCodec",
+            "details.trackpad",
+            "details.screenResolution"
+        ]
     },
-    "samsung_notebook_9": { // Might need to specify year/model, e.g., Notebook 9 Pro
+    samsung_notebook_9: {
         name: "Samsung Notebook 9",
         priority: ["portability"],
         image: "assets/images/laptops/Samsung Notebook 9.png",
         score: 8.3,
         summary: "Ultra-lightweight laptop with good performance",
         details: {
-            cpu: "Intel Core i5/i7 8th Gen", // Or newer depending on model
+            cpu: "Intel Core i5/i7 8th Gen",
             igpu: "Intel UHD 620",
             ram: "Up to 16GB LPDDR3",
             storage: "NVMe",
             macosSupport: "Monterey",
-            minMacosSupport: "Mojave (Placeholder - Verify)",
-            maxMacosSupport: "Ventura (Placeholder - Verify)",
-            wifiBluetooth: "Intel AC 8265/9560 (Placeholder - Verify)",
-            audioCodec: "Realtek ALC298 (Placeholder - Verify)",
-            trackpad: "ELAN I2C (Placeholder - Verify)",
-            screenResolution: "1920x1080 (FHD) (Placeholder - Verify)",
+            minMacosSupport: "Mojave",
+            maxMacosSupport: "Ventura",
+            wifiBluetooth: "Intel AC 8265/9560",
+            audioCodec: "Realtek ALC298",
+            trackpad: "ELAN I2C",
+            screenResolution: "1920x1080 (FHD)",
             chartData: {
                 ease: 80,
                 performance: 85,
@@ -1783,7 +1753,7 @@ const laptopData = {
                 aspectRatio: "16:9",
                 brightness: "300 nits",
                 colorGamut: "72% NTSC",
-                panel: "AU Optronics (Verify specific model)",
+                panel: "AU Optronics",
                 touchscreen: false
             },
             biosVersion: {
@@ -1799,11 +1769,7 @@ const laptopData = {
             ],
             communitySupport: {
                 rating: "Good",
-                resources: [
-                    "Some GitHub guides",
-                    "Forum support available",
-                    "Growing documentation"
-                ]
+                resources: ["Some GitHub guides", "Forum support available", "Growing documentation"]
             },
             guides: {
                 installation: "https://github.com/username/samsung-notebook9-opencore",
@@ -1818,26 +1784,36 @@ const laptopData = {
                 coolingSystem: "Dual fan system",
                 undervolting: "Supported via ThrottleStop"
             }
-        }
+        },
+        needsVerification: [
+            "details.macosSupport",
+            "details.minMacosSupport",
+            "details.maxMacosSupport",
+            "details.wifiBluetooth",
+            "details.audioCodec",
+            "details.trackpad",
+            "details.screenResolution",
+            "details.displayFeatures.panel"
+        ]
     },
-    "hp_spectre_x360_13": {
+    hp_spectre_x360_13: {
         name: "HP Spectre x360 13",
         priority: ["performance", "portability"],
         image: "assets/images/laptops/Spectre x360 13.png",
         score: 8.7,
         summary: "Premium 2-in-1 with excellent build quality",
         details: {
-            cpu: "Intel Core i5/i7 10th Gen", // Or newer, e.g., 11th Gen with Iris Xe
-            igpu: "Intel Iris Plus", // Or Iris Xe for newer models
-            ram: "Up to 16GB LPDDR4", // Or LPDDR4X
+            cpu: "Intel Core i5/i7 10th Gen",
+            igpu: "Intel Iris Plus",
+            ram: "Up to 16GB LPDDR4",
             storage: "NVMe",
             macosSupport: "Monterey",
-            minMacosSupport: "Catalina (Placeholder - Verify specific model year)",
-            maxMacosSupport: "Ventura (Placeholder - Verify specific model year)",
-            wifiBluetooth: "Intel Wi-Fi 6 AX201 (Placeholder - Verify)",
-            audioCodec: "Bang & Olufsen / Realtek (Placeholder - Verify specific codec)",
-            trackpad: "I2C HID Precision (Placeholder - Verify)",
-            screenResolution: "1920x1080 (FHD) or 3840x2160 (4K OLED) (Placeholder - Verify)",
+            minMacosSupport: "Catalina",
+            maxMacosSupport: "Ventura",
+            wifiBluetooth: "Intel Wi-Fi 6 AX201",
+            audioCodec: "Bang & Olufsen / Realtek",
+            trackpad: "I2C HID Precision",
+            screenResolution: "1920x1080 (FHD) or 3840x2160 (4K OLED)",
             chartData: {
                 ease: 80,
                 performance: 90,
@@ -1890,11 +1866,7 @@ const laptopData = {
             ],
             communitySupport: {
                 rating: "Good",
-                resources: [
-                    "Multiple GitHub guides",
-                    "Active forum support",
-                    "Regular updates available"
-                ]
+                resources: ["Multiple GitHub guides", "Active forum support", "Regular updates available"]
             },
             guides: {
                 installation: "https://github.com/username/spectre-x360-13-opencore",
@@ -1909,38 +1881,466 @@ const laptopData = {
                 coolingSystem: "Dual fan cooling",
                 undervolting: "Limited by BIOS restrictions"
             }
-        }
+        },
+        needsVerification: [
+            "details.macosSupport",
+            "details.minMacosSupport",
+            "details.maxMacosSupport",
+            "details.wifiBluetooth",
+            "details.audioCodec",
+            "details.trackpad",
+            "details.screenResolution"
+        ]
+    },
+    dell_xps_13_9360: {
+        name: "Dell XPS 13 9360",
+        priority: ["portability", "budget"],
+        image: "assets/images/laptops/Dell XPS 13 9360.png",
+        score: 8.8,
+        summary: "Compact, widely documented ultrabook that's cheap on the used market",
+        details: {
+            cpu: "Intel Core i5/i7 7th Gen (Kaby Lake) or 8th Gen (Kaby Lake R)",
+            igpu: "Intel HD 620 / UHD 620",
+            ram: "4-16GB LPDDR3 (soldered)",
+            storage: "M.2 2280 (SATA or NVMe)",
+            macosSupport: "Monterey",
+            minMacosSupport: "High Sierra",
+            maxMacosSupport: "Sonoma",
+            wifiBluetooth: "Killer 1535 (QCA6174) or Intel 8265 (often replaced with Broadcom DW1830/DW1560)",
+            audioCodec: "Realtek ALC3246 (ALC256)",
+            trackpad: "I2C HID Precision (VoodooI2C)",
+            screenResolution: "1920x1080 (FHD) or 3200x1800 (QHD+ touch)",
+            chartData: {
+                ease: 85,
+                performance: 70,
+                battery: 80,
+                stability: 88
+            },
+            dimensions: {
+                width: "304 mm",
+                depth: "200 mm",
+                height: "9-15 mm"
+            },
+            weight: "1.2 kg",
+            batteryLife: {
+                average: "7-10 hours",
+                capacity: "60Wh",
+                type: "Internal Li-ion"
+            },
+            ports: {
+                usb: ["2x USB 3.0 Type-A"],
+                thunderbolt: "1x Thunderbolt 3 (USB-C)",
+                video: ["DisplayPort over USB-C"],
+                network: "None (Wi-Fi only)",
+                others: ["SD Card Reader", "3.5mm Audio Jack"]
+            },
+            keyboard: {
+                type: "Chiclet",
+                backlit: true,
+                numpad: false,
+                layout: "Compact"
+            },
+            displayFeatures: {
+                type: "IPS (matte FHD or glossy QHD+ touch)",
+                resolution: "1920x1080 / 3200x1800",
+                aspectRatio: "16:9",
+                brightness: "400 nits",
+                colorGamut: "72% NTSC (FHD)",
+                touchscreen: "QHD+ models only"
+            },
+            biosVersion: {
+                recommended: "Latest",
+                notes: "Disable CFG Lock (via modified variable) or use AppleXcpmCfgLock",
+                secureBootSupport: true
+            },
+            knownIssues: [
+                "Stock Killer/Intel Wi-Fi needs replacing or itlwm",
+                "Fingerprint reader not supported",
+                "Thunderbolt hot-plug can be unreliable"
+            ],
+            communitySupport: {
+                rating: "Excellent",
+                resources: ["Many public OpenCore EFIs", "Long-running forum threads", "Popular r/hackintosh model"]
+            },
+            guides: {
+                installation: "https://dortania.github.io/OpenCore-Install-Guide/config-laptop.plist/kaby-lake.html",
+                additional: []
+            },
+            thermals: {
+                idleTemp: "35-45°C",
+                loadTemp: "80-90°C",
+                coolingSystem: "Dual fan",
+                undervolting: "Possible with VoltageShift"
+            }
+        },
+        needsVerification: ["details.macosSupport", "details.maxMacosSupport", "details.thermals"]
+    },
+    thinkpad_x1_carbon_gen6: {
+        name: "ThinkPad X1 Carbon Gen 6",
+        priority: ["ease", "portability"],
+        image: "assets/images/laptops/X1 Carbon Gen 6.png",
+        score: 9,
+        summary: "Lightweight business ultrabook with one of the best-documented OpenCore setups",
+        details: {
+            cpu: "Intel Core i5/i7 8th Gen (Kaby Lake R)",
+            igpu: "Intel UHD 620",
+            ram: "8-16GB LPDDR3 (soldered)",
+            storage: "M.2 2280 NVMe",
+            macosSupport: "Monterey",
+            minMacosSupport: "Mojave",
+            maxMacosSupport: "Sonoma",
+            wifiBluetooth: "Intel Wireless-AC 8265 (replaceable M.2; Broadcom or itlwm)",
+            audioCodec: "Realtek ALC3286 (ALC285)",
+            trackpad: "Synaptics (VoodooRMI / VoodooPS2)",
+            screenResolution: "1920x1080 (FHD) or 2560x1440 (WQHD)",
+            chartData: {
+                ease: 88,
+                performance: 75,
+                battery: 82,
+                stability: 92
+            },
+            dimensions: {
+                width: "323.5 mm",
+                depth: "217.1 mm",
+                height: "15.95 mm"
+            },
+            weight: "1.13 kg",
+            batteryLife: {
+                average: "8-11 hours",
+                capacity: "57Wh",
+                type: "Internal Li-ion"
+            },
+            ports: {
+                usb: ["2x USB 3.1 Gen 1 Type-A"],
+                thunderbolt: "2x Thunderbolt 3 (USB-C)",
+                video: ["HDMI 1.4b"],
+                network: "Ethernet via proprietary adapter",
+                others: ["microSD Card Reader", "3.5mm Audio Jack"]
+            },
+            keyboard: {
+                type: "ThinkPad Precision Keyboard",
+                backlit: true,
+                numpad: false,
+                layout: "Full-size, spill-resistant"
+            },
+            displayFeatures: {
+                type: "IPS Anti-glare (HDR option on WQHD)",
+                resolution: "1920x1080 / 2560x1440",
+                aspectRatio: "16:9",
+                brightness: "300-500 nits",
+                colorGamut: "72% NTSC (FHD)",
+                touchscreen: "Optional on FHD"
+            },
+            biosVersion: {
+                recommended: "Latest",
+                notes: "Set Sleep State to 'Linux' (S3) in BIOS; disable CFG Lock",
+                secureBootSupport: true
+            },
+            knownIssues: [
+                "Requires BIOS sleep state set to Linux/S3",
+                "Fingerprint reader not supported",
+                "WWAN modem not supported"
+            ],
+            communitySupport: {
+                rating: "Excellent",
+                resources: ["Detailed public OpenCore repository", "Active ThinkPad Hackintosh community"]
+            },
+            guides: {
+                installation: "https://github.com/tylernguyen/x1c6-hackintosh",
+                additional: []
+            },
+            thermals: {
+                idleTemp: "35-45°C",
+                loadTemp: "75-90°C",
+                coolingSystem: "Single fan",
+                undervolting: "Possible with VoltageShift"
+            }
+        },
+        needsVerification: ["details.macosSupport", "details.maxMacosSupport", "details.thermals"]
+    },
+    thinkpad_t490: {
+        name: "ThinkPad T490",
+        priority: ["ease", "budget"],
+        image: "assets/images/laptops/T490.png",
+        score: 8.7,
+        summary: "Slimmer successor to the T480 with similar compatibility, minus the hot-swap battery",
+        details: {
+            cpu: "Intel Core i5/i7 8th Gen (Whiskey Lake)",
+            igpu: "Intel UHD 620",
+            dgpu: "Optional NVIDIA MX250 (must be disabled)",
+            ram: "8-16GB soldered + 1x DDR4 SO-DIMM",
+            storage: "M.2 2280 NVMe",
+            macosSupport: "Monterey",
+            minMacosSupport: "Catalina",
+            maxMacosSupport: "Sonoma",
+            wifiBluetooth: "Intel Wireless-AC 9560 (CNVi, soldered on many units; itlwm)",
+            audioCodec: "Realtek ALC3287 (ALC257)",
+            trackpad: "Synaptics (VoodooRMI / VoodooPS2)",
+            screenResolution: "1920x1080 (FHD) or 2560x1440 (WQHD)",
+            chartData: {
+                ease: 82,
+                performance: 78,
+                battery: 75,
+                stability: 88
+            },
+            dimensions: {
+                width: "329 mm",
+                depth: "227 mm",
+                height: "17.9 mm"
+            },
+            weight: "1.46 kg",
+            batteryLife: {
+                average: "8-11 hours",
+                capacity: "50Wh",
+                type: "Internal Li-ion"
+            },
+            ports: {
+                usb: ["2x USB 3.1 Gen 1 Type-A", "1x USB-C 3.1"],
+                thunderbolt: "1x Thunderbolt 3 (USB-C)",
+                video: ["HDMI 1.4b"],
+                network: "Ethernet via proprietary adapter",
+                others: ["microSD Card Reader", "3.5mm Audio Jack", "Smart Card Reader (optional)"]
+            },
+            keyboard: {
+                type: "ThinkPad Precision Keyboard",
+                backlit: true,
+                numpad: false,
+                layout: "Full-size, spill-resistant"
+            },
+            displayFeatures: {
+                type: "IPS Anti-glare",
+                resolution: "1920x1080 / 2560x1440",
+                aspectRatio: "16:9",
+                brightness: "250-500 nits",
+                colorGamut: "45-72% NTSC",
+                touchscreen: "Optional on FHD"
+            },
+            biosVersion: {
+                recommended: "Latest",
+                notes: "Disable CFG Lock; set Sleep State to Linux if available",
+                secureBootSupport: true
+            },
+            knownIssues: [
+                "CNVi Wi-Fi can't be swapped for Broadcom; itlwm only",
+                "MX250 dGPU models must disable the dGPU via SSDT",
+                "Fingerprint reader not supported"
+            ],
+            communitySupport: {
+                rating: "Very Good",
+                resources: ["Several public OpenCore EFIs", "Shares most config with T480/X1C6"]
+            },
+            guides: {
+                installation: "https://dortania.github.io/OpenCore-Install-Guide/config-laptop.plist/coffee-lake.html",
+                additional: []
+            },
+            thermals: {
+                idleTemp: "35-45°C",
+                loadTemp: "75-90°C",
+                coolingSystem: "Single fan",
+                undervolting: "Possible with VoltageShift"
+            }
+        },
+        needsVerification: ["details.macosSupport", "details.maxMacosSupport", "details.batteryLife", "details.thermals"]
     }
 };
 
-// Initialize and validate data
-try {
-    // Add helper methods to laptopData
-    Object.assign(laptopData, laptopMethods);
-
-    // Validate data
-    const validation = validateLaptopData(laptopData);
-    
-    // Log validation results
-    console.log(`Data loaded successfully: ${Object.values(laptopData).length} laptop models found`);
-    
-    if (validation.errors.length > 0) {
-        console.error('Validation Errors:', validation.errors);
+const componentData = {
+    CPU: {
+        intro: "The CPU is the brain. Intel CPUs from 8th-10th Gen are the 'sweet spot'. Newer generations and AMD CPUs introduce significant challenges for laptops.",
+        items: [
+            {
+                name: "Intel 8th-10th Gen (Coffee/Comet/Ice Lake U/H)",
+                status: "good",
+                desc: "Recommended: Excellent choice. Best balance of performance, iGPU compatibility (UHD 620/630, Iris Plus), and community support."
+            },
+            {
+                name: "Intel 11th+ Gen (Tiger/Alder Lake & newer)",
+                status: "bad",
+                desc: "Avoid for Laptops: Their Iris Xe iGPUs lack graphics acceleration in macOS, making them unusable for a good experience unless it's a rare model where iGPU can be fully disabled and a supported AMD dGPU is present (uncommon in laptops)."
+            },
+            {
+                name: "Intel 4th-7th Gen (Haswell/Broadwell/Skylake/Kaby Lake)",
+                status: "mid",
+                desc: "Viable with Effort: Good for budget builds. Compatibility is generally good with appropriate patching (e.g. HD 4600, HD 5500, HD 620), but lower performance. Great for learning on cheaper hardware."
+            },
+            {
+                name: "AMD Ryzen (All series for laptops)",
+                status: "bad",
+                desc: "Avoid for Laptops: Requires complex patches (NootedRed for iGPU), and support for iGPU, power management, sleep, and other features is very inconsistent, experimental, and often breaks."
+            }
+        ]
+    },
+    GPU: {
+        intro: "Graphics acceleration is non-negotiable. For laptops, the integrated GPU (iGPU) is almost always the one you'll use. NVIDIA dGPUs are not supported on recent macOS versions and MUST be disabled.",
+        items: [
+            {
+                name: "Intel UHD 620 / 630 / Iris Plus (8th-10th Gen)",
+                status: "good",
+                desc: "Recommended: The gold standard for laptop iGPUs. Excellent support in macOS."
+            },
+            {
+                name: "Intel HD Graphics (4th-7th Gen, e.g., HD 4600, HD 520, HD 620)",
+                status: "mid",
+                desc: "Usable: Supported with WhateverGreen and appropriate device properties. Performance varies but generally okay for non-demanding tasks."
+            },
+            {
+                name: "Intel Iris Xe (11th Gen+)",
+                status: "bad",
+                desc: "Avoid: No hardware acceleration in macOS for these iGPUs. Makes the system very laggy and unusable."
+            },
+            {
+                name: "NVIDIA GeForce/Quadro dGPU (All modern laptop versions)",
+                status: "bad",
+                desc: "Must Disable: No support in recent macOS versions (High Sierra was last for some older cards). Must be disabled via ACPI patches (SSDT) to prevent heat, battery drain, and instability. Cannot be used as primary GPU."
+            },
+            {
+                name: "AMD Radeon dGPU (RX 5xx, Vega M, RX 5xxxM, 6xxxM series)",
+                status: "mid",
+                desc: "Potentially Usable (Rare): Some AMD dGPUs are supported. However, in most laptops with Optimus-like technology (paired with Intel iGPU), the dGPU cannot drive the internal display. If it's the sole GPU or can directly drive display, it might work, but this is uncommon. Research specific model thoroughly."
+            }
+        ]
+    },
+    "Wi-Fi": {
+        intro: "Wireless is crucial. Many stock laptop cards are not compatible and must be replaced. Check if your laptop's Wi-Fi card is soldered or replaceable before buying.",
+        items: [
+            {
+                name: "Broadcom (e.g., DW1560, DW1820A, DW1830, Fenvi cards)",
+                status: "good",
+                desc: "Recommended (Check Sonoma/Sequoia compatibility): Offers the most 'native' experience, enabling features like AirDrop & Handoff. Some cards may need OCLP patching on newest macOS versions."
+            },
+            {
+                name: "Intel Wi-Fi (e.g., AX200, AX201, AX210, AC-9560)",
+                status: "mid",
+                desc: "Good Alternative: Works well with OpenIntelWireless kexts (itlwm + HeliPort or AirportItlwm). Most Apple ecosystem features (AirDrop, Handoff, Continuity Camera) will NOT work or be limited."
+            },
+            {
+                name: "Atheros (Older cards, e.g., AR9285, AR9380)",
+                status: "mid",
+                desc: "Viable for Older Systems: Some older Atheros cards have good support on older macOS versions. Check specific chipset."
+            },
+            {
+                name: "Killer Wireless (Intel-based, e.g., AX1650)",
+                status: "mid",
+                desc: "Usually Intel Rebrands: If based on an Intel chipset (like AX200), it will work with OpenIntelWireless. Non-Intel Killer cards are generally incompatible."
+            },
+            {
+                name: "Realtek Wi-Fi / Qualcomm Atheros (newer QCA series)",
+                status: "bad",
+                desc: "Avoid: Poor to no support. Must be replaced."
+            }
+        ]
+    },
+    RAM: {
+        intro: "macOS benefits from ample RAM, especially for creative tasks. Ensure your chosen laptop's RAM is compatible and sufficient for your needs.",
+        items: [
+            {
+                name: "DDR3 / DDR3L (1333MHz, 1600MHz)",
+                status: "good",
+                desc: "Compatible: Standard for older Hackintosh-compatible laptops (3rd-5th Gen Intel). Works reliably."
+            },
+            {
+                name: "DDR4 (2133MHz, 2400MHz, 2666MHz+)",
+                status: "good",
+                desc: "Compatible: Standard for modern Hackintosh laptops (6th Gen Intel onwards). Works reliably."
+            },
+            {
+                name: "LPDDR3 / LPDDR4 / LPDDR4X (Soldered)",
+                status: "good",
+                desc: "Compatible (If on board): Low Power RAM, common in ultrabooks. Works fine, but it's almost always soldered, so ensure you get enough capacity at purchase."
+            },
+            {
+                name: "ECC RAM (Error Correcting Code)",
+                status: "mid",
+                desc: "Usually Works (Non-ECC Mode): While some Xeon-based Hackintoshes might use ECC RAM, macOS typically doesn't leverage ECC features. It should work as standard non-ECC RAM."
+            },
+            {
+                name: "Mismatched RAM Sticks (Speed/Capacity/Brand)",
+                status: "bad",
+                desc: "Avoid if Possible: Can lead to instability or prevent booting. Always try to use matching pairs of RAM sticks for dual-channel operation and stability."
+            }
+        ]
+    },
+    Storage: {
+        intro: "macOS is picky about NVMe SSDs. A wrong choice can lead to slowdowns, freezes, or kernel panics. SATA SSDs are generally safer.",
+        items: [
+            {
+                name: "SATA SSD (Any major brand, e.g., Crucial, WD, Samsung SATA, SanDisk)",
+                status: "good",
+                desc: "Highly Recommended for Stability: Virtually all SATA SSDs work flawlessly and are the safest bet for compatibility."
+            },
+            {
+                name: "NVMe SSD - Western Digital (e.g., SN550, SN570, SN750, SN770, Black series)",
+                status: "good",
+                desc: "Recommended NVMe: Generally excellent compatibility and reliability with macOS. Good performance."
+            },
+            {
+                name: "NVMe SSD - Crucial (P-series, e.g., P1, P2, P5)",
+                status: "good",
+                desc: "Good NVMe Option: Most Crucial NVMe drives work well. P1/P2 are QLC and might be slower for sustained writes but are compatible."
+            },
+            {
+                name: "NVMe SSD - Kingston (A2000, KC2500, KC3000)",
+                status: "mid",
+                desc: "Generally Compatible: Many Kingston NVMe drives work, but research specific models. Some newer/controller-specific models might have issues."
+            },
+            {
+                name: "NVMe SSD - Samsung (e.g., PM981, PM981a, PM9A1, 970 EVO Plus, 980 Pro, 990 Pro)",
+                status: "bad",
+                desc: "Problematic - Avoid or Use with Caution: Many Samsung NVMes (especially OEM like PM981) are known for issues like freezes, trim problems, or instability in macOS. Some newer retail drives (970 Evo Plus, 980/990 Pro) might work with specific firmware or kexts (e.g., NVMeFix.kext, SetApfsTrimTimeout in OpenCore) but can still be unreliable. Not recommended for beginners."
+            },
+            {
+                name: "NVMe SSD - Micron / SK Hynix (OEM models)",
+                status: "bad",
+                desc: "Often Problematic: Certain OEM models from these brands can be incompatible or cause issues. Research specific model numbers carefully."
+            },
+            {
+                name: "HDD (Hard Disk Drive)",
+                status: "mid",
+                desc: "Usable but Slow: macOS will run on an HDD, but the experience will be very slow compared to an SSD. Not recommended for main OS drive if avoidable."
+            }
+        ]
     }
-    
-    if (validation.warnings.length > 0) {
-        console.warn('Validation Warnings:', validation.warnings);
+};
+
+const LaptopDB = {
+    all() {
+        return Object.entries(laptopData).map(([id, laptop]) => ({ id, ...laptop }));
+    },
+    get(id) {
+        return Object.prototype.hasOwnProperty.call(laptopData, id) ? { id, ...laptopData[id] } : null;
+    },
+    // Index of the first macOS release name found in a free-text value, or -1.
+    macosIndex(text) {
+        const lower = String(text || '').toLowerCase();
+        return MACOS_VERSIONS.findIndex(v => lower.startsWith(v.toLowerCase()));
+    },
+    supportsMacos(laptop, version) {
+        const target = MACOS_VERSIONS.indexOf(version);
+        const min = this.macosIndex(laptop.details.minMacosSupport);
+        const max = this.macosIndex(laptop.details.maxMacosSupport);
+        if (target < 0 || min < 0 || max < 0) return false;
+        return target >= min && target <= max;
+    },
+    isUnverified(laptop, path) {
+        return (laptop.needsVerification || []).some(p => p === path || p.startsWith(path + '.'));
     }
+};
 
-    // Make data globally available
-    window.laptopData = laptopData;
-
-} catch (error) {
-    console.error('Error initializing laptop data:', error);
-    throw error;
-}
-
-// Export if in a module environment
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = laptopData;
-}
+// Surface data mistakes in the console during development.
+(function validate() {
+    const required = ['name', 'priority', 'image', 'score', 'summary', 'details'];
+    const metrics = ['ease', 'performance', 'battery', 'stability'];
+    const errors = [];
+    for (const [id, laptop] of Object.entries(laptopData)) {
+        required.forEach(f => { if (laptop[f] === undefined) errors.push(`${id}: missing ${f}`); });
+        if (typeof laptop.score !== 'number' || laptop.score < 0 || laptop.score > 10) errors.push(`${id}: invalid score`);
+        const chart = laptop.details && laptop.details.chartData;
+        metrics.forEach(m => {
+            if (!chart || typeof chart[m] !== 'number' || chart[m] < 0 || chart[m] > 100) errors.push(`${id}: invalid chartData.${m}`);
+        });
+        ['minMacosSupport', 'maxMacosSupport'].forEach(f => {
+            if (LaptopDB.macosIndex(laptop.details && laptop.details[f]) < 0) errors.push(`${id}: unrecognised ${f}`);
+        });
+    }
+    if (errors.length) console.error('laptopData validation errors:', errors);
+})();

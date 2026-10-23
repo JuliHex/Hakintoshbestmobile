@@ -1,86 +1,67 @@
 const ComponentsPage = (() => {
-    let componentTabsContainer;
-    let componentContentContainer;
+    const esc = UI.escape;
+    const STATUS_LABELS = { good: 'Recommended', mid: 'Works with effort', bad: 'Avoid' };
+    const keys = Object.keys(componentData);
 
-    function createComponentTab(key, isActive = false) {
-        const tab = document.createElement('button');
-        tab.className = `component-tab px-4 py-2 rounded-lg font-semibold transition-all hover:bg-opacity-90 scale-in ${
-            isActive ? 'bg-primary text-white dark:bg-blue-600' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-        }`;
-        tab.setAttribute('data-component', key);
-        tab.textContent = key;
-        return tab;
+    function tabId(key) {
+        return `tab-${key.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
     }
 
-    function renderComponentContent(component) {
-        if (!component) return '';
-        
-        return `
-            <div class="component-content-wrapper slide-up">
-                <p class="text-lg mb-6 fade-in">${component.intro}</p>
-                <div class="grid gap-6 stagger-animate">
-                    ${component.items.map(item => `
-                        <div class="bg-secondary dark:bg-gray-700 p-4 rounded-lg fade-in">
-                            <div class="flex items-start gap-4">
-                                <span class="status-indicator ${item.status}"></span>
-                                <div>
-                                    <h4 class="font-semibold mb-2">${item.name}</h4>
-                                    <p class="text-medium dark:text-gray-300 text-sm">${item.desc}</p>
-                                </div>
-                            </div>
+    function renderContent(key) {
+        const component = componentData[key];
+        const panel = document.getElementById('component-content');
+        panel.setAttribute('aria-labelledby', tabId(key));
+        panel.innerHTML = `
+            <p class="mb-5 text-gray-700 dark:text-gray-300 max-w-3xl">${esc(component.intro)}</p>
+            <ul class="grid gap-3 md:grid-cols-2">
+                ${component.items.map(item => `
+                    <li class="card p-4 flex gap-3 animate-in">
+                        <span class="status-dot ${esc(item.status)}" role="img" aria-label="${STATUS_LABELS[item.status] || ''}"></span>
+                        <div class="min-w-0">
+                            <h3 class="font-semibold">${esc(item.name)}</h3>
+                            <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">${esc(item.desc)}</p>
                         </div>
-                    `).join('')}
-                </div>
-            </div>
-        `;
+                    </li>`).join('')}
+            </ul>`;
     }
 
-    /**
-     * Initializes the Components page: renders tabs and sets up event listeners.
-     */
-    function init() {
-        console.log("ComponentsPage.init() called"); // For debugging
-        componentTabsContainer = document.getElementById('component-tabs');
-        componentContentContainer = document.getElementById('component-content');
-
-        if (!componentTabsContainer || !componentContentContainer) {
-            console.error("ComponentsPage: Required DOM elements (#component-tabs or #component-content) not found.");
-            return;
-        }
-
-        if (typeof componentData === 'undefined') {
-            console.error("ComponentsPage: componentData is not defined. Ensure js/data.js is loaded.");
-            componentContentContainer.innerHTML = `<p class="text-red-500">Error: Component data could not be loaded.</p>`;
-            return;
-        }
-
-        // Render tabs
-        let firstKey = null;
-        Object.keys(componentData).forEach((key, index) => {
-            if (index === 0) firstKey = key;
-            const tab = createComponentTab(key, index === 0);
-            
-            tab.addEventListener('click', () => {
-                // Update active tab
-                componentTabsContainer.querySelectorAll('.component-tab').forEach(t => t.classList.remove('active', 'bg-primary', 'text-white', 'dark:bg-blue-600'));
-                tab.classList.add('active', 'bg-primary', 'text-white', 'dark:bg-blue-600');
-                
-                // Render content
-                componentContentContainer.innerHTML = renderComponentContent(componentData[key]);
-            });
-            
-            componentTabsContainer.appendChild(tab);
+    function select(key, focus = false) {
+        document.querySelectorAll('#component-tabs [role="tab"]').forEach(tab => {
+            const active = tab.dataset.key === key;
+            tab.setAttribute('aria-selected', String(active));
+            tab.tabIndex = active ? 0 : -1;
+            if (active && focus) tab.focus();
         });
-        
-        // Render content for the first tab by default
-        if (firstKey) {
-            componentContentContainer.innerHTML = renderComponentContent(componentData[firstKey]);
-        } else {
-            componentContentContainer.innerHTML = `<p>No component categories found.</p>`;
-        }
+        renderContent(key);
+        history.replaceState(null, '', `#${encodeURIComponent(key)}`);
     }
 
-    return {
-        init
-    };
+    function init() {
+        const tabs = document.getElementById('component-tabs');
+        tabs.innerHTML = keys.map(key => `
+            <button type="button" role="tab" id="${tabId(key)}" class="chip shrink-0" data-key="${esc(key)}" aria-controls="component-content" aria-selected="false">${esc(key)}</button>
+        `).join('');
+
+        tabs.addEventListener('click', e => {
+            const tab = e.target.closest('[role="tab"]');
+            if (tab) select(tab.dataset.key);
+        });
+
+        // Arrow keys move between tabs (WAI-ARIA tabs pattern).
+        tabs.addEventListener('keydown', e => {
+            const current = keys.indexOf(document.activeElement.dataset.key);
+            if (current < 0) return;
+            const step = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
+            if (!step) return;
+            e.preventDefault();
+            select(keys[(current + step + keys.length) % keys.length], true);
+        });
+
+        const fromHash = decodeURIComponent(location.hash.slice(1));
+        select(keys.includes(fromHash) ? fromHash : keys[0]);
+    }
+
+    return { init };
 })();
+
+ComponentsPage.init();
