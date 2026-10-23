@@ -2,8 +2,13 @@
 module.exports = {
   content: [
     "./*.html",
-    "./js/**/*.js"
+    "./js/**/*.js",
+    "./src/islands/**/*.jsx",
+    // liquid-glass-react styles its overlay layers with Tailwind classes.
+    "./node_modules/liquid-glass-react/dist/index.esm.js"
   ],
+  // Classes built at runtime (e.g. 'macos-' + version) that the scanner can't see.
+  safelist: [{ pattern: /^macos-/ }],
   darkMode: 'class',
   theme: {
     extend: {

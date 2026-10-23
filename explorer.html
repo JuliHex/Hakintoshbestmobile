@@ -58,6 +58,17 @@
                     </fieldset>
 
                     <div>
+                        <label for="brand-select" class="label">Brand</label>
+                        <select id="brand-select" class="input">
+                            <option value="">All brands</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <button type="button" id="favorites-only" class="chip w-full justify-center" aria-pressed="false">Favorites only</button>
+                    </div>
+
+                    <div>
                         <label for="min-score" class="label">Minimum score</label>
                         <select id="min-score" class="input">
                             <option value="0">Any</option>
@@ -84,8 +95,9 @@
         </div>
     </main>
 
-    <div id="compare-bar" class="fixed inset-x-0 bottom-0 z-30 border-t border-gray-200 dark:border-gray-700 bg-white/95 dark:bg-gray-800/95 backdrop-blur" style="padding-bottom: env(safe-area-inset-bottom)" hidden>
-        <div class="container mx-auto px-4 sm:px-6 py-3 flex items-center gap-3">
+    <div id="compare-bar" class="fixed inset-x-0 z-30 h-16 pointer-events-none text-center" style="bottom: calc(0.75rem + env(safe-area-inset-bottom))"
+         data-liquid-glass='{"padding": "0", "style": {"pointerEvents": "auto"}}' hidden>
+        <div class="lg-surface pointer-events-auto inline-flex rounded-full pl-5 pr-2 py-2 items-center gap-2 text-left" style="width: min(42rem, calc(100vw - 1.5rem))">
             <p class="flex-1 min-w-0 text-sm">
                 <strong id="compare-count"></strong>
                 <span id="compare-names" class="hidden sm:inline text-gray-600 dark:text-gray-300"></span>
@@ -100,5 +112,6 @@
     <script src="js/data.js"></script>
     <script src="js/layout.js"></script>
     <script src="js/explorer_page.js"></script>
+    <script src="assets/js/liquid-glass.js" defer></script>
 </body>
 </html>

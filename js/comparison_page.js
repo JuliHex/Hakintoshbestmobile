@@ -42,18 +42,18 @@ const ComparisonPage = (() => {
 
     function renderTable(laptops) {
         const head = `
-            <thead class="bg-gray-50 dark:bg-gray-900/40">
+            <thead class="bg-white/40 dark:bg-white/5">
                 <tr>
-                    <th scope="col" class="sticky left-0 bg-gray-50 dark:bg-gray-800 w-28 sm:w-40"><span class="sr-only">Spec</span></th>
+                    <th scope="col" class="sticky left-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur w-28 sm:w-40"><span class="sr-only">Spec</span></th>
                     ${laptops.map(l => `
                         <th scope="col" class="min-w-[12rem]">
-                            <a href="laptop_detail.html?id=${encodeURIComponent(l.id)}" class="font-semibold text-primary dark:text-blue-300 hover:underline">${esc(l.name)}</a>
+                            <a href="laptop_detail.html?id=${encodeURIComponent(l.id)}" class="font-semibold text-blue-700 dark:text-blue-300 hover:underline">${esc(l.name)}</a>
                         </th>`).join('')}
                 </tr>
             </thead>`;
         const body = ROWS.map(([label, get, path]) => `
-            <tr class="border-t border-gray-100 dark:border-gray-700">
-                <th scope="row" class="sticky left-0 bg-white dark:bg-gray-800 font-medium text-gray-500 dark:text-gray-400">${esc(label)}</th>
+            <tr class="border-t border-gray-900/5 dark:border-white/10">
+                <th scope="row" class="sticky left-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur font-medium text-gray-500 dark:text-gray-400">${esc(label)}</th>
                 ${laptops.map(l => `<td>${esc(get(l) || '—')}${path ? UI.unverifiedBadge(l, path) : ''}</td>`).join('')}
             </tr>`).join('');
         document.getElementById('compare-table').innerHTML = head + `<tbody>${body}</tbody>`;

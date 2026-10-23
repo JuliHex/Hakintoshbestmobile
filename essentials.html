@@ -21,34 +21,34 @@
 
         <div class="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
             <section class="card p-5 sm:p-6">
-                <h2 class="text-xl font-semibold text-primary dark:text-blue-300 mb-5">The build at a glance</h2>
+                <h2 class="text-xl font-semibold text-blue-700 dark:text-blue-300 mb-5">The build at a glance</h2>
                 <ol class="relative border-l-2 border-dashed border-gray-300 dark:border-gray-600 ml-3 space-y-6">
                     <li class="pl-6 relative">
-                        <span class="absolute -left-[0.95rem] top-0 w-7 h-7 rounded-full bg-primary text-white text-sm font-bold flex items-center justify-center ring-4 ring-white dark:ring-gray-800">1</span>
+                        <span class="absolute -left-[0.95rem] top-0 w-7 h-7 rounded-full bg-primary text-white text-sm font-bold flex items-center justify-center ring-4 ring-white/70 dark:ring-white/10">1</span>
                         <h3 class="font-semibold">Research &amp; planning</h3>
                         <p class="text-sm text-gray-600 dark:text-gray-300">Identify your exact CPU, Wi-Fi card, audio codec and trackpad. Read the Dortania guide for your CPU generation.</p>
                     </li>
                     <li class="pl-6 relative">
-                        <span class="absolute -left-[0.95rem] top-0 w-7 h-7 rounded-full bg-primary text-white text-sm font-bold flex items-center justify-center ring-4 ring-white dark:ring-gray-800">2</span>
+                        <span class="absolute -left-[0.95rem] top-0 w-7 h-7 rounded-full bg-primary text-white text-sm font-bold flex items-center justify-center ring-4 ring-white/70 dark:ring-white/10">2</span>
                         <h3 class="font-semibold">BIOS &amp; USB installer</h3>
                         <p class="text-sm text-gray-600 dark:text-gray-300">Configure the BIOS, download macOS, and build an OpenCore EFI on a USB stick.</p>
                     </li>
                     <li class="pl-6 relative">
-                        <span class="absolute -left-[0.95rem] top-0 w-7 h-7 rounded-full bg-primary text-white text-sm font-bold flex items-center justify-center ring-4 ring-white dark:ring-gray-800">3</span>
+                        <span class="absolute -left-[0.95rem] top-0 w-7 h-7 rounded-full bg-primary text-white text-sm font-bold flex items-center justify-center ring-4 ring-white/70 dark:ring-white/10">3</span>
                         <h3 class="font-semibold">Installation</h3>
                         <p class="text-sm text-gray-600 dark:text-gray-300">Boot the USB and install macOS. Expect to troubleshoot a hang or two.</p>
                     </li>
                     <li class="pl-6 relative">
-                        <span class="absolute -left-[0.95rem] top-0 w-7 h-7 rounded-full bg-primary text-white text-sm font-bold flex items-center justify-center ring-4 ring-white dark:ring-gray-800">4</span>
+                        <span class="absolute -left-[0.95rem] top-0 w-7 h-7 rounded-full bg-primary text-white text-sm font-bold flex items-center justify-center ring-4 ring-white/70 dark:ring-white/10">4</span>
                         <h3 class="font-semibold">Post-install tuning</h3>
                         <p class="text-sm text-gray-600 dark:text-gray-300">Copy the EFI to the internal drive, then fix Wi-Fi, audio, USB mapping, sleep and battery reporting.</p>
                     </li>
                 </ol>
-                <a href="build_guide.html" class="btn-primary mt-6">Read the full Build Guide &rarr;</a>
+                <a href="build_guide.html" class="btn-primary mt-6">Read the full Build Guide <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
             </section>
 
             <section class="card p-5 sm:p-6">
-                <h2 class="text-xl font-semibold text-primary dark:text-blue-300 mb-3">Mindset</h2>
+                <h2 class="text-xl font-semibold text-blue-700 dark:text-blue-300 mb-3">Mindset</h2>
                 <p class="text-gray-700 dark:text-gray-300">Hackintoshing is a rewarding hobby, not a replacement for a real Mac if you need everything to work flawlessly out of the box. Budget a weekend for the first build.</p>
                 <div class="callout callout-warn mt-4 mb-0">
                     <p><strong>Back up before every update.</strong> macOS updates can break kexts or patches. Keep a copy of your working EFI on a spare USB stick, and wait a week or two after a release for the community to report problems.</p>
@@ -59,19 +59,19 @@
             </section>
 
             <section class="card p-5 sm:p-6">
-                <h2 class="text-xl font-semibold text-primary dark:text-blue-300 mb-4">Toolbox</h2>
+                <h2 class="text-xl font-semibold text-blue-700 dark:text-blue-300 mb-4">Toolbox</h2>
                 <ul class="space-y-3 text-sm">
-                    <li><a class="font-semibold text-primary dark:text-blue-300 hover:underline" href="https://github.com/acidanthera/OpenCorePkg" target="_blank" rel="noopener">OpenCore ↗</a><br><span class="text-gray-600 dark:text-gray-300">The bootloader that makes it all work.</span></li>
-                    <li><a class="font-semibold text-primary dark:text-blue-300 hover:underline" href="https://github.com/corpnewt/ProperTree" target="_blank" rel="noopener">ProperTree ↗</a><br><span class="text-gray-600 dark:text-gray-300">Cross-platform editor for <code class="text-xs">config.plist</code>, with OC Snapshot.</span></li>
-                    <li><a class="font-semibold text-primary dark:text-blue-300 hover:underline" href="https://github.com/corpnewt/SSDTTime" target="_blank" rel="noopener">SSDTTime ↗</a><br><span class="text-gray-600 dark:text-gray-300">Generates the ACPI patches (SSDTs) your laptop needs.</span></li>
-                    <li><a class="font-semibold text-primary dark:text-blue-300 hover:underline" href="https://github.com/USBToolBox/tool" target="_blank" rel="noopener">USBToolBox ↗</a><br><span class="text-gray-600 dark:text-gray-300">Maps USB ports from Windows so you stay under macOS's 15-port limit.</span></li>
-                    <li><a class="font-semibold text-primary dark:text-blue-300 hover:underline" href="https://github.com/corpnewt/GenSMBIOS" target="_blank" rel="noopener">GenSMBIOS ↗</a><br><span class="text-gray-600 dark:text-gray-300">Creates serial numbers for your SMBIOS.</span></li>
-                    <li><a class="font-semibold text-primary dark:text-blue-300 hover:underline" href="https://github.com/dortania/OpenCore-Legacy-Patcher" target="_blank" rel="noopener">OpenCore Legacy Patcher ↗</a><br><span class="text-gray-600 dark:text-gray-300">Root patches for hardware newer macOS dropped, such as Broadcom Wi-Fi on Sonoma and later.</span></li>
+                    <li><a class="font-semibold text-blue-700 dark:text-blue-300 hover:underline" href="https://github.com/acidanthera/OpenCorePkg" target="_blank" rel="noopener">OpenCore <svg class="icon w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1h5"/></svg></a><br><span class="text-gray-600 dark:text-gray-300">The bootloader that makes it all work.</span></li>
+                    <li><a class="font-semibold text-blue-700 dark:text-blue-300 hover:underline" href="https://github.com/corpnewt/ProperTree" target="_blank" rel="noopener">ProperTree <svg class="icon w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1h5"/></svg></a><br><span class="text-gray-600 dark:text-gray-300">Cross-platform editor for <code class="text-xs">config.plist</code>, with OC Snapshot.</span></li>
+                    <li><a class="font-semibold text-blue-700 dark:text-blue-300 hover:underline" href="https://github.com/corpnewt/SSDTTime" target="_blank" rel="noopener">SSDTTime <svg class="icon w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1h5"/></svg></a><br><span class="text-gray-600 dark:text-gray-300">Generates the ACPI patches (SSDTs) your laptop needs.</span></li>
+                    <li><a class="font-semibold text-blue-700 dark:text-blue-300 hover:underline" href="https://github.com/USBToolBox/tool" target="_blank" rel="noopener">USBToolBox <svg class="icon w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1h5"/></svg></a><br><span class="text-gray-600 dark:text-gray-300">Maps USB ports from Windows so you stay under macOS's 15-port limit.</span></li>
+                    <li><a class="font-semibold text-blue-700 dark:text-blue-300 hover:underline" href="https://github.com/corpnewt/GenSMBIOS" target="_blank" rel="noopener">GenSMBIOS <svg class="icon w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1h5"/></svg></a><br><span class="text-gray-600 dark:text-gray-300">Creates serial numbers for your SMBIOS.</span></li>
+                    <li><a class="font-semibold text-blue-700 dark:text-blue-300 hover:underline" href="https://github.com/dortania/OpenCore-Legacy-Patcher" target="_blank" rel="noopener">OpenCore Legacy Patcher <svg class="icon w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1h5"/></svg></a><br><span class="text-gray-600 dark:text-gray-300">Root patches for hardware newer macOS dropped, such as Broadcom Wi-Fi on Sonoma and later.</span></li>
                 </ul>
             </section>
 
             <section class="card p-5 sm:p-6">
-                <h2 class="text-xl font-semibold text-primary dark:text-blue-300 mb-4">Core kexts for laptops</h2>
+                <h2 class="text-xl font-semibold text-blue-700 dark:text-blue-300 mb-4">Core kexts for laptops</h2>
                 <dl class="text-sm space-y-2.5">
                     <div><dt class="inline font-semibold">Lilu:</dt> <dd class="inline text-gray-600 dark:text-gray-300">patching framework most other kexts depend on.</dd></div>
                     <div><dt class="inline font-semibold">VirtualSMC:</dt> <dd class="inline text-gray-600 dark:text-gray-300">emulates the Mac SMC; add SMCBatteryManager for battery status.</dd></div>
@@ -85,14 +85,14 @@
             </section>
 
             <section class="card p-5 sm:p-6 lg:col-span-2">
-                <h2 class="text-xl font-semibold text-primary dark:text-blue-300 mb-4">Where to learn and get help</h2>
+                <h2 class="text-xl font-semibold text-blue-700 dark:text-blue-300 mb-4">Where to learn and get help</h2>
                 <ul class="grid sm:grid-cols-2 gap-3 text-sm">
-                    <li><a class="font-semibold text-primary dark:text-blue-300 hover:underline" href="https://dortania.github.io/OpenCore-Install-Guide/" target="_blank" rel="noopener">Dortania OpenCore Install Guide ↗</a><br><span class="text-gray-600 dark:text-gray-300">The #1 resource. Read it before anything else.</span></li>
-                    <li><a class="font-semibold text-primary dark:text-blue-300 hover:underline" href="https://dortania.github.io/OpenCore-Post-Install/" target="_blank" rel="noopener">Dortania Post-Install Guide ↗</a><br><span class="text-gray-600 dark:text-gray-300">USB mapping, sleep, audio, security and more.</span></li>
-                    <li><a class="font-semibold text-primary dark:text-blue-300 hover:underline" href="https://www.reddit.com/r/hackintosh/" target="_blank" rel="noopener">r/hackintosh ↗</a><br><span class="text-gray-600 dark:text-gray-300">Active community forum. Read the posting rules first.</span></li>
-                    <li><a class="font-semibold text-primary dark:text-blue-300 hover:underline" href="https://github.com/acidanthera" target="_blank" rel="noopener">Acidanthera on GitHub ↗</a><br><span class="text-gray-600 dark:text-gray-300">Home of OpenCore and the essential kexts.</span></li>
-                    <li><a class="font-semibold text-primary dark:text-blue-300 hover:underline" href="https://www.insanelymac.com/forum/" target="_blank" rel="noopener">InsanelyMac Forums ↗</a><br><span class="text-gray-600 dark:text-gray-300">Long-running community with deep technical threads.</span></li>
-                    <li><a class="font-semibold text-primary dark:text-blue-300 hover:underline" href="https://www.tonymacx86.com/forums/" target="_blank" rel="noopener">tonymacx86 Forums ↗</a><br><span class="text-gray-600 dark:text-gray-300">Large community with model-specific threads.</span></li>
+                    <li><a class="font-semibold text-blue-700 dark:text-blue-300 hover:underline" href="https://dortania.github.io/OpenCore-Install-Guide/" target="_blank" rel="noopener">Dortania OpenCore Install Guide <svg class="icon w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1h5"/></svg></a><br><span class="text-gray-600 dark:text-gray-300">The #1 resource. Read it before anything else.</span></li>
+                    <li><a class="font-semibold text-blue-700 dark:text-blue-300 hover:underline" href="https://dortania.github.io/OpenCore-Post-Install/" target="_blank" rel="noopener">Dortania Post-Install Guide <svg class="icon w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1h5"/></svg></a><br><span class="text-gray-600 dark:text-gray-300">USB mapping, sleep, audio, security and more.</span></li>
+                    <li><a class="font-semibold text-blue-700 dark:text-blue-300 hover:underline" href="https://www.reddit.com/r/hackintosh/" target="_blank" rel="noopener">r/hackintosh <svg class="icon w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1h5"/></svg></a><br><span class="text-gray-600 dark:text-gray-300">Active community forum. Read the posting rules first.</span></li>
+                    <li><a class="font-semibold text-blue-700 dark:text-blue-300 hover:underline" href="https://github.com/acidanthera" target="_blank" rel="noopener">Acidanthera on GitHub <svg class="icon w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1h5"/></svg></a><br><span class="text-gray-600 dark:text-gray-300">Home of OpenCore and the essential kexts.</span></li>
+                    <li><a class="font-semibold text-blue-700 dark:text-blue-300 hover:underline" href="https://www.insanelymac.com/forum/" target="_blank" rel="noopener">InsanelyMac Forums <svg class="icon w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1h5"/></svg></a><br><span class="text-gray-600 dark:text-gray-300">Long-running community with deep technical threads.</span></li>
+                    <li><a class="font-semibold text-blue-700 dark:text-blue-300 hover:underline" href="https://www.tonymacx86.com/forums/" target="_blank" rel="noopener">tonymacx86 Forums <svg class="icon w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1h5"/></svg></a><br><span class="text-gray-600 dark:text-gray-300">Large community with model-specific threads.</span></li>
                 </ul>
             </section>
         </div>

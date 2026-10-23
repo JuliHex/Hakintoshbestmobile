@@ -1,6 +1,6 @@
 const ExplorerPage = (() => {
     const MACOS_FILTERS = ['Monterey', 'Ventura', 'Sonoma', 'Sequoia', 'Tahoe'];
-    const DEFAULTS = { search: '', priorities: [], macos: '', minScore: 0, sort: 'score-desc' };
+    const DEFAULTS = { search: '', priorities: [], macos: '', brand: '', favorites: false, minScore: 0, sort: 'score-desc' };
     const state = { ...DEFAULTS, priorities: [] };
 
     const el = id => document.getElementById(id);
@@ -20,6 +20,8 @@ const ExplorerPage = (() => {
     function matches(laptop) {
         if (state.priorities.some(p => !laptop.priority.includes(p))) return false;
         if (state.macos && !LaptopDB.supportsMacos(laptop, state.macos)) return false;
+        if (state.brand && laptop.brand !== state.brand) return false;
+        if (state.favorites && !FavoriteStore.has(laptop.id)) return false;
         if (laptop.score < state.minScore) return false;
         if (state.search) {
             const text = searchText(laptop);
@@ -35,7 +37,7 @@ const ExplorerPage = (() => {
     }
 
     function activeFilterCount() {
-        return (state.search ? 1 : 0) + state.priorities.length + (state.macos ? 1 : 0) + (state.minScore ? 1 : 0);
+        return (state.search ? 1 : 0) + state.priorities.length + (state.macos ? 1 : 0) + (state.brand ? 1 : 0) + (state.favorites ? 1 : 0) + (state.minScore ? 1 : 0);
     }
 
     function render() {
@@ -52,6 +54,8 @@ const ExplorerPage = (() => {
         el('macos-filters').querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', b.dataset.value === state.macos));
         searchInputs().forEach(input => { if (input.value !== state.search) input.value = state.search; });
         el('sort-select').value = state.sort;
+        el('brand-select').value = state.brand;
+        el('favorites-only').setAttribute('aria-pressed', String(state.favorites));
         el('min-score').value = String(state.minScore);
 
         renderCompareBar();
@@ -66,7 +70,7 @@ const ExplorerPage = (() => {
         el('compare-go').classList.toggle('pointer-events-none', ids.length < 2);
         el('compare-go').classList.toggle('opacity-50', ids.length < 2);
         el('compare-go').setAttribute('aria-disabled', String(ids.length < 2));
-        el('compare-go').textContent = ids.length < 2 ? 'Pick 1 more' : 'Compare';
+        el('compare-go').innerHTML = ids.length < 2 ? 'Pick 1 more' : `Compare ${icon('arrowRight')}`;
     }
 
     function syncUrl() {
@@ -74,6 +78,8 @@ const ExplorerPage = (() => {
         if (state.search) params.set('search', state.search);
         if (state.priorities.length) params.set('priority', state.priorities.join(','));
         if (state.macos) params.set('macos', state.macos);
+        if (state.brand) params.set('brand', state.brand);
+        if (state.favorites) params.set('fav', '1');
         if (state.minScore) params.set('min', state.minScore);
         if (state.sort !== DEFAULTS.sort) params.set('sort', state.sort);
         const query = params.toString();
@@ -85,6 +91,8 @@ const ExplorerPage = (() => {
         state.search = params.get('search') || '';
         state.priorities = (params.get('priority') || '').split(',').filter(p => p in PRIORITY_LABELS);
         state.macos = MACOS_FILTERS.includes(params.get('macos')) ? params.get('macos') : '';
+        state.brand = LaptopDB.brands().includes(params.get('brand')) ? params.get('brand') : '';
+        state.favorites = params.get('fav') === '1';
         state.minScore = parseFloat(params.get('min')) || 0;
         const sortValue = params.get('sort');
         state.sort = [...el('sort-select').options].some(o => o.value === sortValue) ? sortValue : DEFAULTS.sort;
@@ -99,6 +107,9 @@ const ExplorerPage = (() => {
         el('priority-filters').innerHTML = Object.entries(PRIORITY_LABELS)
             .map(([value, label]) => `<button type="button" class="chip" data-value="${value}" aria-pressed="false">${label}</button>`)
             .join('');
+        el('favorites-only').insertAdjacentHTML('afterbegin', icon('heart'));
+        el('brand-select').insertAdjacentHTML('beforeend', LaptopDB.brands()
+            .map(b => `<option value="${UI.escape(b)}">${UI.escape(b)}</option>`).join(''));
         el('macos-filters').innerHTML = MACOS_FILTERS
             .map(v => `<button type="button" class="chip" data-value="${v}" aria-pressed="false">${v}</button>`)
             .join('');
@@ -144,18 +155,12 @@ const ExplorerPage = (() => {
             el('filters-toggle').setAttribute('aria-expanded', String(open));
         });
 
-        el('laptop-grid').addEventListener('click', e => {
-            const button = e.target.closest('[data-compare-id]');
-            if (!button) return;
-            if (!CompareStore.toggle(button.dataset.compareId)) {
-                alert(`You can compare up to ${CompareStore.MAX} laptops. Remove one first.`);
-                return;
-            }
-            const selected = CompareStore.has(button.dataset.compareId);
-            button.setAttribute('aria-pressed', String(selected));
-            button.textContent = selected ? '✓ Comparing' : '+ Compare';
-            renderCompareBar();
-        });
+        el('brand-select').addEventListener('change', e => { state.brand = e.target.value; render(); });
+        el('favorites-only').addEventListener('click', () => { state.favorites = !state.favorites; render(); });
+
+        // Card buttons are handled by layout.js; keep the compare bar and favorites view in sync.
+        document.addEventListener('compare:change', renderCompareBar);
+        document.addEventListener('favorites:change', () => { if (state.favorites) render(); });
 
         el('compare-clear').addEventListener('click', () => {
             CompareStore.clear();

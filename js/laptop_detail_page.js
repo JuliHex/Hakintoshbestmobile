@@ -20,6 +20,42 @@ const LaptopDetailPage = (() => {
         return esc(value);
     }
 
+    function macosChip(label, value) {
+        if (!value) return '';
+        return `<span class="spec-chip"><span class="text-gray-600 dark:text-gray-300">${esc(label)}</span><span class="spec-chip-value ${UI.macosClass(value)}">${esc(value)}</span></span>`;
+    }
+
+    // Groups free-text port entries ("2x USB 3.1 Gen 1", "HDMI 1.4b") into type counts.
+    function portType(entry) {
+        const e = entry.toLowerCase();
+        if (e.includes('thunderbolt')) return 'Thunderbolt';
+        if (e.includes('usb-c') || e.includes('type-c') || e.includes('usb c')) return 'USB-C';
+        if (e.includes('usb')) return 'USB-A';
+        if (e.includes('hdmi')) return 'HDMI';
+        if (e.includes('displayport') || e.includes('mini dp')) return 'DisplayPort';
+        if (e.includes('ethernet') || e.includes('rj45')) return 'Ethernet';
+        if (e.includes('microsd') || e.includes('micro sd')) return 'microSD';
+        if (/\bsd\b/.test(e)) return 'SD card';
+        if (e.includes('audio') || e.includes('headphone')) return 'Audio jack';
+        return null;
+    }
+
+    function portSummary(ports) {
+        const counts = {};
+        Object.values(ports).flat().filter(Boolean).forEach(entry => {
+            String(entry).split(/,\s*/).forEach(part => {
+                const type = portType(part);
+                if (!type || /^none/i.test(part)) return;
+                const m = part.match(/(\d+)\s*x/i);
+                counts[type] = (counts[type] || 0) + (m ? parseInt(m[1], 10) : 1);
+            });
+        });
+        const entries = Object.entries(counts);
+        if (!entries.length) return '';
+        return `<div class="flex flex-wrap gap-2 mb-3">${entries.map(([type, n]) =>
+            `<span class="spec-chip !pr-3">${esc(type)}${n > 1 ? `<span class="spec-chip-value !px-2">&times;${n}</span>` : ''}</span>`).join('')}</div>`;
+    }
+
     function section(title, body, extraClass = '') {
         return `
             <section class="card p-5 ${extraClass}">
@@ -54,23 +90,33 @@ const LaptopDetailPage = (() => {
 
         return `
             <div class="card overflow-hidden md:grid md:grid-cols-2 animate-in">
-                <img src="${esc(laptop.image)}" alt="" width="600" height="400" class="w-full h-full aspect-[3/2] object-cover bg-gray-100 dark:bg-gray-700">
+                ${UI.tile(laptop, { large: true })}
                 <div class="p-5 sm:p-8 flex flex-col gap-4">
                     <div>
-                        <h1 class="text-3xl sm:text-4xl font-bold tracking-tight">${esc(laptop.name)}</h1>
+                        <p class="eyebrow">${esc(laptop.brand)}</p>
+                        <h1 class="mt-1 text-3xl sm:text-4xl font-bold tracking-tight">${esc(laptop.name)}</h1>
                         <p class="mt-2 text-gray-600 dark:text-gray-300">${esc(laptop.summary)}</p>
                     </div>
                     <div class="max-w-xs">${UI.scoreBar(laptop.score)}</div>
                     <div class="flex flex-wrap gap-1.5">${UI.priorityTags(laptop)}</div>
-                    <p class="text-sm"><span class="text-gray-500 dark:text-gray-400">macOS:</span> <strong>${UI.macosRange(laptop)}</strong>${UI.unverifiedBadge(laptop, 'details.maxMacosSupport')}</p>
-                    <div class="flex flex-wrap gap-2 mt-auto">
-                        <button type="button" id="compare-toggle" class="chip" aria-pressed="false"></button>
-                        <a href="comparison.html" id="compare-link" class="btn-secondary" hidden>Open comparison &rarr;</a>
+                    <div class="flex flex-wrap gap-2">
+                        ${macosChip('Oldest', d.minMacosSupport)}
+                        ${macosChip('Newest', d.maxMacosSupport)}
+                        ${UI.unverifiedBadge(laptop, 'details.maxMacosSupport')}
+                    </div>
+                    <div class="flex flex-wrap items-center gap-2 mt-auto pt-2">
+                        <button type="button" class="chip" data-compare-id="${esc(laptop.id)}" aria-pressed="${CompareStore.has(laptop.id)}">${UI.compareButtonContent(CompareStore.has(laptop.id))}</button>
+                        <button type="button" class="chip" id="copy-link">${icon('link')} Copy link</button>
+                        ${UI.favoriteButton(laptop.id)}
+                        <a href="comparison.html" id="compare-link" class="btn-primary" hidden>Open comparison ${icon('arrowRight')}</a>
                     </div>
                 </div>
             </div>
 
-            ${laptop.needsVerification && laptop.needsVerification.length ? `
+            ${laptop.source === 'community' ? `
+                <div class="callout callout-info mt-6">
+                    <p><strong>Community data.</strong> This laptop comes from a community-submitted list. Its specs describe a typical configuration, and its ratings are estimated from that list's compatibility score. Double-check everything for your exact model.</p>
+                </div>` : laptop.needsVerification && laptop.needsVerification.length ? `
                 <div class="callout callout-warn mt-6">
                     <p>Fields marked <span class="badge-unverified !ml-0">Unverified</span> come from typical configurations and haven't been confirmed against a working build yet. Check them for your exact model before buying.</p>
                 </div>` : ''}
@@ -104,11 +150,11 @@ const LaptopDetailPage = (() => {
 
                 ${section('Install guides', guideLinks.length ? `
                     <ul class="space-y-2 text-sm">
-                        ${guideLinks.map(url => `<li><a href="${esc(url)}" target="_blank" rel="noopener" class="text-primary dark:text-blue-300 hover:underline break-all">${esc(linkLabel(url))} ↗</a></li>`).join('')}
+                        ${guideLinks.map(url => `<li><a href="${esc(url)}" target="_blank" rel="noopener" class="text-blue-700 dark:text-blue-300 hover:underline break-all">${esc(linkLabel(url))} ${icon('external', 'icon w-3.5 h-3.5')}</a></li>`).join('')}
                     </ul>
                     ${community.rating ? `<p class="mt-4 text-sm"><span class="text-gray-500 dark:text-gray-400">Community support:</span> <strong>${esc(community.rating)}</strong></p>` : ''}
                     ${community.resources ? `<ul class="mt-1 list-disc pl-5 text-sm text-gray-600 dark:text-gray-300">${community.resources.map(r => `<li>${esc(r)}</li>`).join('')}</ul>` : ''}
-                ` : '<p class="text-sm">No model-specific guide yet. Start with the <a class="text-primary hover:underline" href="build_guide.html">Build Guide</a>.</p>')}
+                ` : '<p class="text-sm">No model-specific guide yet. Start with the <a class="text-blue-700 dark:text-blue-300 hover:underline" href="build_guide.html">Build Guide</a>.</p>')}
 
                 ${section('Display', specList(laptop, [
                     ['Resolution', d.screenResolution, 'details.screenResolution'],
@@ -118,7 +164,7 @@ const LaptopDetailPage = (() => {
                     ['Touchscreen', display.touchscreen, 'details.displayFeatures']
                 ]))}
 
-                ${section('Ports', specList(laptop, [
+                ${section('Ports', portSummary(ports) + specList(laptop, [
                     ['USB', ports.usb, 'details.ports'],
                     ['Thunderbolt', ports.thunderbolt, 'details.ports'],
                     ['Video', ports.video, 'details.ports'],
@@ -152,11 +198,7 @@ const LaptopDetailPage = (() => {
             </div>`;
     }
 
-    function updateCompareButton(id) {
-        const button = document.getElementById('compare-toggle');
-        const selected = CompareStore.has(id);
-        button.setAttribute('aria-pressed', String(selected));
-        button.textContent = selected ? '✓ In comparison' : '+ Add to comparison';
+    function updateCompareLink() {
         document.getElementById('compare-link').hidden = CompareStore.ids().length < 2;
     }
 
@@ -171,12 +213,17 @@ const LaptopDetailPage = (() => {
         }
 
         container.innerHTML = render(laptop);
-        updateCompareButton(id);
-        document.getElementById('compare-toggle').addEventListener('click', () => {
-            if (!CompareStore.toggle(id)) {
-                alert(`You can compare up to ${CompareStore.MAX} laptops. Remove one on the Compare page first.`);
+        RecentStore.add(id);
+        updateCompareLink();
+        document.addEventListener('compare:change', updateCompareLink);
+
+        document.getElementById('copy-link').addEventListener('click', async () => {
+            try {
+                await navigator.clipboard.writeText(location.href);
+                UI.toast('Link copied');
+            } catch (e) {
+                UI.toast('Copy failed. Use your browser\'s share menu instead.');
             }
-            updateCompareButton(id);
         });
 
         // Chart.js is deferred, so wait for it before drawing.

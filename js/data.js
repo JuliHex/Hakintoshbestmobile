@@ -3,9 +3,11 @@
 // Each laptop's `needsVerification` lists field paths (e.g. "details.maxMacosSupport")
 // whose values haven't been confirmed against a real build. The UI marks those
 // fields as unverified; remove a path once you've checked the value.
+// Laptops with `source: "community"` were imported from a community list and
+// carry estimated ratings; the detail page says so.
 
 // macOS releases in order, used for version-range filtering.
-const MACOS_VERSIONS = ["High Sierra", "Mojave", "Catalina", "Big Sur", "Monterey", "Ventura", "Sonoma", "Sequoia", "Tahoe"];
+const MACOS_VERSIONS = ["Yosemite", "El Capitan", "Sierra", "High Sierra", "Mojave", "Catalina", "Big Sur", "Monterey", "Ventura", "Sonoma", "Sequoia", "Tahoe"];
 
 const PRIORITY_LABELS = {
     ease: "Ease of Setup",
@@ -19,7 +21,6 @@ const laptopData = {
     thinkpad_t480: {
         name: "ThinkPad T480",
         priority: ["ease", "budget"],
-        image: "assets/images/laptops/T480.png",
         score: 9.2,
         summary: "Excellent Hackintosh compatibility with great community support",
         details: {
@@ -34,17 +35,8 @@ const laptopData = {
             audioCodec: "Realtek ALC3287 (ALC257)",
             trackpad: "PS/2 Synaptics/ALPS (Full gestures with kexts)",
             screenResolution: "1920x1080 (FHD)",
-            chartData: {
-                ease: 90,
-                performance: 85,
-                battery: 80,
-                stability: 95
-            },
-            dimensions: {
-                width: "336.6 mm",
-                depth: "232.5 mm",
-                height: "19.95 mm"
-            },
+            chartData: { ease: 90, performance: 85, battery: 80, stability: 95 },
+            dimensions: { width: "336.6 mm", depth: "232.5 mm", height: "19.95 mm" },
             weight: "1.58 kg",
             batteryLife: {
                 average: "12-15 hours",
@@ -73,11 +65,7 @@ const laptopData = {
                 panel: "BOE NV140FHM-N49",
                 touchscreen: false
             },
-            biosVersion: {
-                recommended: "1.45",
-                notes: "CFG lock must be disabled",
-                secureBootSupport: true
-            },
+            biosVersion: { recommended: "1.45", notes: "CFG lock must be disabled", secureBootSupport: true },
             knownIssues: [
                 "Sleep works but may require additional patches",
                 "SD Card reader requires additional kext",
@@ -98,12 +86,12 @@ const laptopData = {
                 undervolting: "Supported via modified BIOS"
             }
         },
-        needsVerification: []
+        needsVerification: [],
+        brand: "Lenovo"
     },
     acer_swift_3: {
         name: "Acer Swift 3",
         priority: ["budget", "portability"],
-        image: "assets/images/laptops/Acer Swift 3.png",
         score: 8,
         summary: "Budget-friendly ultrabook with good performance",
         details: {
@@ -118,23 +106,10 @@ const laptopData = {
             audioCodec: "Realtek ALC256",
             trackpad: "I2C HID",
             screenResolution: "1920x1080 (FHD)",
-            chartData: {
-                ease: 75,
-                performance: 80,
-                battery: 85,
-                stability: 80
-            },
-            dimensions: {
-                width: "323.4 mm",
-                depth: "218.9 mm",
-                height: "15.95 mm"
-            },
+            chartData: { ease: 75, performance: 80, battery: 85, stability: 80 },
+            dimensions: { width: "323.4 mm", depth: "218.9 mm", height: "15.95 mm" },
             weight: "1.2 kg",
-            batteryLife: {
-                average: "10-12 hours",
-                capacity: "48Wh",
-                type: "Li-ion battery"
-            },
+            batteryLife: { average: "10-12 hours", capacity: "48Wh", type: "Li-ion battery" },
             ports: {
                 usb: ["2x USB 3.2 Gen 1 Type-A", "1x USB 3.2 Gen 2 Type-C"],
                 thunderbolt: "No",
@@ -142,12 +117,7 @@ const laptopData = {
                 network: "No built-in Ethernet",
                 others: ["3.5mm Audio Jack"]
             },
-            keyboard: {
-                type: "Standard keyboard",
-                backlit: true,
-                numpad: false,
-                layout: "Full-size"
-            },
+            keyboard: { type: "Standard keyboard", backlit: true, numpad: false, layout: "Full-size" },
             displayFeatures: {
                 type: "IPS LED-backlit",
                 resolution: "1920x1080",
@@ -194,12 +164,12 @@ const laptopData = {
             "details.trackpad",
             "details.screenResolution",
             "details.displayFeatures.panel"
-        ]
+        ],
+        brand: "Acer"
     },
     chuwi_corebook_x: {
         name: "Chuwi CoreBook X",
         priority: ["budget"],
-        image: "assets/images/laptops/Chuwi CoreBookX.png",
         score: 7.5,
         summary: "Affordable laptop with decent build quality",
         details: {
@@ -214,23 +184,10 @@ const laptopData = {
             audioCodec: "Realtek ALC269 (Layout-id may be needed)",
             trackpad: "I2C HID",
             screenResolution: "2160x1440 (3:2 Aspect Ratio)",
-            chartData: {
-                ease: 70,
-                performance: 75,
-                battery: 70,
-                stability: 75
-            },
-            dimensions: {
-                width: "317 mm",
-                depth: "235 mm",
-                height: "17 mm"
-            },
+            chartData: { ease: 70, performance: 75, battery: 70, stability: 75 },
+            dimensions: { width: "317 mm", depth: "235 mm", height: "17 mm" },
             weight: "1.5 kg",
-            batteryLife: {
-                average: "8-10 hours",
-                capacity: "46Wh",
-                type: "Li-Polymer"
-            },
+            batteryLife: { average: "8-10 hours", capacity: "46Wh", type: "Li-Polymer" },
             ports: {
                 usb: ["2x USB 3.0 Type-A", "1x USB Type-C"],
                 thunderbolt: "No",
@@ -238,12 +195,7 @@ const laptopData = {
                 network: "No built-in Ethernet",
                 others: ["3.5mm Audio Jack"]
             },
-            keyboard: {
-                type: "Standard keyboard",
-                backlit: true,
-                numpad: false,
-                layout: "Full-size"
-            },
+            keyboard: { type: "Standard keyboard", backlit: true, numpad: false, layout: "Full-size" },
             displayFeatures: {
                 type: "IPS Display",
                 resolution: "2160x1440",
@@ -282,12 +234,12 @@ const laptopData = {
                 undervolting: "Supported via ThrottleStop"
             }
         },
-        needsVerification: ["details.macosSupport", "details.trackpad"]
+        needsVerification: ["details.macosSupport", "details.trackpad"],
+        brand: "Chuwi"
     },
     dell_xps_13_9300: {
         name: "Dell XPS 13 9300",
         priority: ["performance", "portability"],
-        image: "assets/images/laptops/Dell XPS 13 9300.png",
         score: 8.9,
         summary: "Premium ultrabook with excellent build quality",
         details: {
@@ -302,23 +254,10 @@ const laptopData = {
             audioCodec: "Realtek ALC3271 (ALC289)",
             trackpad: "I2C HID Precision",
             screenResolution: "1920x1200 or 3840x2400",
-            chartData: {
-                ease: 80,
-                performance: 90,
-                battery: 85,
-                stability: 85
-            },
-            dimensions: {
-                width: "296 mm",
-                depth: "199 mm",
-                height: "14.8 mm"
-            },
+            chartData: { ease: 80, performance: 90, battery: 85, stability: 85 },
+            dimensions: { width: "296 mm", depth: "199 mm", height: "14.8 mm" },
             weight: "1.2 kg",
-            batteryLife: {
-                average: "10-12 hours",
-                capacity: "52Wh",
-                type: "Li-ion"
-            },
+            batteryLife: { average: "10-12 hours", capacity: "52Wh", type: "Li-ion" },
             ports: {
                 usb: ["2x Thunderbolt 3"],
                 thunderbolt: "2x Thunderbolt 3",
@@ -326,12 +265,7 @@ const laptopData = {
                 network: "No built-in Ethernet",
                 others: ["MicroSD Card Reader", "3.5mm Audio Jack"]
             },
-            keyboard: {
-                type: "Edge-to-edge keyboard",
-                backlit: true,
-                numpad: false,
-                layout: "Full-size"
-            },
+            keyboard: { type: "Edge-to-edge keyboard", backlit: true, numpad: false, layout: "Full-size" },
             displayFeatures: {
                 type: "InfinityEdge Touch Display",
                 resolution: ["1920x1200", "3840x2400"],
@@ -378,12 +312,12 @@ const laptopData = {
             "details.audioCodec",
             "details.trackpad",
             "details.screenResolution"
-        ]
+        ],
+        brand: "Dell"
     },
     dell_xps_13_9370: {
         name: "Dell XPS 13 9370",
         priority: ["performance", "portability"],
-        image: "assets/images/laptops/Dell XPS 13 9370.png",
         score: 8.7,
         summary: "Compact ultrabook with great display",
         details: {
@@ -398,23 +332,10 @@ const laptopData = {
             audioCodec: "Realtek ALC3271 (ALC299)",
             trackpad: "I2C HID Precision",
             screenResolution: "1920x1080 or 3840x2160",
-            chartData: {
-                ease: 80,
-                performance: 85,
-                battery: 85,
-                stability: 85
-            },
-            dimensions: {
-                width: "302 mm",
-                depth: "199 mm",
-                height: "11.6 mm"
-            },
+            chartData: { ease: 80, performance: 85, battery: 85, stability: 85 },
+            dimensions: { width: "302 mm", depth: "199 mm", height: "11.6 mm" },
             weight: "1.21 kg",
-            batteryLife: {
-                average: "10-12 hours",
-                capacity: "52Wh",
-                type: "Li-Polymer"
-            },
+            batteryLife: { average: "10-12 hours", capacity: "52Wh", type: "Li-Polymer" },
             ports: {
                 usb: ["2x Thunderbolt 3", "1x USB-C 3.1"],
                 thunderbolt: "2x Thunderbolt 3",
@@ -422,12 +343,7 @@ const laptopData = {
                 network: "No built-in Ethernet",
                 others: ["MicroSD Card Reader", "3.5mm Audio Jack"]
             },
-            keyboard: {
-                type: "Chiclet-style keyboard",
-                backlit: true,
-                numpad: false,
-                layout: "Full-size"
-            },
+            keyboard: { type: "Chiclet-style keyboard", backlit: true, numpad: false, layout: "Full-size" },
             displayFeatures: {
                 type: "InfinityEdge IPS",
                 resolution: ["1920x1080", "3840x2160"],
@@ -437,11 +353,7 @@ const laptopData = {
                 panel: "Sharp SHP148B",
                 touchscreen: false
             },
-            biosVersion: {
-                recommended: "1.12.0",
-                notes: "CFG lock must be disabled",
-                secureBootSupport: true
-            },
+            biosVersion: { recommended: "1.12.0", notes: "CFG lock must be disabled", secureBootSupport: true },
             knownIssues: [
                 "Sleep may require additional patches",
                 "Thunderbolt hot-plug may be unstable",
@@ -473,12 +385,12 @@ const laptopData = {
             "details.audioCodec",
             "details.trackpad",
             "details.screenResolution"
-        ]
+        ],
+        brand: "Dell"
     },
     dell_xps_15_9570: {
         name: "Dell XPS 15 9570",
         priority: ["performance"],
-        image: "assets/images/laptops/Dell XPS 15 9570.png",
         score: 8.5,
         summary: "Powerful laptop with dedicated graphics (dGPU disabled in macOS)",
         details: {
@@ -493,23 +405,10 @@ const laptopData = {
             audioCodec: "Realtek ALC3266 (ALC298)",
             trackpad: "I2C HID Precision",
             screenResolution: "1920x1080 or 3840x2160",
-            chartData: {
-                ease: 70,
-                performance: 95,
-                battery: 75,
-                stability: 80
-            },
-            dimensions: {
-                width: "357 mm",
-                depth: "235 mm",
-                height: "17 mm"
-            },
+            chartData: { ease: 70, performance: 95, battery: 75, stability: 80 },
+            dimensions: { width: "357 mm", depth: "235 mm", height: "17 mm" },
             weight: "1.8 kg",
-            batteryLife: {
-                average: "8-10 hours",
-                capacity: "97Wh",
-                type: "Li-Polymer"
-            },
+            batteryLife: { average: "8-10 hours", capacity: "97Wh", type: "Li-Polymer" },
             ports: {
                 usb: ["2x USB 3.1 Type-A", "1x Thunderbolt 3"],
                 thunderbolt: "1x Thunderbolt 3",
@@ -517,12 +416,7 @@ const laptopData = {
                 network: "No built-in Ethernet",
                 others: ["SD Card Reader", "3.5mm Audio Jack"]
             },
-            keyboard: {
-                type: "Chiclet-style keyboard",
-                backlit: true,
-                numpad: false,
-                layout: "Full-size"
-            },
+            keyboard: { type: "Chiclet-style keyboard", backlit: true, numpad: false, layout: "Full-size" },
             displayFeatures: {
                 type: "IPS Anti-glare",
                 resolution: ["1920x1200", "3840x2400"],
@@ -569,12 +463,12 @@ const laptopData = {
             "details.audioCodec",
             "details.trackpad",
             "details.screenResolution"
-        ]
+        ],
+        brand: "Dell"
     },
     hp_elitebook_840: {
         name: "HP EliteBook 840 G5/G6",
         priority: ["stability", "ease"],
-        image: "assets/images/laptops/EliteBook 840 G56.png",
         score: 8.8,
         summary: "Business laptop with excellent reliability",
         details: {
@@ -589,23 +483,10 @@ const laptopData = {
             audioCodec: "Conexant CX8050",
             trackpad: "Synaptics SMBus",
             screenResolution: "1920x1080 (FHD)",
-            chartData: {
-                ease: 85,
-                performance: 85,
-                battery: 90,
-                stability: 90
-            },
-            dimensions: {
-                width: "326 mm",
-                depth: "234 mm",
-                height: "17.9 mm"
-            },
+            chartData: { ease: 85, performance: 85, battery: 90, stability: 90 },
+            dimensions: { width: "326 mm", depth: "234 mm", height: "17.9 mm" },
             weight: "1.48 kg",
-            batteryLife: {
-                average: "13-15 hours",
-                capacity: "50Wh",
-                type: "Long Life 3-cell Li-ion"
-            },
+            batteryLife: { average: "13-15 hours", capacity: "50Wh", type: "Long Life 3-cell Li-ion" },
             ports: {
                 usb: ["2x USB 3.1 Type-A", "1x USB 3.1 Type-C"],
                 thunderbolt: "1x Thunderbolt 3",
@@ -661,12 +542,12 @@ const laptopData = {
             "details.audioCodec",
             "details.trackpad",
             "details.screenResolution"
-        ]
+        ],
+        brand: "HP"
     },
     hp_spectre_x360_15: {
         name: "HP Spectre x360 15",
         priority: ["performance"],
-        image: "assets/images/laptops/HP Spectre x360 15.png",
         score: 8.3,
         summary: "Premium 2-in-1 with powerful specs (dGPU likely disabled)",
         details: {
@@ -681,23 +562,10 @@ const laptopData = {
             audioCodec: "Realtek ALC",
             trackpad: "I2C HID Precision",
             screenResolution: "3840x2160 (4K) or 1920x1080 (FHD)",
-            chartData: {
-                ease: 75,
-                performance: 90,
-                battery: 80,
-                stability: 80
-            },
-            dimensions: {
-                width: "359.9 mm",
-                depth: "226.4 mm",
-                height: "19.3 mm"
-            },
+            chartData: { ease: 75, performance: 90, battery: 80, stability: 80 },
+            dimensions: { width: "359.9 mm", depth: "226.4 mm", height: "19.3 mm" },
             weight: "1.92 kg",
-            batteryLife: {
-                average: "13-15 hours",
-                capacity: "72.9Wh",
-                type: "6-cell Li-ion polymer"
-            },
+            batteryLife: { average: "13-15 hours", capacity: "72.9Wh", type: "6-cell Li-ion polymer" },
             ports: {
                 usb: ["1x USB 3.1 Type-A", "2x Thunderbolt 3"],
                 thunderbolt: "2x Thunderbolt 3",
@@ -757,12 +625,12 @@ const laptopData = {
             "details.audioCodec",
             "details.trackpad",
             "details.screenResolution"
-        ]
+        ],
+        brand: "HP"
     },
     lenovo_ideapad_330s: {
         name: "Lenovo IdeaPad 330S",
         priority: ["budget"],
-        image: "assets/images/laptops/IdeaPad 330S.png",
         score: 7.8,
         summary: "Budget-friendly laptop with good value",
         details: {
@@ -777,23 +645,10 @@ const laptopData = {
             audioCodec: "Realtek ALC236",
             trackpad: "Synaptics/ELAN I2C/PS2",
             screenResolution: "1366x768 or 1920x1080",
-            chartData: {
-                ease: 75,
-                performance: 75,
-                battery: 70,
-                stability: 80
-            },
-            dimensions: {
-                width: "323 mm",
-                depth: "234 mm",
-                height: "18.9 mm"
-            },
+            chartData: { ease: 75, performance: 75, battery: 70, stability: 80 },
+            dimensions: { width: "323 mm", depth: "234 mm", height: "18.9 mm" },
             weight: "1.67 kg",
-            batteryLife: {
-                average: "7-9 hours",
-                capacity: "45Wh",
-                type: "Li-Polymer"
-            },
+            batteryLife: { average: "7-9 hours", capacity: "45Wh", type: "Li-Polymer" },
             ports: {
                 usb: ["2x USB 3.0 Type-A", "1x USB 3.1 Type-C"],
                 thunderbolt: "No",
@@ -801,12 +656,7 @@ const laptopData = {
                 network: "No built-in Ethernet",
                 others: ["4-in-1 Card Reader", "3.5mm Audio Jack"]
             },
-            keyboard: {
-                type: "Standard keyboard",
-                backlit: false,
-                numpad: false,
-                layout: "Full-size"
-            },
+            keyboard: { type: "Standard keyboard", backlit: false, numpad: false, layout: "Full-size" },
             displayFeatures: {
                 type: "IPS LED-backlit",
                 resolution: "1920x1080",
@@ -846,12 +696,12 @@ const laptopData = {
             "details.trackpad",
             "details.screenResolution",
             "details.displayFeatures.panel"
-        ]
+        ],
+        brand: "Lenovo"
     },
     lenovo_ideapad_530s: {
         name: "Lenovo IdeaPad 530S",
         priority: ["budget", "portability"],
-        image: "assets/images/laptops/IdeaPad530S.png",
         score: 8,
         summary: "Mid-range laptop with good build quality",
         details: {
@@ -866,23 +716,10 @@ const laptopData = {
             audioCodec: "Realtek ALC236",
             trackpad: "I2C HID",
             screenResolution: "1920x1080 (FHD)",
-            chartData: {
-                ease: 80,
-                performance: 80,
-                battery: 75,
-                stability: 80
-            },
-            dimensions: {
-                width: "308.3 mm",
-                depth: "211 mm",
-                height: "16.4 mm"
-            },
+            chartData: { ease: 80, performance: 80, battery: 75, stability: 80 },
+            dimensions: { width: "308.3 mm", depth: "211 mm", height: "16.4 mm" },
             weight: "1.49 kg",
-            batteryLife: {
-                average: "8-10 hours",
-                capacity: "45Wh",
-                type: "Li-Polymer"
-            },
+            batteryLife: { average: "8-10 hours", capacity: "45Wh", type: "Li-Polymer" },
             ports: {
                 usb: ["2x USB 3.0 Type-A", "1x USB 3.1 Type-C"],
                 thunderbolt: "No",
@@ -890,12 +727,7 @@ const laptopData = {
                 network: "No built-in Ethernet",
                 others: ["SD Card Reader", "3.5mm Audio Jack"]
             },
-            keyboard: {
-                type: "Backlit keyboard",
-                backlit: true,
-                numpad: false,
-                layout: "Full-size"
-            },
+            keyboard: { type: "Backlit keyboard", backlit: true, numpad: false, layout: "Full-size" },
             displayFeatures: {
                 type: "IPS-level Anti-glare",
                 resolution: ["1920x1080", "3840x2160"],
@@ -939,12 +771,12 @@ const laptopData = {
             "details.trackpad",
             "details.screenResolution",
             "details.displayFeatures.panel"
-        ]
+        ],
+        brand: "Lenovo"
     },
     dell_latitude_7x90: {
         name: "Dell Latitude 7x90",
         priority: ["stability", "ease"],
-        image: "assets/images/laptops/Latitude 7x90.png",
         score: 8.9,
         summary: "Business laptop series with great compatibility",
         details: {
@@ -959,23 +791,10 @@ const laptopData = {
             audioCodec: "Realtek ALC3246 (ALC295)",
             trackpad: "ALPS I2C/Dell Touchpad",
             screenResolution: "1920x1080 (FHD)",
-            chartData: {
-                ease: 90,
-                performance: 85,
-                battery: 85,
-                stability: 95
-            },
-            dimensions: {
-                width: "330.5 mm",
-                depth: "229.5 mm",
-                height: "17.9 mm"
-            },
+            chartData: { ease: 90, performance: 85, battery: 85, stability: 95 },
+            dimensions: { width: "330.5 mm", depth: "229.5 mm", height: "17.9 mm" },
             weight: "1.4 kg",
-            batteryLife: {
-                average: "12-14 hours",
-                capacity: "60Wh",
-                type: "4-cell Li-ion"
-            },
+            batteryLife: { average: "12-14 hours", capacity: "60Wh", type: "4-cell Li-ion" },
             ports: {
                 usb: ["3x USB 3.1 Type-A", "1x USB Type-C"],
                 thunderbolt: "1x Thunderbolt 3",
@@ -1034,12 +853,12 @@ const laptopData = {
             "details.audioCodec",
             "details.trackpad",
             "details.screenResolution"
-        ]
+        ],
+        brand: "Dell"
     },
     lg_gram_14: {
         name: "LG Gram 14",
         priority: ["portability"],
-        image: "assets/images/laptops/LG Gram 14.png",
         score: 8.6,
         summary: "Ultra-lightweight laptop with excellent battery life",
         details: {
@@ -1054,23 +873,10 @@ const laptopData = {
             audioCodec: "Realtek ALC",
             trackpad: "I2C HID Precision",
             screenResolution: "1920x1080 (FHD) or 2560x1600 (WQXGA)",
-            chartData: {
-                ease: 80,
-                performance: 85,
-                battery: 95,
-                stability: 85
-            },
-            dimensions: {
-                width: "323.4 mm",
-                depth: "209.8 mm",
-                height: "16.8 mm"
-            },
+            chartData: { ease: 80, performance: 85, battery: 95, stability: 85 },
+            dimensions: { width: "323.4 mm", depth: "209.8 mm", height: "16.8 mm" },
             weight: "0.999 kg",
-            batteryLife: {
-                average: "18-20 hours",
-                capacity: "72Wh",
-                type: "Li-ion"
-            },
+            batteryLife: { average: "18-20 hours", capacity: "72Wh", type: "Li-ion" },
             ports: {
                 usb: ["2x USB 3.2 Type-A", "2x USB Type-C"],
                 thunderbolt: "2x Thunderbolt 4",
@@ -1078,12 +884,7 @@ const laptopData = {
                 network: "No built-in Ethernet",
                 others: ["MicroSD Card Reader", "3.5mm Audio Jack"]
             },
-            keyboard: {
-                type: "LG Premium Keyboard",
-                backlit: true,
-                numpad: false,
-                layout: "Full-size"
-            },
+            keyboard: { type: "LG Premium Keyboard", backlit: true, numpad: false, layout: "Full-size" },
             displayFeatures: {
                 type: "IPS Anti-glare",
                 resolution: ["1920x1080", "2560x1600"],
@@ -1126,12 +927,12 @@ const laptopData = {
             "details.audioCodec",
             "details.trackpad",
             "details.screenResolution"
-        ]
+        ],
+        brand: "LG"
     },
     huawei_matebook_x_pro: {
         name: "Huawei MateBook X Pro",
         priority: ["performance", "portability"],
-        image: "assets/images/laptops/MateBook X Pro.png",
         score: 8.7,
         summary: "Premium ultrabook with 3:2 display",
         details: {
@@ -1146,23 +947,10 @@ const laptopData = {
             audioCodec: "Realtek ALC256",
             trackpad: "I2C HID",
             screenResolution: "3000x2000 (3K)",
-            chartData: {
-                ease: 85,
-                performance: 90,
-                battery: 85,
-                stability: 85
-            },
-            dimensions: {
-                width: "304 mm",
-                depth: "217 mm",
-                height: "14.6 mm"
-            },
+            chartData: { ease: 85, performance: 90, battery: 85, stability: 85 },
+            dimensions: { width: "304 mm", depth: "217 mm", height: "14.6 mm" },
             weight: "1.33 kg",
-            batteryLife: {
-                average: "12-14 hours",
-                capacity: "56Wh",
-                type: "Li-Polymer"
-            },
+            batteryLife: { average: "12-14 hours", capacity: "56Wh", type: "Li-Polymer" },
             ports: {
                 usb: ["1x USB 3.0 Type-A", "2x USB Type-C"],
                 thunderbolt: "1x Thunderbolt 3",
@@ -1222,12 +1010,12 @@ const laptopData = {
             "details.audioCodec",
             "details.trackpad",
             "details.screenResolution"
-        ]
+        ],
+        brand: "Huawei"
     },
     xiaomi_mi_notebook_pro: {
         name: "Xiaomi Mi Notebook Pro",
         priority: ["performance", "budget"],
-        image: "assets/images/laptops/Mi Notebook Pro.png",
         score: 8.4,
         summary: "High-performance laptop with premium build",
         details: {
@@ -1242,23 +1030,10 @@ const laptopData = {
             audioCodec: "Realtek ALC298",
             trackpad: "Synaptics SMBus",
             screenResolution: "1920x1080 (FHD)",
-            chartData: {
-                ease: 75,
-                performance: 80,
-                battery: 75,
-                stability: 80
-            },
-            dimensions: {
-                width: "357 mm",
-                depth: "229 mm",
-                height: "15.9 mm"
-            },
+            chartData: { ease: 75, performance: 80, battery: 75, stability: 80 },
+            dimensions: { width: "357 mm", depth: "229 mm", height: "15.9 mm" },
             weight: "1.8 kg",
-            batteryLife: {
-                average: "8-10 hours",
-                capacity: "60Wh",
-                type: "Li-Polymer"
-            },
+            batteryLife: { average: "8-10 hours", capacity: "60Wh", type: "Li-Polymer" },
             ports: {
                 usb: ["2x USB 3.0 Type-A", "1x USB Type-C"],
                 thunderbolt: "No",
@@ -1266,12 +1041,7 @@ const laptopData = {
                 network: "No built-in Ethernet",
                 others: ["SD Card Reader", "3.5mm Audio Jack"]
             },
-            keyboard: {
-                type: "Backlit keyboard",
-                backlit: true,
-                numpad: false,
-                layout: "Full-size"
-            },
+            keyboard: { type: "Backlit keyboard", backlit: true, numpad: false, layout: "Full-size" },
             displayFeatures: {
                 type: "IPS LED-backlit",
                 resolution: "1920x1080",
@@ -1315,12 +1085,12 @@ const laptopData = {
             "details.audioCodec",
             "details.trackpad",
             "details.screenResolution"
-        ]
+        ],
+        brand: "Xiaomi"
     },
     msi_gs65: {
         name: "MSI GS65 Stealth",
         priority: ["performance"],
-        image: "assets/images/laptops/MSI GS65.png",
         score: 7.8,
         summary: "Gaming laptop with powerful specs (dGPU disabled)",
         details: {
@@ -1335,23 +1105,10 @@ const laptopData = {
             audioCodec: "Nahimic / Realtek ALC1220",
             trackpad: "Synaptics",
             screenResolution: "1920x1080 (FHD) @144Hz/240Hz",
-            chartData: {
-                ease: 65,
-                performance: 95,
-                battery: 70,
-                stability: 75
-            },
-            dimensions: {
-                width: "358 mm",
-                depth: "248 mm",
-                height: "17.7 mm"
-            },
+            chartData: { ease: 65, performance: 95, battery: 70, stability: 75 },
+            dimensions: { width: "358 mm", depth: "248 mm", height: "17.7 mm" },
             weight: "1.88 kg",
-            batteryLife: {
-                average: "6-8 hours",
-                capacity: "82Wh",
-                type: "Li-Polymer"
-            },
+            batteryLife: { average: "6-8 hours", capacity: "82Wh", type: "Li-Polymer" },
             ports: {
                 usb: ["3x USB 3.1 Type-A"],
                 thunderbolt: "1x Thunderbolt 3",
@@ -1359,12 +1116,7 @@ const laptopData = {
                 network: "RJ45 Gigabit Ethernet",
                 others: ["3.5mm Audio Jack", "3.5mm Microphone Jack"]
             },
-            keyboard: {
-                type: "SteelSeries RGB keyboard",
-                backlit: true,
-                numpad: false,
-                layout: "Full-size"
-            },
+            keyboard: { type: "SteelSeries RGB keyboard", backlit: true, numpad: false, layout: "Full-size" },
             displayFeatures: {
                 type: "IPS-level Anti-glare",
                 resolution: "1920x1080",
@@ -1408,12 +1160,12 @@ const laptopData = {
             "details.audioCodec",
             "details.trackpad",
             "details.screenResolution"
-        ]
+        ],
+        brand: "MSI"
     },
     msi_prestige_14: {
         name: "MSI Prestige 14",
         priority: ["performance", "portability"],
-        image: "assets/images/laptops/MSI Prestige 14.png",
         score: 8.2,
         summary: "Creator-focused laptop with good performance",
         details: {
@@ -1428,23 +1180,10 @@ const laptopData = {
             audioCodec: "Realtek ALC",
             trackpad: "I2C HID",
             screenResolution: "1920x1080 (FHD) or 3840x2160 (4K)",
-            chartData: {
-                ease: 75,
-                performance: 90,
-                battery: 80,
-                stability: 80
-            },
-            dimensions: {
-                width: "319 mm",
-                depth: "219 mm",
-                height: "15.9 mm"
-            },
+            chartData: { ease: 75, performance: 90, battery: 80, stability: 80 },
+            dimensions: { width: "319 mm", depth: "219 mm", height: "15.9 mm" },
             weight: "1.29 kg",
-            batteryLife: {
-                average: "10-12 hours",
-                capacity: "52Wh",
-                type: "Li-Polymer"
-            },
+            batteryLife: { average: "10-12 hours", capacity: "52Wh", type: "Li-Polymer" },
             ports: {
                 usb: ["2x USB 2.0 Type-A", "2x USB Type-C"],
                 thunderbolt: "2x Thunderbolt 3",
@@ -1452,12 +1191,7 @@ const laptopData = {
                 network: "No built-in Ethernet",
                 others: ["MicroSD Card Reader", "3.5mm Audio Jack"]
             },
-            keyboard: {
-                type: "White backlit keyboard",
-                backlit: true,
-                numpad: false,
-                layout: "Full-size"
-            },
+            keyboard: { type: "White backlit keyboard", backlit: true, numpad: false, layout: "Full-size" },
             displayFeatures: {
                 type: "IPS-level Anti-glare",
                 resolution: ["1920x1080", "3840x2160"],
@@ -1505,12 +1239,12 @@ const laptopData = {
             "details.trackpad",
             "details.screenResolution",
             "details.displayFeatures.panel"
-        ]
+        ],
+        brand: "MSI"
     },
     dell_precision_5550: {
         name: "Dell Precision 5550",
         priority: ["performance"],
-        image: "assets/images/laptops/Precision 55x0.png",
         score: 8.6,
         summary: "Workstation laptop with powerful specs (dGPU disabled)",
         details: {
@@ -1525,23 +1259,10 @@ const laptopData = {
             audioCodec: "Realtek ALC3204",
             trackpad: "I2C HID Precision",
             screenResolution: "1920x1200 or 3840x2400",
-            chartData: {
-                ease: 70,
-                performance: 95,
-                battery: 75,
-                stability: 85
-            },
-            dimensions: {
-                width: "360.3 mm",
-                depth: "234.2 mm",
-                height: "11.5 mm"
-            },
+            chartData: { ease: 70, performance: 95, battery: 75, stability: 85 },
+            dimensions: { width: "360.3 mm", depth: "234.2 mm", height: "11.5 mm" },
             weight: "1.84 kg",
-            batteryLife: {
-                average: "10-12 hours",
-                capacity: "86Wh",
-                type: "Li-ion"
-            },
+            batteryLife: { average: "10-12 hours", capacity: "86Wh", type: "Li-ion" },
             ports: {
                 usb: ["2x USB Type-C"],
                 thunderbolt: "2x Thunderbolt 3",
@@ -1549,12 +1270,7 @@ const laptopData = {
                 network: "No built-in Ethernet",
                 others: ["SD Card Reader", "3.5mm Audio Jack"]
             },
-            keyboard: {
-                type: "Dell Premium Keyboard",
-                backlit: true,
-                numpad: false,
-                layout: "Full-size"
-            },
+            keyboard: { type: "Dell Premium Keyboard", backlit: true, numpad: false, layout: "Full-size" },
             displayFeatures: {
                 type: "IPS Anti-glare",
                 resolution: ["1920x1200", "3840x2400"],
@@ -1601,12 +1317,12 @@ const laptopData = {
             "details.audioCodec",
             "details.trackpad",
             "details.screenResolution"
-        ]
+        ],
+        brand: "Dell"
     },
     hp_probook_450_g7: {
         name: "HP ProBook 450 G7",
         priority: ["budget", "ease"],
-        image: "assets/images/laptops/ProBook 450 G7.png",
         score: 8.5,
         summary: "Business laptop with good value",
         details: {
@@ -1621,23 +1337,10 @@ const laptopData = {
             audioCodec: "Realtek ALC236",
             trackpad: "Synaptics",
             screenResolution: "1366x768 or 1920x1080",
-            chartData: {
-                ease: 85,
-                performance: 80,
-                battery: 80,
-                stability: 85
-            },
-            dimensions: {
-                width: "359 mm",
-                depth: "233.8 mm",
-                height: "19.9 mm"
-            },
+            chartData: { ease: 85, performance: 80, battery: 80, stability: 85 },
+            dimensions: { width: "359 mm", depth: "233.8 mm", height: "19.9 mm" },
             weight: "2 kg",
-            batteryLife: {
-                average: "10-12 hours",
-                capacity: "45Wh",
-                type: "3-cell Li-ion"
-            },
+            batteryLife: { average: "10-12 hours", capacity: "45Wh", type: "3-cell Li-ion" },
             ports: {
                 usb: ["3x USB 3.1 Type-A", "1x USB Type-C"],
                 thunderbolt: "No",
@@ -1697,12 +1400,12 @@ const laptopData = {
             "details.audioCodec",
             "details.trackpad",
             "details.screenResolution"
-        ]
+        ],
+        brand: "HP"
     },
     samsung_notebook_9: {
         name: "Samsung Notebook 9",
         priority: ["portability"],
-        image: "assets/images/laptops/Samsung Notebook 9.png",
         score: 8.3,
         summary: "Ultra-lightweight laptop with good performance",
         details: {
@@ -1717,23 +1420,10 @@ const laptopData = {
             audioCodec: "Realtek ALC298",
             trackpad: "ELAN I2C",
             screenResolution: "1920x1080 (FHD)",
-            chartData: {
-                ease: 80,
-                performance: 85,
-                battery: 85,
-                stability: 80
-            },
-            dimensions: {
-                width: "313.5 mm",
-                depth: "218.5 mm",
-                height: "14.9 mm"
-            },
+            chartData: { ease: 80, performance: 85, battery: 85, stability: 80 },
+            dimensions: { width: "313.5 mm", depth: "218.5 mm", height: "14.9 mm" },
             weight: "1.29 kg",
-            batteryLife: {
-                average: "10-12 hours",
-                capacity: "75Wh",
-                type: "Li-Polymer"
-            },
+            batteryLife: { average: "10-12 hours", capacity: "75Wh", type: "Li-Polymer" },
             ports: {
                 usb: ["2x USB 3.0 Type-A", "1x USB Type-C"],
                 thunderbolt: "1x Thunderbolt 3",
@@ -1741,12 +1431,7 @@ const laptopData = {
                 network: "No built-in Ethernet",
                 others: ["microSD Card Reader", "3.5mm Audio Jack"]
             },
-            keyboard: {
-                type: "Backlit keyboard",
-                backlit: true,
-                numpad: false,
-                layout: "Full-size"
-            },
+            keyboard: { type: "Backlit keyboard", backlit: true, numpad: false, layout: "Full-size" },
             displayFeatures: {
                 type: "IPS LED-backlit",
                 resolution: "1920x1080",
@@ -1794,12 +1479,12 @@ const laptopData = {
             "details.trackpad",
             "details.screenResolution",
             "details.displayFeatures.panel"
-        ]
+        ],
+        brand: "Samsung"
     },
     hp_spectre_x360_13: {
         name: "HP Spectre x360 13",
         priority: ["performance", "portability"],
-        image: "assets/images/laptops/Spectre x360 13.png",
         score: 8.7,
         summary: "Premium 2-in-1 with excellent build quality",
         details: {
@@ -1814,23 +1499,10 @@ const laptopData = {
             audioCodec: "Bang & Olufsen / Realtek",
             trackpad: "I2C HID Precision",
             screenResolution: "1920x1080 (FHD) or 3840x2160 (4K OLED)",
-            chartData: {
-                ease: 80,
-                performance: 90,
-                battery: 85,
-                stability: 85
-            },
-            dimensions: {
-                width: "306 mm",
-                depth: "194.5 mm",
-                height: "16.9 mm"
-            },
+            chartData: { ease: 80, performance: 90, battery: 85, stability: 85 },
+            dimensions: { width: "306 mm", depth: "194.5 mm", height: "16.9 mm" },
             weight: "1.27 kg",
-            batteryLife: {
-                average: "12-14 hours",
-                capacity: "60Wh",
-                type: "4-cell Li-ion"
-            },
+            batteryLife: { average: "12-14 hours", capacity: "60Wh", type: "4-cell Li-ion" },
             ports: {
                 usb: ["1x USB 3.1 Type-A"],
                 thunderbolt: "2x Thunderbolt 4",
@@ -1838,12 +1510,7 @@ const laptopData = {
                 network: "No built-in Ethernet",
                 others: ["microSD Card Reader", "3.5mm Audio Jack"]
             },
-            keyboard: {
-                type: "HP Premium Keyboard",
-                backlit: true,
-                numpad: false,
-                layout: "Full-size"
-            },
+            keyboard: { type: "HP Premium Keyboard", backlit: true, numpad: false, layout: "Full-size" },
             displayFeatures: {
                 type: "OLED/IPS Touch Display",
                 resolution: ["1920x1080", "3840x2160"],
@@ -1890,12 +1557,12 @@ const laptopData = {
             "details.audioCodec",
             "details.trackpad",
             "details.screenResolution"
-        ]
+        ],
+        brand: "HP"
     },
     dell_xps_13_9360: {
         name: "Dell XPS 13 9360",
         priority: ["portability", "budget"],
-        image: "assets/images/laptops/Dell XPS 13 9360.png",
         score: 8.8,
         summary: "Compact, widely documented ultrabook that's cheap on the used market",
         details: {
@@ -1910,23 +1577,10 @@ const laptopData = {
             audioCodec: "Realtek ALC3246 (ALC256)",
             trackpad: "I2C HID Precision (VoodooI2C)",
             screenResolution: "1920x1080 (FHD) or 3200x1800 (QHD+ touch)",
-            chartData: {
-                ease: 85,
-                performance: 70,
-                battery: 80,
-                stability: 88
-            },
-            dimensions: {
-                width: "304 mm",
-                depth: "200 mm",
-                height: "9-15 mm"
-            },
+            chartData: { ease: 85, performance: 70, battery: 80, stability: 88 },
+            dimensions: { width: "304 mm", depth: "200 mm", height: "9-15 mm" },
             weight: "1.2 kg",
-            batteryLife: {
-                average: "7-10 hours",
-                capacity: "60Wh",
-                type: "Internal Li-ion"
-            },
+            batteryLife: { average: "7-10 hours", capacity: "60Wh", type: "Internal Li-ion" },
             ports: {
                 usb: ["2x USB 3.0 Type-A"],
                 thunderbolt: "1x Thunderbolt 3 (USB-C)",
@@ -1934,12 +1588,7 @@ const laptopData = {
                 network: "None (Wi-Fi only)",
                 others: ["SD Card Reader", "3.5mm Audio Jack"]
             },
-            keyboard: {
-                type: "Chiclet",
-                backlit: true,
-                numpad: false,
-                layout: "Compact"
-            },
+            keyboard: { type: "Chiclet", backlit: true, numpad: false, layout: "Compact" },
             displayFeatures: {
                 type: "IPS (matte FHD or glossy QHD+ touch)",
                 resolution: "1920x1080 / 3200x1800",
@@ -1973,12 +1622,12 @@ const laptopData = {
                 undervolting: "Possible with VoltageShift"
             }
         },
-        needsVerification: ["details.macosSupport", "details.maxMacosSupport", "details.thermals"]
+        needsVerification: ["details.macosSupport", "details.maxMacosSupport", "details.thermals"],
+        brand: "Dell"
     },
     thinkpad_x1_carbon_gen6: {
         name: "ThinkPad X1 Carbon Gen 6",
         priority: ["ease", "portability"],
-        image: "assets/images/laptops/X1 Carbon Gen 6.png",
         score: 9,
         summary: "Lightweight business ultrabook with one of the best-documented OpenCore setups",
         details: {
@@ -1993,23 +1642,10 @@ const laptopData = {
             audioCodec: "Realtek ALC3286 (ALC285)",
             trackpad: "Synaptics (VoodooRMI / VoodooPS2)",
             screenResolution: "1920x1080 (FHD) or 2560x1440 (WQHD)",
-            chartData: {
-                ease: 88,
-                performance: 75,
-                battery: 82,
-                stability: 92
-            },
-            dimensions: {
-                width: "323.5 mm",
-                depth: "217.1 mm",
-                height: "15.95 mm"
-            },
+            chartData: { ease: 88, performance: 75, battery: 82, stability: 92 },
+            dimensions: { width: "323.5 mm", depth: "217.1 mm", height: "15.95 mm" },
             weight: "1.13 kg",
-            batteryLife: {
-                average: "8-11 hours",
-                capacity: "57Wh",
-                type: "Internal Li-ion"
-            },
+            batteryLife: { average: "8-11 hours", capacity: "57Wh", type: "Internal Li-ion" },
             ports: {
                 usb: ["2x USB 3.1 Gen 1 Type-A"],
                 thunderbolt: "2x Thunderbolt 3 (USB-C)",
@@ -2056,12 +1692,12 @@ const laptopData = {
                 undervolting: "Possible with VoltageShift"
             }
         },
-        needsVerification: ["details.macosSupport", "details.maxMacosSupport", "details.thermals"]
+        needsVerification: ["details.macosSupport", "details.maxMacosSupport", "details.thermals"],
+        brand: "Lenovo"
     },
     thinkpad_t490: {
         name: "ThinkPad T490",
         priority: ["ease", "budget"],
-        image: "assets/images/laptops/T490.png",
         score: 8.7,
         summary: "Slimmer successor to the T480 with similar compatibility, minus the hot-swap battery",
         details: {
@@ -2077,23 +1713,10 @@ const laptopData = {
             audioCodec: "Realtek ALC3287 (ALC257)",
             trackpad: "Synaptics (VoodooRMI / VoodooPS2)",
             screenResolution: "1920x1080 (FHD) or 2560x1440 (WQHD)",
-            chartData: {
-                ease: 82,
-                performance: 78,
-                battery: 75,
-                stability: 88
-            },
-            dimensions: {
-                width: "329 mm",
-                depth: "227 mm",
-                height: "17.9 mm"
-            },
+            chartData: { ease: 82, performance: 78, battery: 75, stability: 88 },
+            dimensions: { width: "329 mm", depth: "227 mm", height: "17.9 mm" },
             weight: "1.46 kg",
-            batteryLife: {
-                average: "8-11 hours",
-                capacity: "50Wh",
-                type: "Internal Li-ion"
-            },
+            batteryLife: { average: "8-11 hours", capacity: "50Wh", type: "Internal Li-ion" },
             ports: {
                 usb: ["2x USB 3.1 Gen 1 Type-A", "1x USB-C 3.1"],
                 thunderbolt: "1x Thunderbolt 3 (USB-C)",
@@ -2140,7 +1763,1766 @@ const laptopData = {
                 undervolting: "Possible with VoltageShift"
             }
         },
-        needsVerification: ["details.macosSupport", "details.maxMacosSupport", "details.batteryLife", "details.thermals"]
+        needsVerification: ["details.macosSupport", "details.maxMacosSupport", "details.batteryLife", "details.thermals"],
+        brand: "Lenovo"
+    },
+    dell_xps_15_9550: {
+        name: "Dell XPS 15 (9550)",
+        brand: "Dell",
+        priority: ["performance"],
+        score: 8,
+        summary: "Good performance; discrete GPU may need additional work but Intel graphics work well.",
+        details: {
+            cpu: "Intel Core i7-6700HQ",
+            igpu: "Intel HD 530",
+            dgpu: "optional NVIDIA GTX 960M (must be disabled)",
+            ram: "16GB DDR4",
+            storage: "M.2 / 2.5\" SATA (SSD)",
+            macosSupport: "Sonoma",
+            minMacosSupport: "Mojave",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "3840x2160",
+            chartData: { ease: 80, performance: 82, battery: 92, stability: 75 },
+            batteryLife: { capacity: "84Wh", type: "Li-ion" },
+            ports: {
+                usb: ["2x USB 3.0"],
+                thunderbolt: "Thunderbolt 3",
+                video: ["HDMI"]
+            },
+            displayFeatures: { type: "IGZO / IPS", brightness: "350 nits" },
+            knownIssues: [
+                "Discrete NVIDIA GPU not supported in recent macOS",
+                "WiFi card replacement recommended for full functionality"
+            ]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    thinkpad_x1_carbon_5th_gen: {
+        name: "ThinkPad X1 Carbon (5th Gen)",
+        brand: "Lenovo",
+        priority: ["portability"],
+        score: 8.8,
+        summary: "Slim ultrabook with strong community support for Hackintosh configurations.",
+        details: {
+            cpu: "Intel Core i7-7600U",
+            igpu: "Intel HD 620",
+            ram: "16GB LPDDR3 (soldered)",
+            storage: "M.2 / 2.5\" SATA (SSD)",
+            macosSupport: "Sonoma",
+            minMacosSupport: "Sierra",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1920x1080",
+            chartData: { ease: 88, performance: 70, battery: 63, stability: 88 },
+            batteryLife: { capacity: "57Wh", type: "Li-ion" },
+            ports: {
+                usb: ["2x USB 3.0"],
+                thunderbolt: "Thunderbolt 3",
+                video: ["HDMI (via adapter)"]
+            },
+            displayFeatures: { type: "IPS", brightness: "300 nits" },
+            knownIssues: ["WiFi compatibility varies by SKU", "Fn keys and audio may need kext adjustments"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    asus_zenbook_ux331: {
+        name: "ASUS ZenBook UX331",
+        brand: "ASUS",
+        priority: ["budget"],
+        score: 7.5,
+        summary: "Budget ultrabook with workable Hackintosh guides; good for lightweight builds.",
+        details: {
+            cpu: "Intel Core i5-8250U",
+            igpu: "Intel UHD 620",
+            ram: "8GB",
+            storage: "M.2 / 2.5\" SATA (SSD)",
+            macosSupport: "Sonoma",
+            minMacosSupport: "High Sierra",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1920x1080",
+            chartData: { ease: 75, performance: 62, battery: 55, stability: 75 },
+            batteryLife: { capacity: "50Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-C", "USB-A"],
+                video: ["microHDMI"]
+            },
+            displayFeatures: { type: "IPS", brightness: "300 nits" },
+            knownIssues: ["Audio and trackpad tweaks often required", "WiFi card swap recommended for best compatibility"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    gigabyte_aero_15: {
+        name: "Gigabyte Aero 15",
+        brand: "Gigabyte",
+        priority: ["performance"],
+        score: 8.2,
+        summary: "Higher performance laptops with good Intel GPU support for macOS; popular among power users.",
+        details: {
+            cpu: "Intel Core i7-9750H",
+            igpu: "Intel UHD 630",
+            dgpu: "NVIDIA GTX 1660 Ti (must be disabled)",
+            ram: "16GB DDR4",
+            storage: "M.2 NVMe",
+            macosSupport: "Sonoma",
+            minMacosSupport: "Mojave",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1920x1080",
+            chartData: { ease: 82, performance: 82, battery: 95, stability: 77 },
+            batteryLife: { capacity: "94Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-C", "USB-A"],
+                video: ["HDMI"],
+                network: "Ethernet (via adapter)"
+            },
+            displayFeatures: { type: "IPS", brightness: "300 nits" },
+            knownIssues: [
+                "Discrete GPU generally unsupported; use integrated GPU",
+                "BIOS settings tweaks required for boot"
+            ]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    lenovo_thinkpad_t14_gen1: {
+        name: "Lenovo ThinkPad T14 (Gen1)",
+        brand: "Lenovo",
+        priority: ["ease"],
+        score: 8.2,
+        summary: "Business laptop with good BIOS options for macOS.",
+        details: {
+            cpu: "Intel Core i5-10210U",
+            igpu: "Intel UHD",
+            ram: "8GB",
+            storage: "M.2 / 2.5\" SATA (SSD)",
+            macosSupport: "Sonoma",
+            minMacosSupport: "Catalina",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1920x1080",
+            chartData: { ease: 82, performance: 62, battery: 50, stability: 82 },
+            batteryLife: { capacity: "45Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A", "USB-C"],
+                video: ["HDMI"]
+            },
+            displayFeatures: { type: "IPS", brightness: "300 nits" },
+            knownIssues: ["Bluetooth kext work", "Trackpad responsiveness tweaks"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    thinkpad_t470: {
+        name: "ThinkPad T470",
+        brand: "Lenovo",
+        priority: ["ease"],
+        score: 8,
+        summary: "Older ThinkPad favored for stable Hackintosh installs.",
+        details: {
+            cpu: "Intel Core i5-7200U",
+            igpu: "Intel HD 620",
+            ram: "8GB",
+            storage: "M.2 / 2.5\" SATA (SSD)",
+            macosSupport: "Sonoma",
+            minMacosSupport: "Sierra",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1920x1080",
+            chartData: { ease: 80, performance: 62, battery: 53, stability: 80 },
+            batteryLife: { capacity: "48Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A"],
+                video: ["HDMI"],
+                network: "Ethernet"
+            },
+            displayFeatures: { type: "IPS", brightness: "250 nits" },
+            knownIssues: ["WiFi swap recommended", "Power management tuning"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    lenovo_thinkpad_p52: {
+        name: "Lenovo ThinkPad P52",
+        brand: "Lenovo",
+        priority: ["performance"],
+        score: 7.4,
+        summary: "Workstation-class hardware — great CPU but discrete GPU may be unsupported.",
+        details: {
+            cpu: "Intel Xeon/E-2176M",
+            igpu: "Unknown",
+            dgpu: "NVIDIA Quadro P2000 (must be disabled)",
+            ram: "32GB",
+            storage: "M.2 / 2.5\" SATA (SSD)",
+            macosSupport: "Sonoma",
+            minMacosSupport: "Mojave",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1920x1080",
+            chartData: { ease: 74, performance: 88, battery: 95, stability: 69 },
+            batteryLife: { capacity: "90Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A"],
+                thunderbolt: "Thunderbolt 3",
+                video: ["HDMI"]
+            },
+            displayFeatures: { type: "IPS", brightness: "300 nits" },
+            knownIssues: ["Discrete GPU not supported", "BIOS tweaks required"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    lenovo_thinkpad_p1_gen2: {
+        name: "Lenovo ThinkPad P1 (Gen2)",
+        brand: "Lenovo",
+        priority: ["performance"],
+        score: 7.6,
+        summary: "Slim workstation using Intel CPUs; integrated graphics easier to support.",
+        details: {
+            cpu: "Intel Core i7-8750H",
+            igpu: "Intel UHD 630",
+            dgpu: "NVIDIA GTX 1050 Ti (must be disabled)",
+            ram: "16GB",
+            storage: "M.2 / 2.5\" SATA (SSD)",
+            macosSupport: "Sonoma",
+            minMacosSupport: "Mojave",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "3840x2160",
+            chartData: { ease: 76, performance: 82, battery: 88, stability: 71 },
+            batteryLife: { capacity: "80Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A"],
+                thunderbolt: "Thunderbolt 3",
+                video: ["HDMI"]
+            },
+            displayFeatures: { type: "IPS", brightness: "400 nits" },
+            knownIssues: ["NVIDIA drivers unsupported", "Trackpad kexts may be needed"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    dell_latitude_5490: {
+        name: "Dell Latitude 5490",
+        brand: "Dell",
+        priority: ["ease"],
+        score: 8.4,
+        summary: "Enterprise laptop with many successful Hackintosh builds.",
+        details: {
+            cpu: "Intel Core i5-8250U",
+            igpu: "Intel UHD 620",
+            ram: "8GB",
+            storage: "M.2 / 2.5\" SATA (SSD)",
+            macosSupport: "Sonoma",
+            minMacosSupport: "High Sierra",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1920x1080",
+            chartData: { ease: 84, performance: 62, battery: 66, stability: 84 },
+            batteryLife: { capacity: "60Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A"],
+                video: ["HDMI"],
+                network: "Ethernet"
+            },
+            displayFeatures: { type: "IPS", brightness: "300 nits" },
+            knownIssues: ["WiFi module swap suggested", "Audio may need kexts"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    dell_latitude_7280: {
+        name: "Dell Latitude 7280",
+        brand: "Dell",
+        priority: ["portability"],
+        score: 8.3,
+        summary: "Ultrabook form factor, reliable for macOS with small tweaks.",
+        details: {
+            cpu: "Intel Core i7-7600U",
+            igpu: "Intel HD 620",
+            ram: "16GB",
+            storage: "M.2 / 2.5\" SATA (SSD)",
+            macosSupport: "Sonoma",
+            minMacosSupport: "Sierra",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1920x1080",
+            chartData: { ease: 83, performance: 70, battery: 66, stability: 83 },
+            batteryLife: { capacity: "60Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A", "USB-C (via adapter)"],
+                video: ["HDMI"]
+            },
+            displayFeatures: { type: "IPS", brightness: "300 nits" },
+            knownIssues: ["WiFi compatibility varies", "Fn keys mapping"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    dell_inspiron_5570: {
+        name: "Dell Inspiron 5570",
+        brand: "Dell",
+        priority: ["budget"],
+        score: 7,
+        summary: "Consumer laptop; community guides exist but require more tweaks.",
+        details: {
+            cpu: "Intel Core i5-8250U",
+            igpu: "Intel UHD 620",
+            ram: "8GB",
+            storage: "M.2 / 2.5\" SATA (SSD)",
+            macosSupport: "Sonoma",
+            minMacosSupport: "High Sierra",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1920x1080",
+            chartData: { ease: 70, performance: 62, battery: 46, stability: 70 },
+            batteryLife: { capacity: "42Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A"],
+                video: ["HDMI"],
+                others: ["SD card"]
+            },
+            displayFeatures: { type: "IPS", brightness: "250 nits" },
+            knownIssues: ["Audio kexts", "WiFi driver fixes"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    dell_precision_5520: {
+        name: "Dell Precision 5520",
+        brand: "Dell",
+        priority: ["performance"],
+        score: 7.8,
+        summary: "Mobile workstation; use integrated GPU for macOS.",
+        details: {
+            cpu: "Intel Core i7-7700HQ",
+            igpu: "Intel HD 630",
+            dgpu: "NVIDIA Quadro M1200 (must be disabled)",
+            ram: "16GB",
+            storage: "M.2 / 2.5\" SATA (SSD)",
+            macosSupport: "Sonoma",
+            minMacosSupport: "Mojave",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "3840x2160",
+            chartData: { ease: 78, performance: 82, battery: 95, stability: 73 },
+            batteryLife: { capacity: "97Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A"],
+                thunderbolt: "Thunderbolt 3",
+                video: ["HDMI"]
+            },
+            displayFeatures: { type: "IGZO", brightness: "400 nits" },
+            knownIssues: ["Discrete GPU unsupported", "BIOS config needed"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    hp_elitebook_840_g3: {
+        name: "HP EliteBook 840 G3",
+        brand: "HP",
+        priority: ["ease"],
+        score: 8.3,
+        summary: "Stable builds exist for this generation; good battery life.",
+        details: {
+            cpu: "Intel Core i5-6300U",
+            igpu: "Intel HD 520",
+            ram: "8GB",
+            storage: "M.2 / 2.5\" SATA (SSD)",
+            macosSupport: "Sonoma",
+            minMacosSupport: "Sierra",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1920x1080",
+            chartData: { ease: 83, performance: 62, battery: 55, stability: 83 },
+            batteryLife: { capacity: "50Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A"],
+                video: ["HDMI"],
+                network: "Ethernet"
+            },
+            displayFeatures: { type: "IPS", brightness: "300 nits" },
+            knownIssues: ["WiFi replacement advised", "Audio fixes with kexts"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    hp_elitebook_850_g4: {
+        name: "HP EliteBook 850 G4",
+        brand: "HP",
+        priority: ["portability"],
+        score: 7.9,
+        summary: "Business laptop with common kext work needed for networking.",
+        details: {
+            cpu: "Intel Core i7-7600U",
+            igpu: "Intel HD 620",
+            ram: "16GB",
+            storage: "M.2 / 2.5\" SATA (SSD)",
+            macosSupport: "Sonoma",
+            minMacosSupport: "Sierra",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1920x1080",
+            chartData: { ease: 79, performance: 70, battery: 62, stability: 79 },
+            batteryLife: { capacity: "56Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A"],
+                thunderbolt: "Thunderbolt 3",
+                video: ["HDMI (via adapter)"]
+            },
+            displayFeatures: { type: "IPS", brightness: "300 nits" },
+            knownIssues: ["WiFi & BT kexts", "Keyboard mapping fixes"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    hp_zbook_15u_g4: {
+        name: "HP ZBook 15u G4",
+        brand: "HP",
+        priority: ["performance"],
+        score: 7.2,
+        summary: "Older mobile workstation; use integrated graphics for compatibility.",
+        details: {
+            cpu: "Intel Core i7-7600U",
+            igpu: "Intel HD 620",
+            ram: "16GB",
+            storage: "M.2 / 2.5\" SATA (SSD)",
+            macosSupport: "Sonoma",
+            minMacosSupport: "High Sierra",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1920x1080",
+            chartData: { ease: 72, performance: 70, battery: 53, stability: 72 },
+            batteryLife: { capacity: "48Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A"],
+                video: ["HDMI"],
+                network: "Ethernet"
+            },
+            displayFeatures: { type: "IPS", brightness: "250 nits" },
+            knownIssues: ["Discrete GPU unsupported", "BIOS tuning required"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    hp_spectre_13: {
+        name: "HP Spectre 13",
+        brand: "HP",
+        priority: ["portability"],
+        score: 7.5,
+        summary: "Stylish ultrabook; audio and Bluetooth may need tweaks.",
+        details: {
+            cpu: "Intel Core i7-7500U",
+            igpu: "Intel HD 620",
+            ram: "8GB",
+            storage: "M.2 / 2.5\" SATA (SSD)",
+            macosSupport: "Sonoma",
+            minMacosSupport: "Sierra",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1920x1080",
+            chartData: { ease: 75, performance: 70, battery: 63, stability: 75 },
+            batteryLife: { capacity: "57Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-C", "USB-A (via adapter)"]
+            },
+            displayFeatures: { type: "IPS", brightness: "300 nits" },
+            knownIssues: ["Audio kexts", "WiFi module swap may be needed"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    hp_envy_13: {
+        name: "HP Envy 13",
+        brand: "HP",
+        priority: ["budget"],
+        score: 7.1,
+        summary: "Mid-range ultrabook with moderate community support.",
+        details: {
+            cpu: "Intel Core i5-8250U",
+            igpu: "Intel UHD 620",
+            ram: "8GB",
+            storage: "M.2 / 2.5\" SATA (SSD)",
+            macosSupport: "Sonoma",
+            minMacosSupport: "High Sierra",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1920x1080",
+            chartData: { ease: 71, performance: 62, battery: 57, stability: 71 },
+            batteryLife: { capacity: "52Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-C", "USB-A"],
+                others: ["microSD"]
+            },
+            displayFeatures: { type: "IPS", brightness: "300 nits" },
+            knownIssues: ["WiFi/Bluetooth kexts", "Touchpad tweaks"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    asus_zenbook_14: {
+        name: "ASUS ZenBook 14",
+        brand: "ASUS",
+        priority: ["portability"],
+        score: 7.4,
+        summary: "Thin and light with a few successful Hackintosh guides.",
+        details: {
+            cpu: "Intel Core i5-8265U",
+            igpu: "Intel UHD 620",
+            ram: "8GB",
+            storage: "M.2 / 2.5\" SATA (SSD)",
+            macosSupport: "Sonoma",
+            minMacosSupport: "High Sierra",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1920x1080",
+            chartData: { ease: 74, performance: 62, battery: 55, stability: 74 },
+            batteryLife: { capacity: "50Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A", "USB-C"],
+                video: ["HDMI (via adapter)"]
+            },
+            displayFeatures: { type: "IPS", brightness: "300 nits" },
+            knownIssues: ["Audio and WiFi adjustments", "Function keys mapping"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    asus_zenbook_15: {
+        name: "ASUS ZenBook 15",
+        brand: "ASUS",
+        priority: ["portability"],
+        score: 7.3,
+        summary: "Larger ZenBook; good balance between portability and performance.",
+        details: {
+            cpu: "Intel Core i7-8565U",
+            igpu: "Intel UHD 620",
+            ram: "16GB",
+            storage: "M.2 / 2.5\" SATA (SSD)",
+            macosSupport: "Sonoma",
+            minMacosSupport: "Mojave",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1920x1080",
+            chartData: { ease: 73, performance: 70, battery: 78, stability: 73 },
+            batteryLife: { capacity: "71Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A", "USB-C"],
+                video: ["HDMI"]
+            },
+            displayFeatures: { type: "IPS", brightness: "350 nits" },
+            knownIssues: ["WiFi swap recommended", "Audio kexts"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    asus_vivobook_s15: {
+        name: "ASUS VivoBook S15",
+        brand: "ASUS",
+        priority: ["budget"],
+        score: 6.8,
+        summary: "Budget ultrabook; community builds exist with more effort.",
+        details: {
+            cpu: "Intel Core i5-8265U",
+            igpu: "Intel UHD 620",
+            ram: "8GB",
+            storage: "M.2 / 2.5\" SATA (SSD)",
+            macosSupport: "Sonoma",
+            minMacosSupport: "High Sierra",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1920x1080",
+            chartData: { ease: 68, performance: 62, battery: 46, stability: 68 },
+            batteryLife: { capacity: "42Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A", "USB-C"],
+                video: ["HDMI"]
+            },
+            displayFeatures: { type: "IPS", brightness: "250 nits" },
+            knownIssues: ["Trackpad fixes", "WiFi replacement commonly needed"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    asus_rog_strix_hero: {
+        name: "ASUS ROG Strix Hero",
+        brand: "ASUS",
+        priority: ["performance"],
+        score: 6.9,
+        summary: "Gaming laptop; use integrated GPU for macOS compatibility.",
+        details: {
+            cpu: "Intel Core i7-8750H",
+            igpu: "Intel UHD 630",
+            dgpu: "NVIDIA GTX 1060 (must be disabled)",
+            ram: "16GB",
+            storage: "M.2 NVMe",
+            macosSupport: "Sonoma",
+            minMacosSupport: "Mojave",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1920x1080",
+            chartData: { ease: 69, performance: 82, battery: 73, stability: 64 },
+            batteryLife: { capacity: "66Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A", "USB-C"],
+                video: ["HDMI"],
+                network: "Ethernet"
+            },
+            displayFeatures: { type: "IPS", brightness: "300 nits" },
+            knownIssues: ["Discrete GPU unsupported", "BIOS tweaks required"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    asus_vivobook_pro: {
+        name: "ASUS VivoBook Pro",
+        brand: "ASUS",
+        priority: ["budget"],
+        score: 6.7,
+        summary: "Multimedia laptop — workable but requires kext replacements.",
+        details: {
+            cpu: "Intel Core i7-7700HQ",
+            igpu: "Unknown",
+            dgpu: "NVIDIA GTX 1050 (must be disabled)",
+            ram: "16GB",
+            storage: "M.2 / 2.5\" SATA (SSD)",
+            macosSupport: "Sonoma",
+            minMacosSupport: "Mojave",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1920x1080",
+            chartData: { ease: 67, performance: 82, battery: 53, stability: 62 },
+            batteryLife: { capacity: "48Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A", "USB-C"],
+                video: ["HDMI"]
+            },
+            displayFeatures: { type: "IPS", brightness: "300 nits" },
+            knownIssues: ["NVIDIA not supported", "WiFi swap recommended"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    msi_p65_creator: {
+        name: "MSI P65 Creator",
+        brand: "MSI",
+        priority: ["performance"],
+        score: 7.3,
+        summary: "Creator-focused laptop; integrated GPU is best for macOS.",
+        details: {
+            cpu: "Intel Core i7-8750H",
+            igpu: "Intel UHD 630",
+            dgpu: "NVIDIA GTX 1060 (must be disabled)",
+            ram: "16GB",
+            storage: "M.2 NVMe",
+            macosSupport: "Sonoma",
+            minMacosSupport: "Mojave",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "3840x2160",
+            chartData: { ease: 73, performance: 82, battery: 88, stability: 68 },
+            batteryLife: { capacity: "80Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A"],
+                thunderbolt: "Thunderbolt 3",
+                video: ["HDMI"]
+            },
+            displayFeatures: { type: "IPS", brightness: "400 nits" },
+            knownIssues: ["Discrete GPU unuseable", "BIOS settings required"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    razer_blade_15: {
+        name: "Razer Blade 15",
+        brand: "Razer",
+        priority: ["performance"],
+        score: 6.8,
+        summary: "Premium gaming laptop; some community builds but often finicky.",
+        details: {
+            cpu: "Intel Core i7-8750H",
+            igpu: "Unknown",
+            dgpu: "NVIDIA GTX 1060 (must be disabled)",
+            ram: "16GB",
+            storage: "M.2 / 2.5\" SATA (SSD)",
+            macosSupport: "Sonoma",
+            minMacosSupport: "Mojave",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1920x1080",
+            chartData: { ease: 68, performance: 82, battery: 88, stability: 63 },
+            batteryLife: { capacity: "80Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A"],
+                thunderbolt: "Thunderbolt 3",
+                video: ["HDMI"]
+            },
+            displayFeatures: { type: "IPS", brightness: "300 nits" },
+            knownIssues: ["Discrete GPU problems", "Touchpad and audio tweaks"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    acer_predator_helios_300: {
+        name: "Acer Predator Helios 300",
+        brand: "Acer",
+        priority: ["performance"],
+        score: 6.5,
+        summary: "Gaming laptop with adequate CPU; use integrated graphics for macOS.",
+        details: {
+            cpu: "Intel Core i7-9750H",
+            igpu: "Unknown",
+            dgpu: "NVIDIA GTX 1660 Ti (must be disabled)",
+            ram: "16GB",
+            storage: "M.2 NVMe",
+            macosSupport: "Sonoma",
+            minMacosSupport: "Mojave",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1920x1080",
+            chartData: { ease: 65, performance: 82, battery: 65, stability: 60 },
+            batteryLife: { capacity: "59Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A", "USB-C"],
+                video: ["HDMI"]
+            },
+            displayFeatures: { type: "IPS", brightness: "300 nits" },
+            knownIssues: ["Discrete GPU unsupported", "Power management tuning"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    acer_aspire_5: {
+        name: "Acer Aspire 5",
+        brand: "Acer",
+        priority: ["budget"],
+        score: 6.4,
+        summary: "Affordable general-purpose laptop; decent for entry-level Hackintosh setups.",
+        details: {
+            cpu: "Intel Core i5-8265U",
+            igpu: "Intel UHD 620",
+            ram: "8GB",
+            storage: "M.2 / 2.5\" SATA (SSD)",
+            macosSupport: "Sonoma",
+            minMacosSupport: "High Sierra",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1920x1080",
+            chartData: { ease: 64, performance: 62, battery: 53, stability: 64 },
+            batteryLife: { capacity: "48Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A", "USB-C"],
+                video: ["HDMI"]
+            },
+            displayFeatures: { type: "IPS", brightness: "250 nits" },
+            knownIssues: ["Audio & WiFi kexts required", "Longer setup time"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    acer_swift_5: {
+        name: "Acer Swift 5",
+        brand: "Acer",
+        priority: ["portability"],
+        score: 6.9,
+        summary: "Lightweight clamshell with moderate community support.",
+        details: {
+            cpu: "Intel Core i7-8565U",
+            igpu: "Intel UHD 620",
+            ram: "8GB",
+            storage: "M.2 / 2.5\" SATA (SSD)",
+            macosSupport: "Sonoma",
+            minMacosSupport: "High Sierra",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1920x1080",
+            chartData: { ease: 69, performance: 70, battery: 62, stability: 69 },
+            batteryLife: { capacity: "56Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A", "USB-C"],
+                video: ["HDMI"]
+            },
+            displayFeatures: { type: "IPS", brightness: "300 nits" },
+            knownIssues: ["WiFi module may need swap", "Audio fixes"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    samsung_galaxy_book_12: {
+        name: "Samsung Galaxy Book 12",
+        brand: "Samsung",
+        priority: ["portability"],
+        score: 6.3,
+        summary: "Convertible Windows laptop; community builds exist with caveats.",
+        details: {
+            cpu: "Intel Core i5-7200U",
+            igpu: "Intel HD 620",
+            ram: "8GB",
+            storage: "M.2 / 2.5\" SATA (SSD)",
+            macosSupport: "Sonoma",
+            minMacosSupport: "Sierra",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "2160x1440",
+            chartData: { ease: 63, performance: 62, battery: 46, stability: 63 },
+            batteryLife: { capacity: "42Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-C"],
+                others: ["microSD"]
+            },
+            displayFeatures: { type: "AMOLED", brightness: "350 nits" },
+            knownIssues: ["Touchscreen unsupported", "WiFi and audio fixes"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    microsoft_surface_laptop_2: {
+        name: "Microsoft Surface Laptop 2",
+        brand: "Microsoft",
+        priority: ["portability"],
+        score: 6.6,
+        summary: "Surface hardware sometimes workable but often needs advanced tweaks.",
+        details: {
+            cpu: "Intel Core i7-8650U",
+            igpu: "Intel UHD 620",
+            ram: "8GB",
+            storage: "M.2 / 2.5\" SATA (SSD)",
+            macosSupport: "Sonoma",
+            minMacosSupport: "High Sierra",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "2256x1504",
+            chartData: { ease: 66, performance: 70, battery: 50, stability: 66 },
+            batteryLife: { capacity: "45Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A (via adapter)"],
+                others: ["Surface Connect"]
+            },
+            displayFeatures: { type: "PixelSense", brightness: "350 nits" },
+            knownIssues: ["Touchscreen not supported", "Power management oddities"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    lenovo_ideapad_720s: {
+        name: "Lenovo IdeaPad 720S",
+        brand: "Lenovo",
+        priority: ["portability"],
+        score: 6.8,
+        summary: "Consumer ultrabook with some community success stories.",
+        details: {
+            cpu: "Intel Core i5-8250U",
+            igpu: "Intel UHD 620",
+            ram: "8GB",
+            storage: "M.2 / 2.5\" SATA (SSD)",
+            macosSupport: "Sonoma",
+            minMacosSupport: "High Sierra",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1920x1080",
+            chartData: { ease: 68, performance: 62, battery: 62, stability: 68 },
+            batteryLife: { capacity: "56Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A", "USB-C"],
+                video: ["HDMI"]
+            },
+            displayFeatures: { type: "IPS", brightness: "300 nits" },
+            knownIssues: ["WiFi swap recommended", "Audio tweaks"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    lenovo_yoga_720: {
+        name: "Lenovo Yoga 720",
+        brand: "Lenovo",
+        priority: ["portability"],
+        score: 7.1,
+        summary: "Convertible Yoga series with workable macOS builds in the community.",
+        details: {
+            cpu: "Intel Core i7-7700U",
+            igpu: "Intel HD 620",
+            ram: "8GB",
+            storage: "M.2 / 2.5\" SATA (SSD)",
+            macosSupport: "Sonoma",
+            minMacosSupport: "Sierra",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1920x1080",
+            chartData: { ease: 71, performance: 70, battery: 53, stability: 71 },
+            batteryLife: { capacity: "48Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A", "USB-C"],
+                video: ["HDMI (via adapter)"]
+            },
+            displayFeatures: { type: "IPS", brightness: "300 nits" },
+            knownIssues: ["Touchscreen unsupported", "Bluetooth fixes often required"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    lenovo_yoga_c930: {
+        name: "Lenovo Yoga C930",
+        brand: "Lenovo",
+        priority: ["portability"],
+        score: 6.5,
+        summary: "Stylish convertible; macOS builds more involved due to unique hardware.",
+        details: {
+            cpu: "Intel Core i7-8550U",
+            igpu: "Intel UHD 620",
+            ram: "12GB",
+            storage: "M.2 / 2.5\" SATA (SSD)",
+            macosSupport: "Sonoma",
+            minMacosSupport: "High Sierra",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1920x1080",
+            chartData: { ease: 65, performance: 70, battery: 66, stability: 65 },
+            batteryLife: { capacity: "60Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-C"],
+                thunderbolt: "Thunderbolt 3 (via adapter)"
+            },
+            displayFeatures: { type: "IPS", brightness: "350 nits" },
+            knownIssues: ["Audio and pen not supported", "WiFi tweaks"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    thinkpad_x270: {
+        name: "ThinkPad X270",
+        brand: "Lenovo",
+        priority: ["portability"],
+        score: 7.9,
+        summary: "Compact ThinkPad with reliable Hackintosh guidance.",
+        details: {
+            cpu: "Intel Core i5-7300U",
+            igpu: "Intel HD 620",
+            ram: "8GB",
+            storage: "M.2 / 2.5\" SATA (SSD)",
+            macosSupport: "Sonoma",
+            minMacosSupport: "Sierra",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1366x768 / 1920x1080 options",
+            chartData: { ease: 79, performance: 62, battery: 43, stability: 79 },
+            batteryLife: { capacity: "39Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A"],
+                video: ["HDMI"],
+                network: "Ethernet"
+            },
+            displayFeatures: { type: "IPS", brightness: "250 nits" },
+            knownIssues: ["WiFi replacement often needed", "Trackpad mapping"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    thinkpad_x260: {
+        name: "ThinkPad X260",
+        brand: "Lenovo",
+        priority: ["ease"],
+        score: 7.8,
+        summary: "Widely used older ThinkPad; very hackintosh-friendly with known guides.",
+        details: {
+            cpu: "Intel Core i5-6200U",
+            igpu: "Intel HD 520",
+            ram: "8GB",
+            storage: "M.2 / 2.5\" SATA (SSD)",
+            macosSupport: "Sonoma",
+            minMacosSupport: "Sierra",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1366x768",
+            chartData: { ease: 78, performance: 62, battery: 53, stability: 78 },
+            batteryLife: { capacity: "48Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A"],
+                video: ["HDMI"],
+                network: "Ethernet"
+            },
+            displayFeatures: { type: "IPS", brightness: "220 nits" },
+            knownIssues: ["WiFi replacement", "Older connectors"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    gigabyte_p55w: {
+        name: "Gigabyte P55W",
+        brand: "Gigabyte",
+        priority: ["performance"],
+        score: 7.1,
+        summary: "Gaming/creator laptop; integrated GPU recommended for macOS.",
+        details: {
+            cpu: "Intel Core i7-7700HQ",
+            igpu: "Unknown",
+            dgpu: "NVIDIA GTX 1060 (must be disabled)",
+            ram: "16GB",
+            storage: "M.2 NVMe",
+            macosSupport: "Sonoma",
+            minMacosSupport: "Mojave",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1920x1080",
+            chartData: { ease: 71, performance: 82, battery: 67, stability: 66 },
+            batteryLife: { capacity: "61Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A", "USB-C"],
+                video: ["HDMI"]
+            },
+            displayFeatures: { type: "IPS", brightness: "300 nits" },
+            knownIssues: ["Discrete GPU not supported", "Audio kexts"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    gigabyte_aero_slim_7: {
+        name: "Gigabyte AERO Slim 7",
+        brand: "Gigabyte",
+        priority: ["performance"],
+        score: 7.5,
+        summary: "Creator laptop with good Intel support when using integrated graphics.",
+        details: {
+            cpu: "Intel Core i7-9750H",
+            igpu: "Intel UHD 630",
+            dgpu: "NVIDIA GTX 1660 Ti (must be disabled)",
+            ram: "16GB",
+            storage: "M.2 NVMe",
+            macosSupport: "Sonoma",
+            minMacosSupport: "Mojave",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "3840x2160",
+            chartData: { ease: 75, performance: 82, battery: 95, stability: 70 },
+            batteryLife: { capacity: "94Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-C", "USB-A"],
+                video: ["HDMI"]
+            },
+            displayFeatures: { type: "IPS", brightness: "400 nits" },
+            knownIssues: ["NVIDIA disabled for compatibility", "BIOS tweaks"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    toshiba_tecra_z50: {
+        name: "Toshiba Tecra Z50",
+        brand: "Toshiba",
+        priority: ["ease"],
+        score: 7.2,
+        summary: "Older business laptop; stable community guides exist.",
+        details: {
+            cpu: "Intel Core i7-6500U",
+            igpu: "Intel HD 520",
+            ram: "8GB",
+            storage: "M.2 / 2.5\" SATA (SSD)",
+            macosSupport: "Sonoma",
+            minMacosSupport: "Sierra",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1920x1080",
+            chartData: { ease: 72, performance: 70, battery: 53, stability: 72 },
+            batteryLife: { capacity: "48Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A"],
+                video: ["HDMI"],
+                network: "Ethernet"
+            },
+            displayFeatures: { type: "IPS", brightness: "250 nits" },
+            knownIssues: ["WiFi swap recommended", "Audio fixes with kexts"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    sony_vaio_svf: {
+        name: "Sony VAIO SVF",
+        brand: "Sony",
+        priority: ["budget"],
+        score: 5.8,
+        summary: "Legacy VAIO models — possible but often require advanced work.",
+        details: {
+            cpu: "Intel Core i5-5200U",
+            igpu: "Intel HD 5500",
+            ram: "8GB",
+            storage: "M.2 / 2.5\" SATA (SSD)",
+            macosSupport: "High Sierra",
+            minMacosSupport: "Yosemite",
+            maxMacosSupport: "High Sierra",
+            screenResolution: "1920x1080",
+            chartData: { ease: 58, performance: 62, battery: 50, stability: 58 },
+            batteryLife: { capacity: "45Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A"],
+                video: ["HDMI"]
+            },
+            displayFeatures: { type: "IPS", brightness: "250 nits" },
+            knownIssues: ["Driver gaps", "Longer setup time"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    hp_omen_15: {
+        name: "HP Omen 15",
+        brand: "HP",
+        priority: ["performance"],
+        score: 6.3,
+        summary: "Gaming laptop with strong CPU but discrete GPUs complicate macOS support.",
+        details: {
+            cpu: "Intel Core i7-8750H",
+            igpu: "Unknown",
+            dgpu: "NVIDIA GTX 1060 (must be disabled)",
+            ram: "16GB",
+            storage: "M.2 NVMe",
+            macosSupport: "Sonoma",
+            minMacosSupport: "Mojave",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1920x1080",
+            chartData: { ease: 63, performance: 82, battery: 77, stability: 58 },
+            batteryLife: { capacity: "70Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A", "USB-C"],
+                video: ["HDMI"],
+                network: "Ethernet"
+            },
+            displayFeatures: { type: "IPS", brightness: "300 nits" },
+            knownIssues: ["Discrete GPU not supported", "Cooling/power tweaks"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    lenovo_legion_y520: {
+        name: "Lenovo Legion Y520",
+        brand: "Lenovo",
+        priority: ["budget"],
+        score: 6.2,
+        summary: "Budget gaming laptop; integrated GPU is the path for macOS.",
+        details: {
+            cpu: "Intel Core i7-7700HQ",
+            igpu: "Unknown",
+            dgpu: "NVIDIA GTX 1050 Ti (must be disabled)",
+            ram: "16GB",
+            storage: "M.2 / 2.5\" SATA (SSD)",
+            macosSupport: "Sonoma",
+            minMacosSupport: "Mojave",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1920x1080",
+            chartData: { ease: 62, performance: 82, battery: 57, stability: 57 },
+            batteryLife: { capacity: "52Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A"],
+                video: ["HDMI"],
+                network: "Ethernet"
+            },
+            displayFeatures: { type: "IPS", brightness: "300 nits" },
+            knownIssues: ["Discrete GPU unsupported", "BIOS and sleep fixes"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    lenovo_legion_y540: {
+        name: "Lenovo Legion Y540",
+        brand: "Lenovo",
+        priority: ["performance"],
+        score: 6.5,
+        summary: "More recent Legion model; compatible if using integrated graphics and specific BIOS settings.",
+        details: {
+            cpu: "Intel Core i7-9750H",
+            igpu: "Unknown",
+            dgpu: "NVIDIA GTX 1660 Ti (must be disabled)",
+            ram: "16GB",
+            storage: "M.2 NVMe",
+            macosSupport: "Sonoma",
+            minMacosSupport: "Mojave",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1920x1080",
+            chartData: { ease: 65, performance: 82, battery: 66, stability: 60 },
+            batteryLife: { capacity: "60Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A", "USB-C"],
+                video: ["HDMI"]
+            },
+            displayFeatures: { type: "IPS", brightness: "300 nits" },
+            knownIssues: ["Discrete GPU not supported", "Audio kexts"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    acer_aspire_vx_15: {
+        name: "Acer Aspire VX 15",
+        brand: "Acer",
+        priority: ["budget"],
+        score: 6.4,
+        summary: "Gaming-oriented but workable using integrated graphics.",
+        details: {
+            cpu: "Intel Core i7-7700HQ",
+            igpu: "Unknown",
+            dgpu: "NVIDIA GTX 1050 Ti (must be disabled)",
+            ram: "16GB",
+            storage: "M.2 / 2.5\" SATA (SSD)",
+            macosSupport: "Sonoma",
+            minMacosSupport: "Mojave",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1920x1080",
+            chartData: { ease: 64, performance: 82, battery: 57, stability: 59 },
+            batteryLife: { capacity: "52Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A", "USB-C"],
+                video: ["HDMI"]
+            },
+            displayFeatures: { type: "IPS", brightness: "300 nits" },
+            knownIssues: ["Discrete GPU", "WiFi replacements often needed"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    huawei_matebook_x: {
+        name: "Huawei MateBook X",
+        brand: "Huawei",
+        priority: ["portability"],
+        score: 6.2,
+        summary: "Premium ultrabook; workable but limited community support.",
+        details: {
+            cpu: "Intel Core i7-8550U",
+            igpu: "Intel UHD 620",
+            ram: "16GB",
+            storage: "M.2 / 2.5\" SATA (SSD)",
+            macosSupport: "Sonoma",
+            minMacosSupport: "High Sierra",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "2160x1440",
+            chartData: { ease: 62, performance: 70, battery: 45, stability: 62 },
+            batteryLife: { capacity: "41Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-C (2x)"]
+            },
+            displayFeatures: { type: "IPS", brightness: "350 nits" },
+            knownIssues: ["WiFi/BT fixes", "Audio mapping"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    clevo_n850hk: {
+        name: "Clevo N850HK",
+        brand: "Clevo",
+        priority: ["performance"],
+        score: 6.6,
+        summary: "Barebones gaming laptop; integrated GPU path is recommended.",
+        details: {
+            cpu: "Intel Core i7-7700HQ",
+            igpu: "Unknown",
+            dgpu: "NVIDIA GTX 1070 (must be disabled)",
+            ram: "16GB",
+            storage: "M.2 NVMe",
+            macosSupport: "Sonoma",
+            minMacosSupport: "Mojave",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1920x1080",
+            chartData: { ease: 66, performance: 82, battery: 68, stability: 61 },
+            batteryLife: { capacity: "62Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A", "USB-C"],
+                video: ["HDMI"],
+                network: "Ethernet"
+            },
+            displayFeatures: { type: "IPS", brightness: "300 nits" },
+            knownIssues: ["Discrete GPU not supported", "Complex BIOS settings"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    msi_gl63: {
+        name: "MSI GL63",
+        brand: "MSI",
+        priority: ["budget"],
+        score: 6.3,
+        summary: "Entry gaming laptop: usable for macOS if using integrated GPU.",
+        details: {
+            cpu: "Intel Core i7-8750H",
+            igpu: "Unknown",
+            dgpu: "NVIDIA GTX 1050 Ti (must be disabled)",
+            ram: "8-16GB",
+            storage: "M.2 / 2.5\" SATA (SSD)",
+            macosSupport: "Sonoma",
+            minMacosSupport: "Mojave",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1920x1080",
+            chartData: { ease: 63, performance: 82, battery: 56, stability: 58 },
+            batteryLife: { capacity: "51Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A", "USB-C"],
+                video: ["HDMI"]
+            },
+            displayFeatures: { type: "IPS", brightness: "300 nits" },
+            knownIssues: ["Discrete GPU", "Sleep issues require patches"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    toshiba_satellite_pro: {
+        name: "Toshiba Satellite Pro",
+        brand: "Toshiba",
+        priority: ["budget"],
+        score: 6.2,
+        summary: "Basic business laptop with older Intel hardware — reasonable support.",
+        details: {
+            cpu: "Intel Core i5-7200U",
+            igpu: "Intel HD 620",
+            ram: "8GB",
+            storage: "M.2 / 2.5\" SATA (SSD)",
+            macosSupport: "Sonoma",
+            minMacosSupport: "Sierra",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1366x768 / 1920x1080",
+            chartData: { ease: 62, performance: 62, battery: 50, stability: 62 },
+            batteryLife: { capacity: "45Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A"],
+                video: ["HDMI"],
+                network: "Ethernet"
+            },
+            displayFeatures: { type: "IPS", brightness: "220-250 nits" },
+            knownIssues: ["WiFi swap", "Audio kexts"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    fujitsu_lifebook_u748: {
+        name: "Fujitsu LifeBook U748",
+        brand: "Fujitsu",
+        priority: ["ease"],
+        score: 7.4,
+        summary: "Business-class Lifebook; many have reported workable installations.",
+        details: {
+            cpu: "Intel Core i5-6200U",
+            igpu: "Intel HD 520",
+            ram: "8GB",
+            storage: "M.2 / 2.5\" SATA (SSD)",
+            macosSupport: "Sonoma",
+            minMacosSupport: "Sierra",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1366x768 / 1920x1080",
+            chartData: { ease: 74, performance: 62, battery: 55, stability: 74 },
+            batteryLife: { capacity: "50Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A"],
+                video: ["HDMI"],
+                network: "Ethernet"
+            },
+            displayFeatures: { type: "IPS", brightness: "250 nits" },
+            knownIssues: ["WiFi modules vary", "Audio mapping needed"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    panasonic_toughbook_54: {
+        name: "Panasonic Toughbook 54",
+        brand: "Panasonic",
+        priority: ["stability"],
+        score: 5.9,
+        summary: "Rugged laptop — not ideal for macOS, but some success with older releases.",
+        details: {
+            cpu: "Intel Core i5-7300U",
+            igpu: "Intel HD 620",
+            ram: "8GB",
+            storage: "M.2 / 2.5\" SATA (SSD)",
+            macosSupport: "High Sierra",
+            minMacosSupport: "Yosemite",
+            maxMacosSupport: "High Sierra",
+            screenResolution: "1920x1080",
+            chartData: { ease: 59, performance: 62, battery: 95, stability: 59 },
+            batteryLife: { capacity: "88Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A"],
+                video: ["HDMI"],
+                network: "Ethernet"
+            },
+            displayFeatures: { type: "IPS", brightness: "400 nits" },
+            knownIssues: ["Driver gaps", "Specialized hardware unsupported"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    huawei_matebook_d: {
+        name: "Huawei MateBook D",
+        brand: "Huawei",
+        priority: ["budget"],
+        score: 6.2,
+        summary: "Budget premium feel; workable with WiFi swaps and kexts.",
+        details: {
+            cpu: "Intel Core i5-8250U",
+            igpu: "Intel UHD 620",
+            ram: "8GB",
+            storage: "M.2 / 2.5\" SATA (SSD)",
+            macosSupport: "Sonoma",
+            minMacosSupport: "High Sierra",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1920x1080",
+            chartData: { ease: 62, performance: 62, battery: 63, stability: 62 },
+            batteryLife: { capacity: "57Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A", "USB-C"],
+                video: ["HDMI"]
+            },
+            displayFeatures: { type: "IPS", brightness: "300 nits" },
+            knownIssues: ["Audio and WiFi adjustments", "Bluetooth fixes"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    toshiba_portege_x30: {
+        name: "Toshiba Portege X30",
+        brand: "Toshiba",
+        priority: ["portability"],
+        score: 7.3,
+        summary: "Ultralight enterprise machine — good candidate for macOS with minor fixes.",
+        details: {
+            cpu: "Intel Core i7-8565U",
+            igpu: "Intel UHD 620",
+            ram: "16GB",
+            storage: "M.2 / 2.5\" SATA (SSD)",
+            macosSupport: "Sonoma",
+            minMacosSupport: "High Sierra",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1920x1080",
+            chartData: { ease: 73, performance: 70, battery: 55, stability: 73 },
+            batteryLife: { capacity: "50Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A", "USB-C"],
+                video: ["HDMI (via adapter)"]
+            },
+            displayFeatures: { type: "IPS", brightness: "350 nits" },
+            knownIssues: ["WiFi module compatibility", "Audio kexts"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    dell_precision_7710: {
+        name: "Dell Precision 7710",
+        brand: "Dell",
+        priority: ["performance"],
+        score: 7,
+        summary: "Older precision mobile workstation — possible with integrated GPU.",
+        details: {
+            cpu: "Intel Xeon E3",
+            igpu: "Unknown",
+            dgpu: "NVIDIA Quadro M2000M (must be disabled)",
+            ram: "32GB",
+            storage: "M.2 / 2.5\" SATA (SSD)",
+            macosSupport: "Sonoma",
+            minMacosSupport: "High Sierra",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1920x1080",
+            chartData: { ease: 70, performance: 88, battery: 95, stability: 65 },
+            batteryLife: { capacity: "90Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A"],
+                thunderbolt: "Thunderbolt 3 (via adapter)",
+                video: ["HDMI"]
+            },
+            displayFeatures: { type: "IPS", brightness: "350 nits" },
+            knownIssues: ["Discrete GPU unsupported", "BIOS changes needed"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    dell_g3_15: {
+        name: "Dell G3 15",
+        brand: "Dell",
+        priority: ["budget"],
+        score: 6.3,
+        summary: "Budget gaming series; workable with effort.",
+        details: {
+            cpu: "Intel Core i5-8300H",
+            igpu: "Unknown",
+            dgpu: "NVIDIA GTX 1050 (must be disabled)",
+            ram: "8GB",
+            storage: "M.2 / 2.5\" SATA (SSD)",
+            macosSupport: "Sonoma",
+            minMacosSupport: "Mojave",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1920x1080",
+            chartData: { ease: 63, performance: 82, battery: 56, stability: 58 },
+            batteryLife: { capacity: "51Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A", "USB-C"],
+                video: ["HDMI"]
+            },
+            displayFeatures: { type: "IPS", brightness: "300 nits" },
+            knownIssues: ["Discrete GPU", "Sleep issues"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    sager_np8651: {
+        name: "Sager NP8651",
+        brand: "Sager",
+        priority: ["performance"],
+        score: 6.7,
+        summary: "Clevo-based system; many custom BIOS models but community builds exist.",
+        details: {
+            cpu: "Intel Core i7-7700HQ",
+            igpu: "Unknown",
+            dgpu: "NVIDIA GTX 1060 (must be disabled)",
+            ram: "16GB",
+            storage: "M.2 NVMe",
+            macosSupport: "Sonoma",
+            minMacosSupport: "Mojave",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1920x1080",
+            chartData: { ease: 67, performance: 82, battery: 68, stability: 62 },
+            batteryLife: { capacity: "62Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A", "USB-C"],
+                video: ["HDMI"]
+            },
+            displayFeatures: { type: "IPS", brightness: "300 nits" },
+            knownIssues: ["Discrete GPU not supported", "BIOS and ACPI fixes required"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    toshiba_portege_z30: {
+        name: "Toshiba Portege Z30",
+        brand: "Toshiba",
+        priority: ["portability"],
+        score: 7.2,
+        summary: "Light business laptop — decent candidate for Hackintosh.",
+        details: {
+            cpu: "Intel Core i5-6200U",
+            igpu: "Intel HD 520",
+            ram: "8GB",
+            storage: "M.2 / 2.5\" SATA (SSD)",
+            macosSupport: "Sonoma",
+            minMacosSupport: "Sierra",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1366x768 / 1920x1080",
+            chartData: { ease: 72, performance: 62, battery: 53, stability: 72 },
+            batteryLife: { capacity: "48Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A"],
+                video: ["HDMI"],
+                network: "Ethernet"
+            },
+            displayFeatures: { type: "IPS", brightness: "250 nits" },
+            knownIssues: ["WiFi replacement often needed", "Audio kexts"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    compaq_elitebook_840: {
+        name: "Compaq EliteBook 840",
+        brand: "Compaq",
+        priority: ["budget"],
+        score: 6.9,
+        summary: "Legacy enterprise laptop; generally workable for hobbyist installations.",
+        details: {
+            cpu: "Intel Core i5-7300U",
+            igpu: "Intel HD 620",
+            ram: "8GB",
+            storage: "M.2 / 2.5\" SATA (SSD)",
+            macosSupport: "Sonoma",
+            minMacosSupport: "Sierra",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1920x1080",
+            chartData: { ease: 69, performance: 62, battery: 55, stability: 69 },
+            batteryLife: { capacity: "50Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A"],
+                video: ["HDMI"],
+                network: "Ethernet"
+            },
+            displayFeatures: { type: "IPS", brightness: "250 nits" },
+            knownIssues: ["WiFi/BT tweaks", "Audio configuration"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    dynabook_portege: {
+        name: "Dynabook Portégé",
+        brand: "Dynabook",
+        priority: ["portability"],
+        score: 7.1,
+        summary: "Lightweight business laptop with workable macOS guides.",
+        details: {
+            cpu: "Intel Core i7-7500U",
+            igpu: "Intel HD 620",
+            ram: "8GB",
+            storage: "M.2 / 2.5\" SATA (SSD)",
+            macosSupport: "Sonoma",
+            minMacosSupport: "Sierra",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1920x1080",
+            chartData: { ease: 71, performance: 70, battery: 55, stability: 71 },
+            batteryLife: { capacity: "50Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A", "USB-C"],
+                video: ["HDMI"]
+            },
+            displayFeatures: { type: "IPS", brightness: "300 nits" },
+            knownIssues: ["WiFi tweaks", "Audio kexts"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    asus_proart_studiobook: {
+        name: "ASUS ProArt StudioBook",
+        brand: "ASUS",
+        priority: ["performance"],
+        score: 7.2,
+        summary: "Creator laptop, better when relying on integrated Intel graphics.",
+        details: {
+            cpu: "Intel Core i7-9750H",
+            igpu: "Unknown",
+            dgpu: "NVIDIA Quadro RTX (must be disabled)",
+            ram: "32GB",
+            storage: "M.2 NVMe",
+            macosSupport: "Sonoma",
+            minMacosSupport: "Mojave",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "3840x2160",
+            chartData: { ease: 72, performance: 82, battery: 84, stability: 67 },
+            batteryLife: { capacity: "76Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A"],
+                thunderbolt: "Thunderbolt 3",
+                video: ["HDMI"]
+            },
+            displayFeatures: { type: "IPS", brightness: "400 nits" },
+            knownIssues: ["Discrete GPU unsupported", "BIOS/ACPI fixes"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    lenovo_ideapad_330: {
+        name: "Lenovo IdeaPad 330",
+        brand: "Lenovo",
+        priority: ["budget"],
+        score: 5.9,
+        summary: "Budget consumer line; occasional successful builds reported.",
+        details: {
+            cpu: "Intel Core i5-8250U",
+            igpu: "Intel UHD 620",
+            ram: "8GB",
+            storage: "M.2 / 2.5\" SATA (SSD)",
+            macosSupport: "Sonoma",
+            minMacosSupport: "High Sierra",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1920x1080",
+            chartData: { ease: 59, performance: 62, battery: 42, stability: 59 },
+            batteryLife: { capacity: "38Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A"],
+                video: ["HDMI"]
+            },
+            displayFeatures: { type: "IPS", brightness: "220 nits" },
+            knownIssues: ["Audio kexts", "WiFi modules vary by SKU"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    lenovo_legion_y7000: {
+        name: "Lenovo Legion Y7000",
+        brand: "Lenovo",
+        priority: ["performance"],
+        score: 6.4,
+        summary: "Gaming laptop with decent CPU; best results when avoiding discrete GPU.",
+        details: {
+            cpu: "Intel Core i7-8750H",
+            igpu: "Unknown",
+            dgpu: "NVIDIA GTX 1060 (must be disabled)",
+            ram: "16GB",
+            storage: "M.2 NVMe",
+            macosSupport: "Sonoma",
+            minMacosSupport: "Mojave",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1920x1080",
+            chartData: { ease: 64, performance: 82, battery: 66, stability: 59 },
+            batteryLife: { capacity: "60Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A", "USB-C"],
+                video: ["HDMI"]
+            },
+            displayFeatures: { type: "IPS", brightness: "300 nits" },
+            knownIssues: ["GPU compatibility", "Audio and sleep tweaks"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    acer_nitro_5: {
+        name: "Acer Nitro 5",
+        brand: "Acer",
+        priority: ["budget"],
+        score: 6.2,
+        summary: "Popular budget gaming laptop — workable with integrated GPU only.",
+        details: {
+            cpu: "Intel Core i5-9300H",
+            igpu: "Unknown",
+            dgpu: "NVIDIA GTX 1650 (must be disabled)",
+            ram: "8GB",
+            storage: "M.2 / 2.5\" SATA (SSD)",
+            macosSupport: "Sonoma",
+            minMacosSupport: "Mojave",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1920x1080",
+            chartData: { ease: 62, performance: 82, battery: 57, stability: 57 },
+            batteryLife: { capacity: "52Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A", "USB-C"],
+                video: ["HDMI"]
+            },
+            displayFeatures: { type: "IPS", brightness: "250 nits" },
+            knownIssues: ["Discrete GPU limitations", "BIOS/ACPI changes needed"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    msi_modern_14: {
+        name: "MSI Modern 14",
+        brand: "MSI",
+        priority: ["portability"],
+        score: 6.7,
+        summary: "Lightweight 14-inch laptop; community builds possible.",
+        details: {
+            cpu: "Intel Core i5-8265U",
+            igpu: "Intel UHD 620",
+            ram: "8GB",
+            storage: "M.2 NVMe",
+            macosSupport: "Sonoma",
+            minMacosSupport: "High Sierra",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1920x1080",
+            chartData: { ease: 67, performance: 62, battery: 55, stability: 67 },
+            batteryLife: { capacity: "50Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A", "USB-C"],
+                video: ["HDMI"]
+            },
+            displayFeatures: { type: "IPS", brightness: "300 nits" },
+            knownIssues: ["WiFi/BT compatibility", "Audio kexts"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    lenovo_thinkbook_13s: {
+        name: "Lenovo ThinkBook 13s",
+        brand: "Lenovo",
+        priority: ["portability"],
+        score: 6.5,
+        summary: "Business-slim ultrabook with some workable macOS reports.",
+        details: {
+            cpu: "Intel Core i5-8265U",
+            igpu: "Intel UHD 620",
+            ram: "8GB",
+            storage: "M.2 / 2.5\" SATA (SSD)",
+            macosSupport: "Sonoma",
+            minMacosSupport: "High Sierra",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1920x1080",
+            chartData: { ease: 65, performance: 62, battery: 50, stability: 65 },
+            batteryLife: { capacity: "45Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A", "USB-C"],
+                video: ["HDMI"]
+            },
+            displayFeatures: { type: "IPS", brightness: "300 nits" },
+            knownIssues: ["WiFi/BT kexts", "Audio tweaks"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    lenovo_legion_5: {
+        name: "Lenovo Legion 5",
+        brand: "Lenovo",
+        priority: ["performance"],
+        score: 6.3,
+        summary: "Gaming-focused; integrated GPU route for macOS compatibility.",
+        details: {
+            cpu: "Intel Core i5-9300H",
+            igpu: "Unknown",
+            dgpu: "NVIDIA GTX 1650 (must be disabled)",
+            ram: "8GB",
+            storage: "M.2 NVMe",
+            macosSupport: "Sonoma",
+            minMacosSupport: "Mojave",
+            maxMacosSupport: "Sonoma",
+            screenResolution: "1920x1080",
+            chartData: { ease: 63, performance: 82, battery: 66, stability: 58 },
+            batteryLife: { capacity: "60Wh", type: "Li-ion" },
+            ports: {
+                usb: ["USB-A", "USB-C"],
+                video: ["HDMI"]
+            },
+            displayFeatures: { type: "IPS", brightness: "300 nits" },
+            knownIssues: ["Discrete GPU unsupported", "BIOS tweaks"]
+        },
+        source: "community",
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
     }
 };
 
@@ -2321,6 +3703,9 @@ const LaptopDB = {
         if (target < 0 || min < 0 || max < 0) return false;
         return target >= min && target <= max;
     },
+    brands() {
+        return [...new Set(this.all().map(l => l.brand))].sort((a, b) => a.localeCompare(b));
+    },
     isUnverified(laptop, path) {
         return (laptop.needsVerification || []).some(p => p === path || p.startsWith(path + '.'));
     }
@@ -2328,7 +3713,7 @@ const LaptopDB = {
 
 // Surface data mistakes in the console during development.
 (function validate() {
-    const required = ['name', 'priority', 'image', 'score', 'summary', 'details'];
+    const required = ['name', 'brand', 'priority', 'score', 'summary', 'details'];
     const metrics = ['ease', 'performance', 'battery', 'stability'];
     const errors = [];
     for (const [id, laptop] of Object.entries(laptopData)) {

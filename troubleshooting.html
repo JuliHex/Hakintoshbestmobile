@@ -11,12 +11,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/styles.css">
-    <style>
-        details > summary { list-style: none; }
-        details > summary::-webkit-details-marker { display: none; }
-        details[open] .chevron { transform: rotate(90deg); }
-        summary code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.9em; }
-    </style>
 </head>
 <body>
     <div id="site-header"></div>
@@ -28,25 +22,25 @@
         <div class="mt-6 max-w-3xl">
             <label for="issue-filter" class="sr-only">Filter issues</label>
             <input type="search" id="issue-filter" class="input" placeholder="Filter issues, e.g. “sleep” or “EXITBS”">
-            <p id="issue-empty" class="mt-4 text-sm text-gray-600 dark:text-gray-400" hidden>No matching issues. Try the <a class="text-primary hover:underline" href="https://dortania.github.io/OpenCore-Install-Guide/troubleshooting/troubleshooting.html" target="_blank" rel="noopener">Dortania troubleshooting guide</a>.</p>
+            <p id="issue-empty" class="mt-4 text-sm text-gray-600 dark:text-gray-400" hidden>No matching issues. Try the <a class="text-blue-700 dark:text-blue-300 hover:underline" href="https://dortania.github.io/OpenCore-Install-Guide/troubleshooting/troubleshooting.html" target="_blank" rel="noopener">Dortania troubleshooting guide</a>.</p>
         </div>
 
         <div id="issues" class="mt-6 max-w-3xl space-y-8">
             <section data-group>
                 <h2 class="text-xl font-bold mb-3">Booting the installer</h2>
                 <div class="space-y-3">
-                    <details class="card group">
-                        <summary class="flex items-center gap-3 p-4 cursor-pointer font-medium"><span class="chevron transition-transform text-gray-400">▶</span>Stuck at <code>EndRandomSeed</code> or “Security Violation”</summary>
+                    <details class="card accordion">
+                        <summary><svg class="chevron w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>Stuck at <code>EndRandomSeed</code> or “Security Violation”</summary>
                         <div class="prose-guide px-4 pb-4 text-sm">
                             <ul>
-                                <li>Make sure <code>HfsPlus.efi</code> (or <code>OpenHfsPlus.efi</code>) and <code>OpenRuntime.efi</code> are in <code>EFI/OC/Drivers</code> and listed in <code>UEFI → Drivers</code>.</li>
-                                <li>For a recovery-based installer, set <code>Misc → Security → DmgLoading</code> to <code>Signed</code> and <code>SecureBootModel</code> to <code>Disabled</code> while installing.</li>
+                                <li>Make sure <code>HfsPlus.efi</code> (or <code>OpenHfsPlus.efi</code>) and <code>OpenRuntime.efi</code> are in <code>EFI/OC/Drivers</code> and listed in <code>UEFI &gt; Drivers</code>.</li>
+                                <li>For a recovery-based installer, set <code>Misc &gt; Security &gt; DmgLoading</code> to <code>Signed</code> and <code>SecureBootModel</code> to <code>Disabled</code> while installing.</li>
                                 <li>Run your config through OpenCore's <code>ocvalidate</code> tool to catch typos and missing keys.</li>
                             </ul>
                         </div>
                     </details>
-                    <details class="card group">
-                        <summary class="flex items-center gap-3 p-4 cursor-pointer font-medium"><span class="chevron transition-transform text-gray-400">▶</span>Stuck at <code>[EB|#LOG:EXITBS:START]</code></summary>
+                    <details class="card accordion">
+                        <summary><svg class="chevron w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>Stuck at <code>[EB|#LOG:EXITBS:START]</code></summary>
                         <div class="prose-guide px-4 pb-4 text-sm">
                             <ul>
                                 <li>This is almost always a <strong>Booter quirks</strong> problem. Recheck every quirk against the Dortania page for your exact CPU generation.</li>
@@ -55,8 +49,8 @@
                             </ul>
                         </div>
                     </details>
-                    <details class="card group">
-                        <summary class="flex items-center gap-3 p-4 cursor-pointer font-medium"><span class="chevron transition-transform text-gray-400">▶</span>Prohibited sign or “Waiting for Root Device”</summary>
+                    <details class="card accordion">
+                        <summary><svg class="chevron w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>Prohibited sign or “Waiting for Root Device”</summary>
                         <div class="prose-guide px-4 pb-4 text-sm">
                             <ul>
                                 <li>Usually USB: macOS can't see the installer. Try a USB&nbsp;2.0 port, and map your ports with USBToolBox.</li>
@@ -65,10 +59,10 @@
                             </ul>
                         </div>
                     </details>
-                    <details class="card group">
-                        <summary class="flex items-center gap-3 p-4 cursor-pointer font-medium"><span class="chevron transition-transform text-gray-400">▶</span>Kernel panic mentioning CPU power management or CFG Lock</summary>
+                    <details class="card accordion">
+                        <summary><svg class="chevron w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>Kernel panic mentioning CPU power management or CFG Lock</summary>
                         <div class="prose-guide px-4 pb-4 text-sm">
-                            <p>Your firmware has CFG Lock enabled. Disable it in the BIOS (sometimes only possible by editing a hidden BIOS variable), or enable <code>Kernel → Quirks → AppleXcpmCfgLock</code>.</p>
+                            <p>Your firmware has CFG Lock enabled. Disable it in the BIOS (sometimes only possible by editing a hidden BIOS variable), or enable <code>Kernel &gt; Quirks &gt; AppleXcpmCfgLock</code>.</p>
                         </div>
                     </details>
                 </div>
@@ -77,8 +71,8 @@
             <section data-group>
                 <h2 class="text-xl font-bold mb-3">Graphics &amp; display</h2>
                 <div class="space-y-3">
-                    <details class="card group">
-                        <summary class="flex items-center gap-3 p-4 cursor-pointer font-medium"><span class="chevron transition-transform text-gray-400">▶</span>Black screen after the verbose text ends</summary>
+                    <details class="card accordion">
+                        <summary><svg class="chevron w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>Black screen after the verbose text ends</summary>
                         <div class="prose-guide px-4 pb-4 text-sm">
                             <ul>
                                 <li>Check <code>AAPL,ig-platform-id</code> and <code>device-id</code> under <code>DeviceProperties</code> match the recommended laptop values for your iGPU.</li>
@@ -88,8 +82,8 @@
                             </ul>
                         </div>
                     </details>
-                    <details class="card group">
-                        <summary class="flex items-center gap-3 p-4 cursor-pointer font-medium"><span class="chevron transition-transform text-gray-400">▶</span>No brightness slider or brightness keys</summary>
+                    <details class="card accordion">
+                        <summary><svg class="chevron w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>No brightness slider or brightness keys</summary>
                         <div class="prose-guide px-4 pb-4 text-sm">
                             <p>Add <strong>SSDT-PNLF</strong> (generate it with SSDTTime) for the slider, and <strong>BrightnessKeys.kext</strong> for the function keys.</p>
                         </div>
@@ -100,8 +94,8 @@
             <section data-group>
                 <h2 class="text-xl font-bold mb-3">Wireless, audio &amp; input</h2>
                 <div class="space-y-3">
-                    <details class="card group">
-                        <summary class="flex items-center gap-3 p-4 cursor-pointer font-medium"><span class="chevron transition-transform text-gray-400">▶</span>Wi-Fi doesn't work</summary>
+                    <details class="card accordion">
+                        <summary><svg class="chevron w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>Wi-Fi doesn't work</summary>
                         <div class="prose-guide px-4 pb-4 text-sm">
                             <ul>
                                 <li><strong>Intel cards:</strong> use <code>AirportItlwm</code> for the version of macOS you're running (each macOS version has its own build), or <code>itlwm</code> with the HeliPort app.</li>
@@ -110,14 +104,14 @@
                             </ul>
                         </div>
                     </details>
-                    <details class="card group">
-                        <summary class="flex items-center gap-3 p-4 cursor-pointer font-medium"><span class="chevron transition-transform text-gray-400">▶</span>Bluetooth doesn't turn on</summary>
+                    <details class="card accordion">
+                        <summary><svg class="chevron w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>Bluetooth doesn't turn on</summary>
                         <div class="prose-guide px-4 pb-4 text-sm">
                             <p>For Intel Bluetooth on Monterey and later, use <code>IntelBluetoothFirmware</code> together with <code>BlueToolFixup</code> (from BrcmPatchRAM). For Broadcom, use BrcmPatchRAM3, BrcmFirmwareData and BlueToolFixup.</p>
                         </div>
                     </details>
-                    <details class="card group">
-                        <summary class="flex items-center gap-3 p-4 cursor-pointer font-medium"><span class="chevron transition-transform text-gray-400">▶</span>No sound</summary>
+                    <details class="card accordion">
+                        <summary><svg class="chevron w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>No sound</summary>
                         <div class="prose-guide px-4 pb-4 text-sm">
                             <ul>
                                 <li>Find your codec's supported layout-ids in the AppleALC documentation.</li>
@@ -126,8 +120,8 @@
                             </ul>
                         </div>
                     </details>
-                    <details class="card group">
-                        <summary class="flex items-center gap-3 p-4 cursor-pointer font-medium"><span class="chevron transition-transform text-gray-400">▶</span>Trackpad doesn't work or has no gestures</summary>
+                    <details class="card accordion">
+                        <summary><svg class="chevron w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>Trackpad doesn't work or has no gestures</summary>
                         <div class="prose-guide px-4 pb-4 text-sm">
                             <ul>
                                 <li><strong>PS/2:</strong> VoodooPS2Controller.</li>
@@ -142,8 +136,8 @@
             <section data-group>
                 <h2 class="text-xl font-bold mb-3">Power, sleep &amp; battery</h2>
                 <div class="space-y-3">
-                    <details class="card group">
-                        <summary class="flex items-center gap-3 p-4 cursor-pointer font-medium"><span class="chevron transition-transform text-gray-400">▶</span>Wakes immediately after sleep, or won't wake</summary>
+                    <details class="card accordion">
+                        <summary><svg class="chevron w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>Wakes immediately after sleep, or won't wake</summary>
                         <div class="prose-guide px-4 pb-4 text-sm">
                             <ul>
                                 <li>Finish USB mapping first: unmapped ports are the #1 cause of instant wake.</li>
@@ -153,8 +147,8 @@
                             </ul>
                         </div>
                     </details>
-                    <details class="card group">
-                        <summary class="flex items-center gap-3 p-4 cursor-pointer font-medium"><span class="chevron transition-transform text-gray-400">▶</span>Battery percentage missing or stuck</summary>
+                    <details class="card accordion">
+                        <summary><svg class="chevron w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>Battery percentage missing or stuck</summary>
                         <div class="prose-guide px-4 pb-4 text-sm">
                             <p>Add <strong>SMCBatteryManager</strong> (part of VirtualSMC). If it still doesn't update, your embedded controller probably uses multi-byte fields; add <strong>ECEnabler.kext</strong> instead of hand-patching ACPI.</p>
                         </div>
@@ -165,13 +159,13 @@
             <section data-group>
                 <h2 class="text-xl font-bold mb-3">Apple services</h2>
                 <div class="space-y-3">
-                    <details class="card group">
-                        <summary class="flex items-center gap-3 p-4 cursor-pointer font-medium"><span class="chevron transition-transform text-gray-400">▶</span>iMessage, FaceTime or iCloud won't sign in</summary>
+                    <details class="card accordion">
+                        <summary><svg class="chevron w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>iMessage, FaceTime or iCloud won't sign in</summary>
                         <div class="prose-guide px-4 pb-4 text-sm">
                             <ul>
                                 <li>Generate a unique serial with GenSMBIOS and check on Apple's coverage site that it's <em>not</em> already in use.</li>
                                 <li>Make sure your network interface is <code>en0</code> and marked as built-in.</li>
-                                <li>Set <code>ROM</code> under <code>PlatformInfo → Generic</code> to your network card's MAC address.</li>
+                                <li>Set <code>ROM</code> under <code>PlatformInfo &gt; Generic</code> to your network card's MAC address.</li>
                             </ul>
                         </div>
                     </details>
@@ -179,7 +173,7 @@
             </section>
         </div>
 
-        <p class="mt-10 max-w-3xl text-sm text-gray-600 dark:text-gray-400">Still stuck? The <a class="text-primary dark:text-blue-300 hover:underline" href="https://dortania.github.io/OpenCore-Install-Guide/troubleshooting/troubleshooting.html" target="_blank" rel="noopener">Dortania troubleshooting guide</a> goes much deeper. When you ask for help on r/hackintosh, include your EFI, your hardware list and a photo of where verbose boot stops.</p>
+        <p class="mt-10 max-w-3xl text-sm text-gray-600 dark:text-gray-400">Still stuck? The <a class="text-blue-700 dark:text-blue-300 hover:underline" href="https://dortania.github.io/OpenCore-Install-Guide/troubleshooting/troubleshooting.html" target="_blank" rel="noopener">Dortania troubleshooting guide</a> goes much deeper. When you ask for help on r/hackintosh, include your EFI, your hardware list and a photo of where verbose boot stops.</p>
     </main>
 
     <div id="site-footer"></div>
