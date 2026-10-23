@@ -1,9 +1,8 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./*.html",
-    "./js/**/*.js",
-    "./src/islands/**/*.jsx",
+    "./index.html",
+    "./src/**/*.{js,jsx}",
     // liquid-glass-react styles its overlay layers with Tailwind classes.
     "./node_modules/liquid-glass-react/dist/index.esm.js"
   ],
@@ -17,7 +16,7 @@ module.exports = {
         secondary: '#f0f4f8'
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif']
+        sans: ['"Inter Variable"', 'Inter', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif']
       }
     }
   },
