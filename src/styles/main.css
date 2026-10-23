@@ -71,8 +71,14 @@
     display: none !important;
   }
 
-  select option {
+  /* Native dropdown lists don't inherit the glass styling; keep them readable in both themes. */
+  select option,
+  select optgroup {
     @apply bg-white text-gray-900 dark:bg-gray-800 dark:text-gray-100;
+  }
+
+  select optgroup {
+    @apply font-semibold;
   }
 
   /*

@@ -9,11 +9,13 @@ A guide to picking a laptop that runs macOS well with [OpenCore](https://github.
 ## Features
 
 - **95 laptops** with compatibility scores, macOS version ranges, hardware details and known issues, from 22 brands.
-- **Explorer**: search everything (model, CPU, Wi-Fi card…), and filter by priority, macOS version, brand, minimum score or favorites. Filters live in the URL, so a filtered view can be shared as a link.
+- **Can your laptop run macOS?**: pick a CPU family on the home page for a quick verdict, the macOS versions to expect, and matching laptops.
+- **Explorer**: search everything (model, CPU, Wi-Fi card…), and filter by priority, macOS version, CPU generation, brand, minimum score or favorites. Filters live in the URL, so a filtered view can be shared as a link.
 - **Compare** up to three laptops side by side, with an overlaid ratings chart and a spec table. Comparison links can be shared too.
 - **Favorites and recently viewed**, saved on your device.
 - **Component Checker**: which CPUs, GPUs, Wi-Fi cards, RAM and SSDs work with macOS.
 - **A build guide for every laptop**: the OpenCore config section, SMBIOS, iGPU framebuffer values, SSDTs and every kext it needs (with download links), plus BIOS settings, boot arguments and the AppleALC layout-ids for its audio codec. Pick your exact CPU, Wi-Fi card, trackpad and target macOS, and the guide adapts. A checklist tracks the kexts you've collected.
+- **Guides page**: every guide in one place, searchable, with General/Laptop tabs and a Beginner/Intermediate/Advanced difficulty for each laptop.
 - **Guides**: a general build guide, a buying-used checklist, a searchable troubleshooting page, and the essential tools and kexts.
 - **Works well on phones**, in light and dark mode, with a "liquid glass" look.
 - **No tracking and no outside requests**: fonts and libraries are bundled with the site.
@@ -37,7 +39,8 @@ Corrections are welcome. See [Adding or correcting a laptop](#adding-or-correcti
 | `/laptop/:id/build` | Step-by-step OpenCore build guide for that laptop |
 | `/compare` | Side-by-side comparison (`?ids=a,b,c`) |
 | `/components` | Component Checker (`?tab=Wi-Fi` and so on) |
-| `/build-guide` | Installing macOS with OpenCore, step by step |
+| `/guides` | All guides: search, filter by type and difficulty |
+| `/build-guide` | Installing macOS with OpenCore, step by step, plus a laptop picker |
 | `/buy-used` | Where to buy used and what to check |
 | `/troubleshooting` | Fixes for common problems |
 | `/essentials` | Tools, kexts and community resources |

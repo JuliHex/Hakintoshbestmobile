@@ -511,3 +511,47 @@ export function buildPlan(laptop, choices) {
 }
 
 export { CPU_PLATFORM };
+
+// ---------------------------------------------------------------------------
+// Summaries used by the Guides page, the Explorer and the home page assistant
+
+// Broad CPU family of a laptop's most likely CPU.
+export const CPU_FAMILIES = {
+    modern: 'Intel 8th–10th gen',
+    mid: 'Intel 6th–7th gen',
+    legacy: 'Intel 4th–5th gen'
+};
+
+const FAMILY_OF_PLATFORM = {
+    broadwell: 'legacy',
+    skylake: 'mid',
+    kaby: 'mid',
+    kabyR: 'modern',
+    amber: 'modern',
+    coffee: 'modern',
+    coffeePlus: 'modern',
+    comet: 'modern',
+    ice: 'modern'
+};
+
+export function cpuFamily(laptop) {
+    const [platform] = CPU_PLATFORM[cpuOptions(laptop)[0]];
+    return FAMILY_OF_PLATFORM[platform];
+}
+
+export const DIFFICULTIES = ['Beginner', 'Intermediate', 'Advanced'];
+
+// How hard the build is likely to be, from the same rules as the build guide: setup ease,
+// a dGPU to disable, a Wi-Fi card to replace, older graphics, and unknowns to check.
+export function guideDifficulty(laptop) {
+    const d = laptop.details;
+    const [platform] = CPU_PLATFORM[cpuOptions(laptop)[0]];
+    const wifi = wifiInfo(laptop);
+    const ease = d.chartData?.ease ?? 70;
+    let points = ease >= 85 ? 0 : ease >= 72 ? 1 : 2;
+    if (d.dgpu && !/^none/i.test(d.dgpu)) points += 1;
+    if (wifi.unsupported && !wifi.intel) points += 1;
+    if (platform === 'skylake' || platform === 'broadwell' || platform === 'ice') points += 1;
+    if (!d.trackpad || !d.wifiBluetooth) points += 1;
+    return DIFFICULTIES[Math.min(2, points <= 1 ? 0 : points <= 3 ? 1 : 2)];
+}
