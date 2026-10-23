@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./index.html",
+    "./src/index.html",
     "./src/**/*.{js,jsx}",
     // liquid-glass-react styles its overlay layers with Tailwind classes.
     "./node_modules/liquid-glass-react/dist/index.esm.js"

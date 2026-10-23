@@ -3,6 +3,6 @@
 // and let React Router render the right page.
 import { copyFileSync, writeFileSync } from 'node:fs';
 
-copyFileSync('dist/index.html', 'dist/404.html');
+copyFileSync('index.html', '404.html');
 // Stop Jekyll from processing the build output.
-writeFileSync('dist/.nojekyll', '');
+writeFileSync('.nojekyll', '');

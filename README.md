@@ -9,7 +9,7 @@ Live site: https://julihex.github.io/Hakintoshbestmobile/
 ```sh
 npm install
 npm run dev       # local dev server with hot reload
-npm run build     # production build into dist/
+npm run build     # production build into the repo root (see Deployment)
 npm run preview   # serve the production build locally
 ```
 
@@ -17,9 +17,14 @@ Built with Vite, React 19, React Router, Tailwind CSS 3, Chart.js and [liquid-gl
 
 ## Deployment
 
-`.github/workflows/deploy.yml` builds the app and publishes `dist/` to GitHub Pages on every push to `main`. In the repository settings, set **Pages > Build and deployment > Source** to **GitHub Actions** once.
+GitHub Pages serves the `main` branch from the repository root ("Deploy from a branch"). There's no build step on GitHub, so the built site is committed:
 
-GitHub Pages has no server-side routing. The build copies `index.html` to `404.html` so deep links like `/Hakintoshbestmobile/explorer` still load the app. Old links from the earlier multi-page site (`explorer.html`, `laptop_detail.html?id=…` and so on) redirect to the new routes. If the repository is renamed, update `base` in `vite.config.js`.
+1. Run `npm run build`. It writes `index.html`, `404.html`, `.nojekyll` and `assets/` to the repo root, replacing the previous build.
+2. Commit those files along with your source changes and push to `main`.
+
+Don't edit the root `index.html` or anything in `assets/` by hand: they're generated. The app's source shell is `src/index.html`.
+
+GitHub Pages has no server-side routing, so `404.html` is a copy of the app shell. That way deep links like `/Hakintoshbestmobile/explorer` still load the app. Old links from the earlier multi-page site (`explorer.html`, `laptop_detail.html?id=…` and so on) redirect to the new routes. If the repository is renamed, update `base` in `vite.config.js`.
 
 ## Structure
 
