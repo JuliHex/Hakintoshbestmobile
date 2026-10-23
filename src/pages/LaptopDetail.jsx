@@ -219,7 +219,7 @@ function Detail({ laptop }) {
                             )}
                         </>
                     ) : (
-                        <p className="text-sm">No model-specific guide yet. Start with the <Link className="text-blue-700 dark:text-blue-300 hover:underline" to="/build-guide">Build Guide</Link>.</p>
+                        <p className="text-sm text-gray-600 dark:text-gray-300">No model-specific repository yet. The build guide above covers what this laptop needs.</p>
                     )}
                 </Section>
 

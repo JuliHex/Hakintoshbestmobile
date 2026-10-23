@@ -292,14 +292,19 @@ function ethernetOptions(laptop) {
 }
 
 // Codec in the laptop data -> AppleALC layout-ids, trying every ALC/CX name mentioned.
+// Layout-ids a model's guide reports as working (e.g. "layout-id 30 or 99") come first.
 export function audioInfo(laptop) {
     const raw = laptop.details.audioCodec;
     const names = String(raw || '').toUpperCase().match(/\b(?:ALC|CX)\s?\d{3,4}[A-Z]?\b/g) || [];
+    const known = (String(raw || '').match(/layout-id[s]?\s*([\d\s,or/]+)/i)?.[1].match(/\d+/g) || []).map(Number);
     for (const name of names) {
         const hit = ALC_LAYOUTS[name.replace(/\s/g, '')];
-        if (hit) return { raw, codec: hit.codec, layouts: hit.layouts };
+        if (hit) {
+            const preferred = known.filter(n => hit.layouts.includes(n));
+            return { raw, codec: hit.codec, layouts: [...preferred, ...hit.layouts.filter(n => !preferred.includes(n))], known: preferred };
+        }
     }
-    return { raw, codec: null, layouts: [] };
+    return { raw, codec: null, layouts: [], known: [] };
 }
 
 // Everything the reader may need to choose, with the best default first.
@@ -383,7 +388,7 @@ export function buildPlan(laptop, choices) {
         kexts.push(kext('AppleALC', 'Audio', {
             required: true,
             when: audio.layouts.length
-                ? `Your codec (${audio.codec}) supports layout-ids ${audio.layouts.join(', ')}. Try them in order.`
+                ? `Your codec (${audio.codec}) supports layout-ids ${audio.layouts.join(', ')}.${audio.known.length ? ` Start with ${audio.known.join(' or ')}, which this model's guide reports as working.` : ' Try them in order.'}`
                 : 'Find your codec\'s layout-ids on the AppleALC supported codecs list.'
         }));
     }

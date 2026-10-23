@@ -8,7 +8,7 @@ A guide to picking a laptop that runs macOS well with [OpenCore](https://github.
 
 ## Features
 
-- **86 laptops** with compatibility scores, macOS version ranges, hardware details and known issues, from 22 brands.
+- **95 laptops** with compatibility scores, macOS version ranges, hardware details and known issues, from 22 brands, with links to maintained OpenCore repositories where one exists.
 - **Explorer**: search everything (model, CPU, Wi-Fi card…), and filter by priority, macOS version, brand, minimum score or favorites. Filters live in the URL, so a filtered view can be shared as a link.
 - **Compare** up to three laptops side by side, with an overlaid ratings chart and a spec table. Comparison links can be shared too.
 - **Favorites and recently viewed**, saved on your device.
@@ -22,10 +22,10 @@ A guide to picking a laptop that runs macOS well with [OpenCore](https://github.
 
 Laptop information is a starting point, not a guarantee. Check everything against your exact model before you buy.
 
-- **23 curated laptops** are the core of the guide. Any field that hasn't been confirmed against a real build is marked **Unverified** on the site.
+- **32 curated laptops** are the core of the guide. Hardware for the newer additions comes from each model's maintained OpenCore repository, which is linked from its page. Any field that hasn't been confirmed against a real build is marked **Unverified** on the site.
 - **63 community laptops** were imported from a community-submitted list. Their pages say so, their ratings are estimated from that list's compatibility scores, and their macOS ranges are marked Unverified.
 
-Corrections are welcome. See [Adding or correcting a laptop](#adding-or-correcting-a-laptop).
+Every guide link points to a repository confirmed to exist. Corrections are welcome. See [Adding or correcting a laptop](#adding-or-correcting-a-laptop).
 
 ## Pages
 

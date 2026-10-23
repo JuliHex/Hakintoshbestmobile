@@ -77,7 +77,10 @@ export const laptopData = {
             },
             guides: {
                 installation: "https://github.com/EETagent/T480-OpenCore-Hackintosh",
-                additional: ["https://github.com/valnoxy/t480-oc", "https://github.com/MSzturc/T480-OpenCore"]
+                additional: [
+                    "https://github.com/valnoxy/t480-oc",
+                    "https://github.com/zexry619/Thinkpad-T480-Hackintosh-Dualboot"
+                ]
             },
             thermals: {
                 idleTemp: "35-40°C",
@@ -140,13 +143,6 @@ export const laptopData = {
             communitySupport: {
                 rating: "Good",
                 resources: ["Several GitHub repositories available", "Active forum discussions", "Multiple success stories"]
-            },
-            guides: {
-                installation: "https://github.com/username/acer-swift3-opencore",
-                additional: [
-                    "https://www.tonymacx86.com/threads/your-thread-here",
-                    "https://github.com/another-repo/swift3-efi"
-                ]
             },
             thermals: {
                 idleTemp: "30-35°C",
@@ -220,13 +216,6 @@ export const laptopData = {
                 rating: "Moderate",
                 resources: ["Limited GitHub guides", "Some forum discussions", "Basic documentation available"]
             },
-            guides: {
-                installation: "https://github.com/username/corebook-x-opencore",
-                additional: [
-                    "https://www.tonymacx86.com/threads/chuwi-corebook-x",
-                    "https://github.com/another-repo/chuwi-efi"
-                ]
-            },
             thermals: {
                 idleTemp: "35-45°C",
                 loadTemp: "80-90°C",
@@ -289,13 +278,6 @@ export const laptopData = {
             communitySupport: {
                 rating: "Very Good",
                 resources: ["Multiple GitHub guides", "Active forum support", "Well-documented solutions"]
-            },
-            guides: {
-                installation: "https://github.com/username/xps-9300-opencore",
-                additional: [
-                    "https://www.tonymacx86.com/threads/dell-xps-13-9300",
-                    "https://github.com/another-repo/xps9300-efi"
-                ]
             },
             thermals: {
                 idleTemp: "35-40°C",
@@ -363,13 +345,6 @@ export const laptopData = {
                 rating: "Excellent",
                 resources: ["Multiple GitHub guides", "Active forum support", "Well-documented solutions"]
             },
-            guides: {
-                installation: "https://github.com/the-darkvoid/XPS9370-macOS",
-                additional: [
-                    "https://github.com/3wsoftware/XPS9370-macOS-Mojave",
-                    "https://www.tonymacx86.com/threads/guide-dell-xps-13-9370-mojave-virtualbox.286712/"
-                ]
-            },
             thermals: {
                 idleTemp: "35-40°C",
                 loadTemp: "75-85°C",
@@ -394,15 +369,15 @@ export const laptopData = {
         score: 8.5,
         summary: "Powerful laptop with dedicated graphics (dGPU disabled in macOS)",
         details: {
-            cpu: "Intel Core i7/i9 8th Gen",
+            cpu: "Intel Core i5-8300H / i7-8750H (Coffee Lake H)",
             igpu: "Intel UHD 630",
             ram: "Up to 32GB DDR4",
             storage: "NVMe + SATA",
             macosSupport: "Monterey",
             minMacosSupport: "Mojave",
             maxMacosSupport: "Ventura (dGPU disabled)",
-            wifiBluetooth: "Killer 1535 (Qualcomm QCA61x4A - Often replaced)",
-            audioCodec: "Realtek ALC3266 (ALC298)",
+            wifiBluetooth: "Killer 1535 (Qualcomm QCA6174), commonly replaced with Broadcom DW1830",
+            audioCodec: "Realtek ALC298",
             trackpad: "I2C HID Precision",
             screenResolution: "1920x1080 or 3840x2160",
             chartData: { ease: 70, performance: 95, battery: 75, stability: 80 },
@@ -435,7 +410,9 @@ export const laptopData = {
                 "NVIDIA GPU must be disabled",
                 "Sleep issues need patches",
                 "Thunderbolt requires careful configuration",
-                "Original Wi-Fi card needs replacement"
+                "Original Wi-Fi card needs replacement",
+                "Thunderbolt not working",
+                "Some Samsung SSDs (SM961/PM961) fail to install Big Sur or later"
             ],
             communitySupport: {
                 rating: "Good",
@@ -443,10 +420,7 @@ export const laptopData = {
             },
             guides: {
                 installation: "https://github.com/bavariancake/XPS9570-macOS",
-                additional: [
-                    "https://github.com/LuletterSoul/Dell-XPS-15-9570-macOS",
-                    "https://www.tonymacx86.com/threads/guide-dell-xps-15-9570-mojave.267805/"
-                ]
+                additional: ["https://github.com/xxxzc/xps15-9570-macos"]
             },
             thermals: {
                 idleTemp: "40-45°C",
@@ -459,8 +433,6 @@ export const laptopData = {
             "details.macosSupport",
             "details.minMacosSupport",
             "details.maxMacosSupport",
-            "details.wifiBluetooth",
-            "details.audioCodec",
             "details.trackpad",
             "details.screenResolution"
         ],
@@ -522,10 +494,6 @@ export const laptopData = {
             communitySupport: {
                 rating: "Very Good",
                 resources: ["Multiple GitHub guides", "Active forum discussions", "Well-documented solutions"]
-            },
-            guides: {
-                installation: "https://github.com/username/elitebook-840-opencore",
-                additional: ["https://www.tonymacx86.com/threads/hp-elitebook-840", "https://github.com/other-repo/840g5-efi"]
             },
             thermals: {
                 idleTemp: "35-40°C",
@@ -603,13 +571,6 @@ export const laptopData = {
                 rating: "Good",
                 resources: ["Several GitHub guides", "Forum support available", "Growing user base"]
             },
-            guides: {
-                installation: "https://github.com/username/spectre-x360-15-opencore",
-                additional: [
-                    "https://www.tonymacx86.com/threads/hp-spectre-x360-15",
-                    "https://github.com/another-repo/spectre-efi"
-                ]
-            },
             thermals: {
                 idleTemp: "35-45°C",
                 loadTemp: "75-85°C",
@@ -675,10 +636,6 @@ export const laptopData = {
             communitySupport: {
                 rating: "Good",
                 resources: ["Some GitHub repositories", "Forum discussions available", "Basic documentation exists"]
-            },
-            guides: {
-                installation: "https://github.com/username/ideapad-330s-opencore",
-                additional: ["https://www.tonymacx86.com/threads/ideapad-330s", "https://github.com/another-repo/330s-efi"]
             },
             thermals: {
                 idleTemp: "35-40°C",
@@ -750,10 +707,6 @@ export const laptopData = {
             communitySupport: {
                 rating: "Good",
                 resources: ["Multiple GitHub guides", "Active forum support", "Detailed documentation"]
-            },
-            guides: {
-                installation: "https://github.com/username/ideapad-530s-opencore",
-                additional: ["https://www.tonymacx86.com/threads/ideapad-530s", "https://github.com/another-repo/530s-efi"]
             },
             thermals: {
                 idleTemp: "30-35°C",
@@ -831,13 +784,6 @@ export const laptopData = {
                 rating: "Very Good",
                 resources: ["Multiple GitHub guides", "Active Dell forums", "Well-documented solutions"]
             },
-            guides: {
-                installation: "https://github.com/username/latitude-7x90-opencore",
-                additional: [
-                    "https://www.tonymacx86.com/threads/dell-latitude-7x90",
-                    "https://github.com/altro-repo/latitude-efi"
-                ]
-            },
             thermals: {
                 idleTemp: "35-40°C",
                 loadTemp: "70-80°C",
@@ -908,10 +854,6 @@ export const laptopData = {
                 rating: "Good",
                 resources: ["GitHub repositories available", "Forum threads with solutions", "Growing user base"]
             },
-            guides: {
-                installation: "https://github.com/username/lg-gram-opencore",
-                additional: ["https://www.tonymacx86.com/threads/lg-gram", "https://github.com/another-repo/gram-efi"]
-            },
             thermals: {
                 idleTemp: "30-35°C",
                 loadTemp: "75-85°C",
@@ -931,22 +873,22 @@ export const laptopData = {
         brand: "LG"
     },
     huawei_matebook_x_pro: {
-        name: "Huawei MateBook X Pro",
+        name: "Huawei MateBook X Pro (2020)",
         priority: ["performance", "portability"],
         score: 8.7,
         summary: "Premium ultrabook with 3:2 display",
         details: {
-            cpu: "Intel Core i5/i7 10th Gen",
-            igpu: "Intel Iris Plus",
+            cpu: "Intel Core i5-10210U / i7-10510U (Comet Lake)",
+            igpu: "Intel UHD 620",
             ram: "16GB LPDDR3",
             storage: "NVMe",
             macosSupport: "Monterey",
             minMacosSupport: "Mojave",
-            maxMacosSupport: "Ventura",
-            wifiBluetooth: "Intel AX201 / Lite-On",
+            maxMacosSupport: "Sequoia",
+            wifiBluetooth: "Intel Wireless-AC 9560 (Bluetooth 5.0)",
             audioCodec: "Realtek ALC256",
             trackpad: "I2C HID",
-            screenResolution: "3000x2000 (3K)",
+            screenResolution: "3000x2000 (3:2, touch)",
             chartData: { ease: 85, performance: 90, battery: 85, stability: 85 },
             dimensions: { width: "304 mm", depth: "217 mm", height: "14.6 mm" },
             weight: "1.33 kg",
@@ -979,38 +921,27 @@ export const laptopData = {
                 secureBootSupport: true
             },
             knownIssues: [
-                "Wi-Fi card needs replacement",
-                "Touchscreen requires patches",
-                "Sleep mode may be unstable",
-                "Brightness keys need remapping"
+                "NVIDIA MX250 must be disabled",
+                "Stock Samsung PM981 SSD is unsupported; replace it (e.g. WD SN750/SN850)",
+                "Wi-Fi in the Sequoia/Tahoe installer needs extra steps (see the guide)"
             ],
             communitySupport: {
                 rating: "Good",
                 resources: ["Several GitHub guides", "Active forum threads", "Good documentation available"]
             },
             guides: {
-                installation: "https://github.com/username/matebook-x-pro-opencore",
-                additional: [
-                    "https://www.tonymacx86.com/threads/matebook-x-pro",
-                    "https://github.com/another-repo/matebook-efi"
-                ]
+                installation: "https://github.com/jlempen/MateBook-X-Pro-2020-OpenCore",
+                additional: []
             },
             thermals: {
                 idleTemp: "35-40°C",
                 loadTemp: "75-85°C",
                 coolingSystem: "Dual fan with shared heat pipes",
                 undervolting: "Supported via ThrottleStop"
-            }
+            },
+            dgpu: "NVIDIA GeForce MX250 (must be disabled)"
         },
-        needsVerification: [
-            "details.macosSupport",
-            "details.minMacosSupport",
-            "details.maxMacosSupport",
-            "details.wifiBluetooth",
-            "details.audioCodec",
-            "details.trackpad",
-            "details.screenResolution"
-        ],
+        needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport"],
         brand: "Huawei"
     },
     xiaomi_mi_notebook_pro: {
@@ -1019,16 +950,16 @@ export const laptopData = {
         score: 8.4,
         summary: "High-performance laptop with premium build",
         details: {
-            cpu: "Intel Core i5/i7 8th Gen",
+            cpu: "Intel Core i5-8250U / i7-8550U (Kaby Lake R)",
             igpu: "Intel UHD 620",
-            ram: "Up to 16GB DDR4",
+            ram: "8/16GB DDR4 2400MHz",
             storage: "NVMe",
             macosSupport: "Monterey",
             minMacosSupport: "Mojave",
             maxMacosSupport: "Ventura",
-            wifiBluetooth: "Intel AC 8265/9260",
-            audioCodec: "Realtek ALC298",
-            trackpad: "Synaptics SMBus",
+            wifiBluetooth: "Intel Wireless-AC 8265",
+            audioCodec: "Realtek ALC298 (layout-id 30 or 99)",
+            trackpad: "ELAN ETD2303 (I2C)",
             screenResolution: "1920x1080 (FHD)",
             chartData: { ease: 75, performance: 80, battery: 75, stability: 80 },
             dimensions: { width: "357 mm", depth: "229 mm", height: "15.9 mm" },
@@ -1057,33 +988,31 @@ export const laptopData = {
                 secureBootSupport: true
             },
             knownIssues: [
-                "Original Wi-Fi card not supported",
-                "HDMI audio may be unstable",
-                "Fingerprint reader not working",
-                "Battery reporting needs patches"
+                "NVIDIA MX150 must be disabled (no Optimus support in macOS)",
+                "Fingerprint sensor not supported",
+                "Intel Wi-Fi works with reduced speed",
+                "Built-in audio stops working on macOS 26 Tahoe (AppleHDA removed)"
             ],
             communitySupport: {
                 rating: "Good",
                 resources: ["GitHub repositories available", "Forum support threads", "Regular updates from community"]
             },
             guides: {
-                installation: "https://github.com/username/mi-notebook-pro-opencore",
-                additional: ["https://www.tonymacx86.com/threads/mi-notebook-pro", "https://github.com/other-repo/xiaomi-efi"]
+                installation: "https://github.com/daliansky/XiaoMi-Pro-Hackintosh",
+                additional: []
             },
             thermals: {
                 idleTemp: "35-45°C",
                 loadTemp: "80-90°C",
                 coolingSystem: "Dual fan cooling system",
                 undervolting: "Supported via ThrottleStop"
-            }
+            },
+            dgpu: "NVIDIA GeForce MX150 (must be disabled)"
         },
         needsVerification: [
             "details.macosSupport",
             "details.minMacosSupport",
             "details.maxMacosSupport",
-            "details.wifiBluetooth",
-            "details.audioCodec",
-            "details.trackpad",
             "details.screenResolution"
         ],
         brand: "Xiaomi"
@@ -1140,10 +1069,6 @@ export const laptopData = {
             communitySupport: {
                 rating: "Moderate",
                 resources: ["Limited GitHub guides", "Some forum discussions", "Requires advanced knowledge"]
-            },
-            guides: {
-                installation: "https://github.com/username/msi-gs65-opencore",
-                additional: ["https://www.tonymacx86.com/threads/msi-gs65", "https://github.com/another-repo/gs65-efi"]
             },
             thermals: {
                 idleTemp: "40-45°C",
@@ -1216,13 +1141,6 @@ export const laptopData = {
                 rating: "Good",
                 resources: ["Several GitHub guides", "Active forum discussions", "Growing community support"]
             },
-            guides: {
-                installation: "https://github.com/username/msi-prestige-14-opencore",
-                additional: [
-                    "https://www.tonymacx86.com/threads/msi-prestige-14",
-                    "https://github.com/another-repo/prestige-efi"
-                ]
-            },
             thermals: {
                 idleTemp: "35-40°C",
                 loadTemp: "75-85°C",
@@ -1294,13 +1212,6 @@ export const laptopData = {
             communitySupport: {
                 rating: "Good",
                 resources: ["Multiple GitHub guides", "Active forum support", "Regular updates available"]
-            },
-            guides: {
-                installation: "https://github.com/username/precision-5550-opencore",
-                additional: [
-                    "https://www.tonymacx86.com/threads/precision-5550",
-                    "https://github.com/another-repo/precision-efi"
-                ]
             },
             thermals: {
                 idleTemp: "35-40°C",
@@ -1378,13 +1289,6 @@ export const laptopData = {
                 rating: "Very Good",
                 resources: ["GitHub guides available", "Active forum support", "Well-documented solutions"]
             },
-            guides: {
-                installation: "https://github.com/username/probook-450-g7-opencore",
-                additional: [
-                    "https://www.tonymacx86.com/threads/probook-450-g7",
-                    "https://github.com/another-repo/probook-efi"
-                ]
-            },
             thermals: {
                 idleTemp: "35-40°C",
                 loadTemp: "70-80°C",
@@ -1455,13 +1359,6 @@ export const laptopData = {
             communitySupport: {
                 rating: "Good",
                 resources: ["Some GitHub guides", "Forum support available", "Growing documentation"]
-            },
-            guides: {
-                installation: "https://github.com/username/samsung-notebook9-opencore",
-                additional: [
-                    "https://www.tonymacx86.com/threads/samsung-notebook-9",
-                    "https://github.com/another-repo/notebook9-efi"
-                ]
             },
             thermals: {
                 idleTemp: "35-40°C",
@@ -1535,13 +1432,6 @@ export const laptopData = {
                 rating: "Good",
                 resources: ["Multiple GitHub guides", "Active forum support", "Regular updates available"]
             },
-            guides: {
-                installation: "https://github.com/username/spectre-x360-13-opencore",
-                additional: [
-                    "https://www.tonymacx86.com/threads/spectre-x360-13",
-                    "https://github.com/another-repo/spectre13-efi"
-                ]
-            },
             thermals: {
                 idleTemp: "35-40°C",
                 loadTemp: "75-85°C",
@@ -1574,7 +1464,7 @@ export const laptopData = {
             minMacosSupport: "High Sierra",
             maxMacosSupport: "Sonoma",
             wifiBluetooth: "Killer 1535 (QCA6174) or Intel 8265 (often replaced with Broadcom DW1830/DW1560)",
-            audioCodec: "Realtek ALC3246 (ALC256)",
+            audioCodec: "Realtek ALC3246 (ALC256), layout-id 56",
             trackpad: "I2C HID Precision (VoodooI2C)",
             screenResolution: "1920x1080 (FHD) or 3200x1800 (QHD+ touch)",
             chartData: { ease: 85, performance: 70, battery: 80, stability: 88 },
@@ -1613,7 +1503,7 @@ export const laptopData = {
             },
             guides: {
                 installation: "https://dortania.github.io/OpenCore-Install-Guide/config-laptop.plist/kaby-lake.html",
-                additional: []
+                additional: ["https://github.com/the-darkvoid/XPS9360-macOS"]
             },
             thermals: {
                 idleTemp: "35-45°C",
@@ -1683,7 +1573,7 @@ export const laptopData = {
             },
             guides: {
                 installation: "https://github.com/tylernguyen/x1c6-hackintosh",
-                additional: []
+                additional: ["https://github.com/Colton-Ko/macOS-ThinkPad-X1C6"]
             },
             thermals: {
                 idleTemp: "35-45°C",
@@ -1848,7 +1738,15 @@ export const laptopData = {
                 video: ["microHDMI"]
             },
             displayFeatures: { type: "IPS", brightness: "300 nits" },
-            knownIssues: ["Audio and trackpad tweaks often required", "WiFi card swap recommended for best compatibility"]
+            knownIssues: ["Audio and trackpad tweaks often required", "WiFi card swap recommended for best compatibility"],
+            dgpu: "NVIDIA GeForce MX150 on some models (must be disabled)",
+            wifiBluetooth: "Intel Dual Band Wireless-AC 8265",
+            audioCodec: "Realtek ALC294",
+            trackpad: "ELAN1200 I2C HID",
+            guides: {
+                installation: "https://github.com/VortexisTV/Asus-Zenbook-UX331-Hackintosh",
+                additional: []
+            }
         },
         source: "community",
         needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
@@ -1935,7 +1833,12 @@ export const laptopData = {
                 network: "Ethernet"
             },
             displayFeatures: { type: "IPS", brightness: "250 nits" },
-            knownIssues: ["WiFi swap recommended", "Power management tuning"]
+            knownIssues: ["WiFi swap recommended", "Power management tuning"],
+            wifiBluetooth: "Intel Dual Band Wireless-AC 8265",
+            guides: {
+                installation: "https://github.com/domamaric/t470-thinkpad-hackintosh",
+                additional: []
+            }
         },
         source: "community",
         needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
@@ -3523,6 +3426,347 @@ export const laptopData = {
         },
         source: "community",
         needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
+    },
+    thinkpad_x1_carbon_gen7: {
+        name: "ThinkPad X1 Carbon Gen 7",
+        brand: "Lenovo",
+        priority: ["portability", "ease"],
+        score: 8.8,
+        summary: "Light Whiskey Lake ultrabook with two maintained OpenCore setups running up to Sonoma",
+        details: {
+            cpu: "Intel Core i5-8265U / i7-8565U / i7-8665U (Whiskey Lake)",
+            igpu: "Intel UHD 620",
+            ram: "8-16GB LPDDR3 (soldered)",
+            storage: "M.2 2280 NVMe",
+            macosSupport: "Sonoma",
+            minMacosSupport: "Mojave",
+            maxMacosSupport: "Sonoma",
+            wifiBluetooth: "Intel Wireless-AC 9560 (Bluetooth 5.0)",
+            audioCodec: "Realtek ALC3286 (ALC285)",
+            trackpad: "Synaptics over I2C (VoodooI2C)",
+            screenResolution: "1920x1080 (FHD), WQHD or 4K options",
+            chartData: { ease: 82, performance: 74, battery: 80, stability: 86 },
+            weight: "1.09 kg",
+            ports: {
+                usb: ["2x USB 3.1 Type-A"],
+                thunderbolt: "2x Thunderbolt 3 (USB-C)",
+                video: ["HDMI 1.4b"],
+                network: "Ethernet via extension adapter",
+                others: ["3.5mm Audio Jack"]
+            },
+            knownIssues: [
+                "Internal microphone may not work",
+                "Fingerprint reader not supported",
+                "Bluetooth headset microphones don't work",
+                "Samsung PM981/PM981a SSDs don't work out of the box"
+            ],
+            communitySupport: {
+                rating: "Very Good",
+                resources: ["Two public OpenCore repositories", "Shares much of its setup with the X1 Carbon Gen 6"]
+            },
+            guides: {
+                installation: "https://github.com/aidanchandra/x1c7-hackintosh",
+                additional: ["https://github.com/mamunaco/x1c7-opencore-hackintosh"]
+            }
+        },
+        needsVerification: ["details.ram", "details.weight", "details.chartData"]
+    },
+    dell_latitude_5400: {
+        name: "Dell Latitude 5400",
+        brand: "Dell",
+        priority: ["budget", "stability"],
+        score: 8.1,
+        summary: "Affordable Whiskey Lake business laptop with a documented Monterey OpenCore build",
+        details: {
+            cpu: "Intel Core i5-8365U (Whiskey Lake)",
+            igpu: "Intel UHD 620",
+            ram: "DDR4 2666MHz SO-DIMM (upgradeable)",
+            storage: "M.2 NVMe",
+            macosSupport: "Monterey",
+            minMacosSupport: "Mojave",
+            maxMacosSupport: "Monterey",
+            wifiBluetooth: "Intel Wireless-AC 9560",
+            audioCodec: "Realtek ALC236",
+            trackpad: "I2C HID",
+            screenResolution: "1920x1080 (FHD)",
+            chartData: { ease: 76, performance: 72, battery: 75, stability: 80 },
+            ports: {
+                usb: ["USB 3.1 Type-A", "USB-C"],
+                video: ["HDMI"],
+                network: "RJ45 Ethernet",
+                others: ["3.5mm Audio Jack"]
+            },
+            knownIssues: [
+                "Display output over USB-C DisplayPort doesn't work",
+                "Only Monterey has been tested",
+                "Some NVMe drives need extra work or are unsupported"
+            ],
+            communitySupport: {
+                rating: "Moderate",
+                resources: ["Public OpenCore EFI for Monterey"]
+            },
+            guides: {
+                installation: "https://github.com/Dugganclock/Dell-Latitude-5400-Hackintosh-OpenCore",
+                additional: []
+            }
+        },
+        needsVerification: ["details.trackpad", "details.ports", "details.chartData"]
+    },
+    dell_xps_15_7590: {
+        name: "Dell XPS 15 7590",
+        brand: "Dell",
+        priority: ["performance"],
+        score: 8,
+        summary: "Powerful 9th gen XPS; the GTX 1650 is unusable, but the Intel side runs macOS well",
+        details: {
+            cpu: "Intel Core i5-9300H / i7-9750H (Coffee Lake Refresh)",
+            igpu: "Intel UHD 630",
+            dgpu: "NVIDIA GeForce GTX 1650 (must be disabled)",
+            ram: "DDR4 2666MHz SO-DIMM",
+            storage: "M.2 NVMe",
+            macosSupport: "Monterey",
+            minMacosSupport: "Mojave",
+            maxMacosSupport: "Monterey",
+            wifiBluetooth: "Killer Wireless 1650 (Intel AX200-based); AirDrop needs a Broadcom DW1820/DW1830",
+            trackpad: "I2C HID",
+            screenResolution: "1920x1080 (FHD) or 3840x2160 (4K touch / OLED)",
+            chartData: { ease: 72, performance: 86, battery: 70, stability: 78 },
+            ports: {
+                usb: ["2x USB 3.1 Type-A"],
+                thunderbolt: "1x Thunderbolt 3 (USB-C)",
+                video: ["HDMI 2.0"],
+                others: ["SD Card Reader", "3.5mm Audio Jack"]
+            },
+            knownIssues: ["NVIDIA GTX 1650 can't be used", "AirDrop doesn't work with the stock Killer card"],
+            communitySupport: {
+                rating: "Good",
+                resources: ["Public OpenCore EFI (Monterey)", "Community notes for newer macOS versions"]
+            },
+            guides: {
+                installation: "https://github.com/1nferious/Dell-XPS-15-7590-MacOS-Monterey--12.0.1--Hackintosh",
+                additional: []
+            }
+        },
+        needsVerification: ["details.maxMacosSupport", "details.ram", "details.ports", "details.chartData"]
+    },
+    dell_xps_15_9500: {
+        name: "Dell XPS 15 9500",
+        brand: "Dell",
+        priority: ["performance"],
+        score: 7.4,
+        summary: "10th gen XPS with good graphics acceleration, but sleep doesn't work",
+        details: {
+            cpu: "Intel Core i7-10750H (Comet Lake H)",
+            igpu: "Intel UHD 630",
+            dgpu: "NVIDIA GeForce GTX 1650 Ti (must be disabled)",
+            ram: "16GB DDR4-2933 (2x8GB SO-DIMM)",
+            storage: "M.2 NVMe",
+            macosSupport: "Big Sur",
+            minMacosSupport: "Catalina",
+            maxMacosSupport: "Big Sur",
+            wifiBluetooth: "Killer Wi-Fi 6 AX1650 (Intel-based)",
+            audioCodec: "Realtek ALC3281 (ALC289)",
+            trackpad: "I2C HID",
+            screenResolution: "1920x1200 (FHD+) or 3840x2400 (UHD+ touch)",
+            chartData: { ease: 62, performance: 88, battery: 68, stability: 66 },
+            ports: {
+                thunderbolt: "2x Thunderbolt 3 (USB-C)",
+                usb: ["1x USB-C 3.1"],
+                others: ["SD Card Reader", "3.5mm Audio Jack"]
+            },
+            knownIssues: [
+                "Sleep doesn't work (BIOS limitation); disable it",
+                "SD card reader not working",
+                "Fingerprint sensor not supported",
+                "BIOS variables must be changed with setup_var"
+            ],
+            communitySupport: {
+                rating: "Good",
+                resources: ["Several public OpenCore repositories"]
+            },
+            guides: {
+                installation: "https://github.com/hieplpvip/XPS9500-Hackintosh",
+                additional: []
+            }
+        },
+        needsVerification: ["details.maxMacosSupport", "details.screenResolution", "details.ports", "details.chartData"]
+    },
+    hp_elitebook_840_g4: {
+        name: "HP EliteBook 840 G4",
+        brand: "HP",
+        priority: ["stability", "budget"],
+        score: 8.3,
+        summary: "Kaby Lake business laptop with a well-documented OpenCore setup",
+        details: {
+            cpu: "Intel Core i5-7200U / i7-7600U (Kaby Lake)",
+            igpu: "Intel HD 620",
+            ram: "DDR4 SO-DIMM (upgradeable)",
+            storage: "M.2 NVMe or SATA",
+            macosSupport: "Monterey",
+            minMacosSupport: "Sierra",
+            maxMacosSupport: "Monterey",
+            wifiBluetooth: "Intel Wi-Fi (stock, works with itlwm); Broadcom BCM94360CS2 swap gives native features",
+            audioCodec: "Conexant CX8200",
+            trackpad: "Synaptics SMBus (VoodooRMI)",
+            screenResolution: "1920x1080 (FHD), touch optional",
+            chartData: { ease: 80, performance: 70, battery: 75, stability: 85 },
+            knownIssues: [
+                "BIOS 1.32 and later needs SSDT-SET-STAS enabled",
+                "Webcam may not work",
+                "Touchscreen models need VoodooI2C"
+            ],
+            biosVersion: { notes: "BIOS 1.32 and later require SSDT-SET-STAS (see the guide)" },
+            communitySupport: {
+                rating: "Good",
+                resources: ["Maintained OpenCore repository"]
+            },
+            guides: {
+                installation: "https://github.com/XXCoreRangerX/Hackintosh-HP-EliteBook-840-G4",
+                additional: []
+            }
+        },
+        needsVerification: ["details.ram", "details.storage", "details.chartData"]
+    },
+    hp_elitebook_830_g6: {
+        name: "HP EliteBook 830 G6",
+        brand: "HP",
+        priority: ["portability"],
+        score: 7.6,
+        summary: "Compact Whiskey Lake EliteBook; works well, but the built-in mic doesn't",
+        details: {
+            cpu: "Intel Core i5-8265U / i7-8565U (Whiskey Lake)",
+            igpu: "Intel UHD 620",
+            storage: "M.2 NVMe",
+            macosSupport: "Catalina",
+            minMacosSupport: "Mojave",
+            maxMacosSupport: "Sonoma",
+            wifiBluetooth: "Intel Wi-Fi (stock, use itlwm) or Broadcom DW1560 (BCM94352Z) swap",
+            audioCodec: "Realtek ALC215",
+            trackpad: "Synaptics",
+            screenResolution: "1920x1080 (FHD)",
+            chartData: { ease: 72, performance: 72, battery: 76, stability: 76 },
+            knownIssues: [
+                "Built-in microphone not supported (ALC215)",
+                "Fingerprint sensor not supported",
+                "Hibernation doesn't work",
+                "Samsung PM981/PM981a SSDs may not be supported"
+            ],
+            biosVersion: { notes: "Set iGPU memory to 64MB" },
+            communitySupport: {
+                rating: "Moderate",
+                resources: ["Public OpenCore repositories (830 G6, close to the 840 G6)"]
+            },
+            guides: {
+                installation: "https://github.com/tookdes/HP-Elitebook-830-G6-Hackintosh",
+                additional: ["https://github.com/Dan1912/HP-Elitebook-830-G6-OSX86"]
+            }
+        },
+        needsVerification: ["details.maxMacosSupport", "details.trackpad", "details.chartData"]
+    },
+    thinkpad_t460s: {
+        name: "ThinkPad T460s",
+        brand: "Lenovo",
+        priority: ["budget", "ease"],
+        score: 8,
+        summary: "Cheap Skylake ThinkPad with a thorough OpenCore guide; runs up to Ventura",
+        details: {
+            cpu: "Intel Core i5-6200U (Skylake)",
+            igpu: "Intel HD 520",
+            ram: "4GB soldered + 1x DDR4 SO-DIMM",
+            storage: "M.2 NVMe or SATA",
+            macosSupport: "Monterey",
+            minMacosSupport: "Big Sur",
+            maxMacosSupport: "Ventura",
+            wifiBluetooth: "Intel Dual Band Wireless-AC 8260",
+            audioCodec: "Realtek ALC3245",
+            trackpad: "Synaptics (PS/2)",
+            screenResolution: "1920x1080 (FHD) IPS, touch optional",
+            chartData: { ease: 80, performance: 60, battery: 72, stability: 82 },
+            knownIssues: [
+                "Ventura needs Skylake graphics spoofed as Kaby Lake",
+                "NVMe drives need the NVMe power-management fix",
+                "Fingerprint reader not supported"
+            ],
+            communitySupport: {
+                rating: "Very Good",
+                resources: ["Detailed OpenCore guide with BIOS settings and post-install steps"]
+            },
+            guides: {
+                installation: "https://github.com/simprecicchiani/ThinkPad-T460s-macOS-OpenCore",
+                additional: []
+            }
+        },
+        needsVerification: ["details.trackpad", "details.chartData"]
+    },
+    dell_xps_13_9350: {
+        name: "Dell XPS 13 9350",
+        brand: "Dell",
+        priority: ["portability", "budget"],
+        score: 7.6,
+        summary: "Older Skylake XPS 13; cheap, but the Wi-Fi card must be swapped",
+        details: {
+            cpu: "Intel Core i5-6200U / i7-6560U (Skylake)",
+            igpu: "Intel HD 520 / Iris 540",
+            storage: "M.2 NVMe or SATA",
+            macosSupport: "Monterey",
+            minMacosSupport: "El Capitan",
+            maxMacosSupport: "Monterey",
+            wifiBluetooth: "Stock card unsupported; replace with Broadcom DW1830 or DW1560",
+            audioCodec: "Realtek ALC3246 (ALC256)",
+            trackpad: "I2C HID",
+            screenResolution: "1920x1080 (FHD) or 3200x1800 (QHD+ touch)",
+            chartData: { ease: 70, performance: 60, battery: 72, stability: 74 },
+            knownIssues: [
+                "Stock Wi-Fi card doesn't work in macOS",
+                "The public guide uses Clover; build a fresh OpenCore EFI"
+            ],
+            communitySupport: {
+                rating: "Moderate",
+                resources: ["Older Clover-based repository"]
+            },
+            guides: {
+                installation: "https://github.com/syscl/XPS9350-macOS",
+                additional: []
+            }
+        },
+        needsVerification: ["details.audioCodec", "details.trackpad", "details.maxMacosSupport", "details.chartData"]
+    },
+    xiaomi_mi_notebook_pro_2019: {
+        name: "Xiaomi Mi Notebook Pro (10th gen)",
+        brand: "Xiaomi",
+        priority: ["performance", "budget"],
+        score: 8.2,
+        summary: "Comet Lake refresh of the Mi Notebook Pro, covered by the same popular OpenCore repo",
+        details: {
+            cpu: "Intel Core i5-10210U / i7-10510U (Comet Lake)",
+            igpu: "Intel UHD 620",
+            dgpu: "NVIDIA GeForce MX250 (must be disabled)",
+            ram: "8/16GB DDR4 2666MHz",
+            storage: "M.2 NVMe",
+            macosSupport: "Sonoma",
+            minMacosSupport: "Catalina",
+            maxMacosSupport: "Sonoma",
+            wifiBluetooth: "Intel Wireless-AC 9462",
+            audioCodec: "Realtek ALC256 (layout-id 69)",
+            trackpad: "ELAN2303 (I2C)",
+            screenResolution: "1920x1080 (FHD)",
+            chartData: { ease: 80, performance: 78, battery: 74, stability: 76 },
+            knownIssues: [
+                "Hibernation can cause serious boot problems on Comet Lake",
+                "Fingerprint sensor not supported",
+                "Intel Wi-Fi works with reduced speed",
+                "Built-in audio stops working on macOS 26 Tahoe (AppleHDA removed)"
+            ],
+            communitySupport: {
+                rating: "Excellent",
+                resources: ["One of the most popular laptop Hackintosh repositories"]
+            },
+            guides: {
+                installation: "https://github.com/daliansky/XiaoMi-Pro-Hackintosh",
+                additional: []
+            }
+        },
+        needsVerification: ["details.dgpu", "details.chartData"]
     }
 };
 
