@@ -13,6 +13,7 @@ import NotFound from './pages/NotFound.jsx';
 // Pages with charts load Chart.js on demand.
 const LaptopDetail = lazy(() => import('./pages/LaptopDetail.jsx'));
 const Compare = lazy(() => import('./pages/Compare.jsx'));
+const BuildPlan = lazy(() => import('./pages/BuildPlan.jsx'));
 
 // Keep links to the old multi-page site (e.g. explorer.html?priority=ease) working.
 function LegacyRedirect({ to }) {
@@ -40,6 +41,7 @@ export default function App() {
                 <Route index element={<Home />} />
                 <Route path="explorer" element={<Explorer />} />
                 <Route path="laptop/:id" element={<Suspense fallback={<Loading />}><LaptopDetail /></Suspense>} />
+                <Route path="laptop/:id/build" element={<Suspense fallback={<Loading />}><BuildPlan /></Suspense>} />
                 <Route path="compare" element={<Suspense fallback={<Loading />}><Compare /></Suspense>} />
                 <Route path="components" element={<ComponentsPage />} />
                 <Route path="essentials" element={<Essentials />} />

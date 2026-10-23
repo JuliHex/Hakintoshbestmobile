@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router';
 import { LaptopDB } from '../data/laptops.js';
 import { Icon } from '../lib/icons.jsx';
 import { compareList, recentList, useList } from '../lib/stores.js';
+import { laptopPath } from '../lib/format.js';
 import { useTitle } from '../components/Layout.jsx';
 import { CompareButton, DeviceTile, FavoriteButton, MacosChip, PriorityTags, ScoreBar, Unverified } from '../components/LaptopBits.jsx';
 import { useToast } from '../components/Toast.jsx';
@@ -141,6 +142,7 @@ function Detail({ laptop }) {
                         <Unverified laptop={laptop} path="details.maxMacosSupport" />
                     </div>
                     <div className="flex flex-wrap items-center gap-2 mt-auto pt-2">
+                        <Link to={`${laptopPath(laptop.id)}/build`} className="btn-primary"><Icon name="wrench" /> Build guide</Link>
                         <CompareButton id={laptop.id} labels={['Add to comparison', 'In comparison']} />
                         <button type="button" className="chip" onClick={copyLink}><Icon name="link" /> Copy link</button>
                         <FavoriteButton id={laptop.id} />
@@ -194,6 +196,10 @@ function Detail({ laptop }) {
                 </Section>
 
                 <Section title="Install guides">
+                    <Link to={`${laptopPath(laptop.id)}/build`} className="block mb-4 rounded-2xl p-3 bg-blue-500/10 ring-1 ring-blue-500/25 hover:bg-blue-500/15 transition-colors">
+                        <span className="font-semibold text-blue-800 dark:text-blue-200">Step-by-step build guide for this laptop</span>
+                        <span className="block text-sm text-gray-600 dark:text-gray-300">Every kext, SSDT and config.plist value it needs.</span>
+                    </Link>
                     {guideLinks.length ? (
                         <>
                             <ul className="space-y-2 text-sm">

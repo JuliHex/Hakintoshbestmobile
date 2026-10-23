@@ -1,5 +1,39 @@
-import { Link } from 'react-router';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router';
+import { LaptopDB } from '../data/laptops.js';
+import { laptopPath } from '../lib/format.js';
+import { Icon } from '../lib/icons.jsx';
 import { useTitle } from '../components/Layout.jsx';
+
+const BY_BRAND = LaptopDB.brands().map(brand => [
+    brand,
+    LaptopDB.all().filter(l => l.brand === brand).sort((a, b) => a.name.localeCompare(b.name))
+]);
+
+// Sends the reader to the build guide generated for their laptop.
+function LaptopPicker() {
+    const navigate = useNavigate();
+    const [id, setId] = useState('');
+    return (
+        <form className="card p-5 sm:p-6 mt-6 flex flex-col md:flex-row md:items-end gap-4"
+              onSubmit={e => { e.preventDefault(); if (id) navigate(`${laptopPath(id)}/build`); }}>
+            <div className="flex-1">
+                <h2 className="text-lg font-bold flex items-center gap-2"><Icon name="wrench" className="w-5 h-5 text-blue-600 dark:text-blue-300" /> Get a guide for your laptop</h2>
+                <p className="mt-1 text-sm text-gray-600 dark:text-gray-300">Every kext, SSDT and config.plist value for your model, worked out from its hardware.</p>
+                <label htmlFor="laptop-picker" className="sr-only">Your laptop</label>
+                <select id="laptop-picker" className="input mt-3" value={id} onChange={e => setId(e.target.value)}>
+                    <option value="">Choose your laptop…</option>
+                    {BY_BRAND.map(([brand, laptops]) => (
+                        <optgroup key={brand} label={brand}>
+                            {laptops.map(l => <option key={l.id} value={l.id}>{l.name}</option>)}
+                        </optgroup>
+                    ))}
+                </select>
+            </div>
+            <button type="submit" className="btn-primary" disabled={!id}>Open build guide <Icon name="arrowRight" /></button>
+        </form>
+    );
+}
 
 export default function BuildGuide() {
     useTitle('Build Guide');
@@ -7,6 +41,8 @@ export default function BuildGuide() {
         <div className="page">
             <h1 className="page-title">Laptop Build Guide</h1>
             <p className="page-lead">A map of the whole process, from BIOS settings to a fully tuned install. Each step links to the detailed Dortania documentation, which is the authoritative source.</p>
+
+            <LaptopPicker />
 
             <div className="mt-8 lg:grid lg:grid-cols-[14rem,1fr] lg:gap-10 lg:items-start">
                 <nav className="card p-4 mb-8 lg:mb-0 lg:sticky lg:top-24" aria-label="On this page">

@@ -13,7 +13,8 @@ A guide to picking a laptop that runs macOS well with [OpenCore](https://github.
 - **Compare** up to three laptops side by side, with an overlaid ratings chart and a spec table. Comparison links can be shared too.
 - **Favorites and recently viewed**, saved on your device.
 - **Component Checker**: which CPUs, GPUs, Wi-Fi cards, RAM and SSDs work with macOS.
-- **Guides**: a step-by-step build guide, a buying-used checklist, a searchable troubleshooting page, and the essential tools and kexts.
+- **A build guide for every laptop**: the OpenCore config section, SMBIOS, iGPU framebuffer values, SSDTs and every kext it needs (with download links), plus BIOS settings, boot arguments and the AppleALC layout-ids for its audio codec. Pick your exact CPU, Wi-Fi card, trackpad and target macOS, and the guide adapts. A checklist tracks the kexts you've collected.
+- **Guides**: a general build guide, a buying-used checklist, a searchable troubleshooting page, and the essential tools and kexts.
 - **Works well on phones**, in light and dark mode, with a "liquid glass" look.
 - **No tracking and no outside requests**: fonts and libraries are bundled with the site.
 
@@ -33,6 +34,7 @@ Corrections are welcome. See [Adding or correcting a laptop](#adding-or-correcti
 | `/` | Home: search, best pick per priority, favorites, macOS coverage, brands, FAQ |
 | `/explorer` | Search and filter all laptops |
 | `/laptop/:id` | One laptop's full details and ratings |
+| `/laptop/:id/build` | Step-by-step OpenCore build guide for that laptop |
 | `/compare` | Side-by-side comparison (`?ids=a,b,c`) |
 | `/components` | Component Checker (`?tab=Wi-Fi` and so on) |
 | `/build-guide` | Installing macOS with OpenCore, step by step |
@@ -76,15 +78,26 @@ src/
 ├── App.jsx               Routes and redirects from old URLs
 ├── data/
 │   ├── laptops.js        Laptop data, macOS versions, LaptopDB helpers
-│   └── components.js     Component Checker data
+│   ├── components.js     Component Checker data
+│   ├── kexts.js          Kexts, SSDTs, drivers and tools used by build guides
+│   └── appleAlcLayouts.js  AppleALC layout-ids per codec (from the AppleALC wiki)
 ├── pages/                One component per route
 ├── components/           Layout, laptop cards, radar chart, Glass, toasts
-├── lib/                  Icons, saved lists, dark mode, formatting helpers
+├── lib/                  Icons, saved lists, dark mode, formatting helpers,
+│                         and buildPlan.js (the build-guide rules engine)
 └── styles/main.css       Tailwind and the glass design system
 scripts/
 ├── clean-build.js        Removes the previous build before building
 └── spa-fallback.js       Creates 404.html and .nojekyll after building
 ```
+
+## How the build guides work
+
+`src/lib/buildPlan.js` turns a laptop's listed hardware into a plan, following [Dortania's OpenCore Install Guide](https://dortania.github.io/OpenCore-Install-Guide/): the laptop config page for its CPU generation, the "Gathering files" kext list, the laptop SSDT table from Getting Started With ACPI, and the Ventura and Tahoe notes. Codec layout-ids come from the [AppleALC supported codecs list](https://github.com/acidanthera/AppleALC/wiki/Supported-codecs).
+
+When the data can't pin a part down, for example "8th gen" could be Kaby Lake R or Whiskey Lake, or the Wi-Fi card isn't listed, the guide offers the options and asks the reader to check their unit. The guides apply general rules to listed hardware; they aren't tested EFIs for each model.
+
+The rules engine is the place to update when Dortania's guidance changes, for example a new macOS release. Kext names and download links live in `src/data/kexts.js`.
 
 ## Adding or correcting a laptop
 
