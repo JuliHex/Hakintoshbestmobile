@@ -1,458 +1,52 @@
 <!DOCTYPE html>
-<html lang="en" class="">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laptop Comparison - Hackintosh Guide</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Compare Laptops - Hackintosh Laptop Guide</title>
+    <meta name="description" content="Compare up to three Hackintosh laptops side by side.">
+    <meta name="theme-color" content="#4A90E2">
+    <script>try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme: dark)').matches))document.documentElement.classList.add('dark')}catch(e){}</script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/animations.css">
-    <style>
-        /* Base styles (Light Mode) - Consistent with other pages */
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #F8F9FA;
-            color: #212529;
-            transition: background-color 0.3s, color 0.3s;
-        }
-        .bg-primary { background-color: #4A90E2; }
-        .text-primary { color: #4A90E2; }
-        .border-primary { border-color: #4A90E2; }
-        .bg-secondary { background-color: #f0f4f8; }
-        .text-dark { color: #212529; }
-        .text-medium { color: #495057; }
-        .text-light { color: #adb5bd; }
-        .card-shadow { box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
-        .nav-link { transition: color 0.2s, border-color 0.2s; padding-top: 0.5rem; padding-bottom: 0.5rem; }
-        .nav-link.active { color: #4A90E2; border-bottom-width: 2px; border-color: #4A90E2; }
-        .nav-link:not(.active) { border-bottom-width: 2px; border-color: transparent; }
-        
-        /* Dark Mode Styles - Consistent with other pages */
-        .dark body {
-            background-color: #1a202c;
-            color: #e2e8f0;
-        }
-        .dark .bg-white { background-color: #2d3748; }
-        .dark .text-dark { color: #e2e8f0; }
-        .dark .text-medium { color: #a0aec0; }
-        .dark .text-light { color: #718096; }
-        .dark .bg-secondary { background-color: #2d3748; }
-        .dark .card-shadow { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3), 0 2px 4px -2px rgba(0,0,0,0.2); }
-        .dark .border-primary { border-color: #63b3ed; }
-        .dark .text-primary { color: #63b3ed; }
-        .dark .bg-primary { background-color: #3182ce; }
-        .dark .nav-link.active { color: #63b3ed; border-color: #63b3ed; }
-        .dark #find-bar { background-color: #4a5568; border-color: #6b7280; color: #e2e8f0; }
-        .dark #find-bar::placeholder { color: #a0aec0; }
-
-        .comparison-card {
-            background-color: #ffffff;
-            border-radius: 0.75rem; /* rounded-xl */
-            padding: 1.5rem; /* p-6 */
-            min-height: 400px; /* Ensure cards have some height */
-        }
-        .dark .comparison-card {
-            background-color: #2d3748;
-        }
-        .comparison-chart-container {
-            position: relative;
-            width: 100%;
-            max-width: 280px; /* Smaller for comparison view */
-            margin-left: auto;
-            margin-right: auto;
-            height: 220px; 
-        }
-    </style>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
 </head>
-<body class="text-dark" data-page-id="comparison">
+<body>
+    <div id="site-header"></div>
 
-    <header class="bg-white shadow-md sticky top-0 z-40 slide-in-right">
-        <nav class="container mx-auto px-6 py-2 flex justify-between items-center">
-            <a href="index.html" class="text-xl font-bold text-primary fade-in">Hackintosh Laptop Guide</a>
-            <div class="flex items-center">
-                 <div class="relative mr-4">
-                    <input type="search" id="find-bar-header" placeholder="Find a laptop..." class="px-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-primary focus:border-primary dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
-                </div>
-                <div class="hidden md:flex space-x-3 lg:space-x-4 mr-4">
-                    <a href="index.html" class="nav-link text-sm lg:text-base">Home</a>
-                    <a href="explorer.html" class="nav-link text-sm lg:text-base">Explorer</a>
-                    <a href="build_guide.html" class="nav-link text-sm lg:text-base">Laptop Builds</a>
-                    <a href="components.html" class="nav-link text-sm lg:text-base">Components</a>
-                    <a href="essentials.html" class="nav-link text-sm lg:text-base">Essentials</a>
-                    <a href="buy_used.html" class="nav-link text-sm lg:text-base">Buy Used</a>
-                    <a href="troubleshooting.html" class="nav-link text-sm lg:text-base">Troubleshoot</a>
-                </div>
-                <button id="theme-toggle" aria-label="Toggle theme" title="Toggle dark mode" class="text-xl">
-                    ☀️
-                </button>
-                <button id="mobile-menu-button" class="md:hidden focus:outline-none ml-2">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
-                </button>
-            </div>
-        </nav>
-        <div id="mobile-menu" class="hidden md:hidden bg-white">
-            <a href="index.html" class="block py-2 px-6 text-sm nav-link">Home</a>
-            <a href="explorer.html" class="block py-2 px-6 text-sm nav-link">Laptop Explorer</a>
-            <a href="build_guide.html" class="block py-2 px-6 text-sm nav-link">Laptop Builds</a>
-            <a href="components.html" class="block py-2 px-6 text-sm nav-link">Component Checker</a>
-            <a href="essentials.html" class="block py-2 px-6 text-sm nav-link">The Essentials</a>
-            <a href="buy_used.html" class="block py-2 px-6 text-sm nav-link">Where to Buy Used</a>
-            <a href="troubleshooting.html" class="block py-2 px-6 text-sm nav-link">Troubleshooting Guide</a>
-        </div>
-    </header>
+    <main id="main" class="page">
+        <h1 class="page-title">Compare laptops</h1>
+        <p class="page-lead">Choose up to three laptops. Your picks are saved on this device, and the page link can be shared.</p>
 
-    <main class="container mx-auto p-4 md:p-8 fade-in">
-        <div class="mb-6 slide-in-right">
-            <a href="explorer.html" class="inline-block text-primary hover:underline">&larr; Back to Explorer</a>
+        <div id="pickers" class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3"></div>
+
+        <div id="compare-empty" class="card p-8 mt-6 text-center" hidden>
+            <p class="font-medium">Pick at least two laptops to compare.</p>
+            <a href="explorer.html" class="btn-primary mt-4">Browse the Explorer</a>
         </div>
-        <h1 class="text-3xl font-bold mb-8 text-center text-dark dark:text-gray-100 slide-up">Laptop Comparison</h1>
-        
-        <div id="comparison-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 stagger-animate">
-            <!-- Comparison cards will be injected here with animations -->
+
+        <div id="compare-results" class="mt-6 space-y-6" hidden>
+            <section class="card p-5">
+                <h2 class="section-title">Ratings</h2>
+                <div class="relative h-80 max-w-xl mx-auto"><canvas id="compare-chart" role="img" aria-label="Ratings radar chart"></canvas></div>
+            </section>
+
+            <section class="card p-0 overflow-hidden">
+                <h2 class="section-title px-5 pt-5">Specifications</h2>
+                <div class="table-scroll !mx-0">
+                    <table id="compare-table"></table>
+                </div>
+            </section>
         </div>
-        <p id="comparison-message" class="text-center text-xl text-medium py-10 hidden fade-in"></p>
     </main>
 
-    <footer class="text-center py-8 border-t dark:border-gray-700 fade-in">
-        <p class="text-sm text-medium">&copy; <span id="current-year"></span> Hackintosh Laptop Guide. For educational purposes only.</p>
-    </footer>
-    
-    <script id="data-script">
-        // This script block now assumes laptopData and componentData are loaded from an external js/data.js file.
-        // For the Canvas preview to work without errors if js/data.js is not *actually* linked yet,
-        // you might need to temporarily re-paste the data here or ensure js/data.js is conceptually loaded first.
-        if (typeof laptopData === 'undefined') { window.laptopData = {}; }
-        if (typeof componentData === 'undefined') { window.componentData = {}; }
-        // console.log("Data script executed. laptopData should be available if loaded from external file.");
-    </script>
-    <script id="theme-script">
-        // Contents of js/theme.js
-        const ThemeManager = (() => {
-            const themeToggle = document.getElementById('theme-toggle');
-            const themeIconLight = document.getElementById('theme-icon-light');
-            const themeIconDark = document.getElementById('theme-icon-dark');
+    <div id="site-footer"></div>
 
-            function applyTheme(theme) {
-                if (theme === 'dark') {
-                    document.documentElement.classList.add('dark');
-                    if (themeIconLight) themeIconLight.classList.add('hidden');
-                    if (themeIconDark) themeIconDark.classList.remove('hidden');
-                } else {
-                    document.documentElement.classList.remove('dark');
-                    if (themeIconLight) themeIconLight.classList.remove('hidden');
-                    if (themeIconDark) themeIconDark.classList.add('hidden');
-                }
-                if (typeof ChartManager !== 'undefined' && ChartManager && typeof ChartManager.updateAllChartThemes === 'function') {
-                    ChartManager.updateAllChartThemes(theme);
-                }
-            }
-
-            function applySavedTheme(){
-                const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-                applyTheme(savedTheme);
-            }
-
-            function init() {
-                if (themeToggle) { 
-                    themeToggle.addEventListener('click', () => {
-                        const currentTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
-                        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-                        localStorage.setItem('theme', newTheme);
-                        applyTheme(newTheme); 
-                    });
-                }
-                applySavedTheme(); 
-            }
-            
-            return {
-                init,
-                applyTheme, 
-                applySavedTheme
-            };
-        })();
-    </script>
-    <script id="navigation-script">
-        // Contents of js/navigation.js
-        const NavigationManager = (() => {
-            const mobileMenuButton = document.getElementById('mobile-menu-button');
-            const mobileMenu = document.getElementById('mobile-menu');
-            const navLinks = document.querySelectorAll('header .nav-link'); 
-
-            function updateActiveLink() {
-                const currentPath = window.location.pathname.split('/').pop() || 'index.html';
-                
-                navLinks.forEach(link => {
-                    link.classList.remove('active');
-                    const linkPath = (link.getAttribute('href') || "").split('/').pop();
-                    if (linkPath === currentPath || (currentPath === '' && linkPath === 'index.html') ) { 
-                        link.classList.add('active');
-                    }
-                });
-            }
-
-            function init() {
-                if (mobileMenuButton && mobileMenu) {
-                    mobileMenuButton.addEventListener('click', () => {
-                        mobileMenu.classList.toggle('hidden');
-                        if (document.documentElement.classList.contains('dark')) {
-                            mobileMenu.classList.add('dark:bg-gray-800');
-                        } else {
-                            mobileMenu.classList.remove('dark:bg-gray-800');
-                        }
-                    });
-                }
-
-                document.querySelectorAll('#mobile-menu .nav-link').forEach(link => {
-                    link.addEventListener('click', () => {
-                        if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
-                            mobileMenu.classList.add('hidden');
-                        }
-                    });
-                });
-                
-                updateActiveLink(); 
-            }
-
-            return {
-                init,
-                updateActiveLink
-            };
-        })();
-    </script>
-    <script id="charts-script">
-        // Contents of js/charts.js
-        const ChartManager = (() => {
-            const chartInstances = []; 
-
-            function createRadarChart(ctx, label, chartData, theme, isComparisonChart = false) {
-                const isDark = theme === 'dark';
-                const gridColor = isDark ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.1)';
-                const pointLabelColor = isDark ? '#e2e8f0' : '#495057';
-                const angleLinesColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)';
-                const tickColor = pointLabelColor;
-                const legendLabelColor = pointLabelColor;
-
-                const existingChart = Chart.getChart(ctx);
-                if (existingChart) {
-                    existingChart.destroy();
-                    const index = chartInstances.indexOf(existingChart);
-                    if (index > -1) {
-                        chartInstances.splice(index, 1);
-                    }
-                }
-
-                const newChart = new Chart(ctx, {
-                    type: 'radar',
-                    data: {
-                        labels: ['Ease', 'Perf', 'Port', 'Budget'], 
-                        datasets: [{
-                            label: label,
-                            data: chartData,
-                            backgroundColor: 'rgba(74, 144, 226, 0.2)',
-                            borderColor: 'rgba(74, 144, 226, 1)',
-                            pointBackgroundColor: 'rgba(74, 144, 226, 1)',
-                            pointBorderColor: '#fff',
-                            pointHoverBackgroundColor: '#fff',
-                            pointHoverBorderColor: 'rgba(74, 144, 226, 1)'
-                        }]
-                    },
-                    options: {
-                        maintainAspectRatio: false,
-                        scales: {
-                            r: {
-                                angleLines: { color: angleLinesColor },
-                                grid: { color: gridColor },
-                                pointLabels: { font: { size: isComparisonChart ? 10 : 12 }, color: pointLabelColor },
-                                suggestedMin: 0,
-                                suggestedMax: 5,
-                                ticks: {
-                                    stepSize: 1,
-                                    backdropColor: isDark ? 'rgba(45, 55, 72, 0.75)' : 'rgba(255, 255, 255, 0.75)',
-                                    color: tickColor,
-                                    showLabelBackdrop: !isComparisonChart 
-                                }
-                            }
-                        },
-                        plugins: {
-                            legend: {
-                                display: !isComparisonChart, 
-                                position: 'top',
-                                labels: { color: legendLabelColor }
-                            }
-                        }
-                    }
-                });
-                chartInstances.push(newChart); 
-                return newChart;
-            }
-            
-            function updateAllChartThemes(theme) { 
-                chartInstances.forEach(chart => {
-                    if (chart && chart.options && chart.options.scales && chart.options.scales.r) {
-                        const isDark = theme === 'dark';
-                        const gridColor = isDark ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.1)';
-                        const pointLabelColor = isDark ? '#e2e8f0' : '#495057';
-                        const angleLinesColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)';
-                        
-                        chart.options.scales.r.grid.color = gridColor;
-                        chart.options.scales.r.pointLabels.color = pointLabelColor;
-                        chart.options.scales.r.angleLines.color = angleLinesColor;
-                        chart.options.scales.r.ticks.backdropColor = isDark ? 'rgba(45, 55, 72, 0.75)' : 'rgba(255, 255, 255, 0.75)';
-                        chart.options.scales.r.ticks.color = pointLabelColor;
-                        if (chart.options.plugins && chart.options.plugins.legend) {
-                           chart.options.plugins.legend.labels.color = pointLabelColor;
-                        }
-                        chart.update();
-                    }
-                });
-            }
-            
-            function clearChartInstances() { 
-                chartInstances.forEach(chart => {
-                    if (chart) chart.destroy();
-                });
-                chartInstances.length = 0; 
-            }
-
-            return {
-                createRadarChart,
-                updateAllChartThemes,
-                clearChartInstances
-            };
-        })();
-    </script>
-    
-    <!-- SCRIPT FOR COMPARISON PAGE -->
-    <script id="comparison-page-script">
-        document.addEventListener('DOMContentLoaded', () => {
-            const comparisonGrid = document.getElementById('comparison-grid');
-            const comparisonMessage = document.getElementById('comparison-message');
-
-            // Ensure laptopData is available (it should be if js/data.js is loaded before this script)
-            if (typeof laptopData === 'undefined') {
-                console.error("laptopData is not defined. Ensure js/data.js is loaded before comparison_page.js.");
-                if(comparisonMessage) {
-                    comparisonMessage.textContent = 'Error: Laptop data could not be loaded. Please try again or contact support.';
-                    comparisonMessage.classList.remove('hidden');
-                }
-                return;
-            }
-
-            if (typeof ChartManager !== 'undefined') {
-                ChartManager.clearChartInstances(); 
-            }
-
-            const selectedLaptopIdsJSON = localStorage.getItem('selectedLaptopsForComparison');
-            let selectedLaptopIds = [];
-            if (selectedLaptopIdsJSON) {
-                try {
-                    selectedLaptopIds = JSON.parse(selectedLaptopIdsJSON);
-                } catch (e) {
-                    console.error("Error parsing selected laptops from localStorage:", e);
-                    selectedLaptopIds = [];
-                }
-            }
-
-            if (!Array.isArray(selectedLaptopIds) || selectedLaptopIds.length < 2) {
-                if(comparisonMessage) {
-                    comparisonMessage.textContent = 'Please select at least two laptops from the Explorer page to compare.';
-                    comparisonMessage.classList.remove('hidden');
-                }
-                if(comparisonGrid) comparisonGrid.innerHTML = ''; 
-                return;
-            }
-            
-            if(comparisonMessage) comparisonMessage.classList.add('hidden');
-            if(comparisonGrid) comparisonGrid.innerHTML = ''; 
-
-            const laptopsToCompare = selectedLaptopIds.slice(0, 3); 
-
-            laptopsToCompare.forEach(id => {
-                const laptop = laptopData[id]; 
-                if (laptop) {
-                    const card = document.createElement('div');
-                    card.className = 'comparison-card card-shadow flex flex-col';
-                    
-                    let dgpuText = laptop.details.dgpu && laptop.details.dgpu !== "None" ? `<li><strong>dGPU:</strong> ${laptop.details.dgpu}</li>` : '';
-
-                    card.innerHTML = `
-                        <h3 class="text-xl font-bold mb-3 text-primary dark:text-blue-400">${laptop.name}</h3>
-                        <img src="${laptop.image}" alt="${laptop.name}" class="w-full h-40 object-cover rounded-md mb-3" onerror="this.onerror=null;this.src='https://placehold.co/400x200/212529/F8F9FA?text=No+Image';">
-                        <p class="text-sm text-medium mb-1"><strong>Score:</strong> ${laptop.score}%</p>
-                        ${laptop.details.cpuBenchmark ? `<p class="text-sm text-medium mb-3"><strong>CPU Bench:</strong> ~${laptop.details.cpuBenchmark.score} <span class="text-xs">(${laptop.details.cpuBenchmark.source})</span></p>` : ''}
-                        
-                        <h4 class="font-semibold text-dark dark:text-gray-200 text-sm mt-2 mb-1">Key Specs:</h4>
-                        <ul class="text-xs text-medium dark:text-gray-300 list-none space-y-0.5 mb-3">
-                            <li><strong>CPU:</strong> ${laptop.details.cpu}</li>
-                            <li><strong>iGPU:</strong> ${laptop.details.igpu}</li>
-                            ${dgpuText}
-                            <li><strong>RAM:</strong> ${laptop.details.ram}</li>
-                            <li><strong>Storage:</strong> ${laptop.details.storage}</li>
-                            <li><strong>macOS:</strong> ${laptop.details.macosSupport.min} - ${laptop.details.macosSupport.max}</li>
-                        </ul>
-                        
-                        <div class="comparison-chart-container mt-auto">
-                            <canvas id="compare-chart-${id}"></canvas>
-                        </div>
-                        <a href="laptop_detail.html?id=${id}" class="mt-4 text-center text-primary dark:text-blue-400 hover:underline text-sm">View Full Details &rarr;</a>
-                    `;
-                    if(comparisonGrid) comparisonGrid.appendChild(card);
-
-                    const chartCtx = document.getElementById(`compare-chart-${id}`).getContext('2d');
-                    const currentTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
-                    if (typeof ChartManager !== 'undefined') {
-                         ChartManager.createRadarChart(chartCtx, laptop.name, laptop.details.chartData, currentTheme, true); 
-                    }
-                } else {
-                    console.warn(`Laptop data for ID ${id} not found on comparison page.`);
-                     const errorCard = document.createElement('div');
-                     errorCard.className = 'comparison-card card-shadow flex flex-col items-center justify-center';
-                     errorCard.innerHTML = `<p class="text-red-500">Error: Data for laptop ID "${id}" not found.</p>`;
-                     if(comparisonGrid) comparisonGrid.appendChild(errorCard);
-                }
-            });
-            if (typeof ThemeManager !== 'undefined') {
-                 ThemeManager.applySavedTheme();
-            }
-        });
-    </script>
-    
-    <script id="main-script">
-        document.addEventListener('DOMContentLoaded', () => {
-            if (typeof ThemeManager !== 'undefined') ThemeManager.init();
-            if (typeof NavigationManager !== 'undefined') NavigationManager.init();
-            
-            const currentYearEl = document.getElementById('current-year');
-            if (currentYearEl) {
-                currentYearEl.textContent = new Date().getFullYear();
-            }
-
-            const findBarHeader = document.getElementById('find-bar-header');
-            if (findBarHeader) {
-                findBarHeader.addEventListener('keypress', function(event) {
-                    if (event.key === 'Enter') {
-                        const searchTerm = findBarHeader.value.trim();
-                        if (searchTerm) {
-                            window.location.href = `explorer.html?search=${encodeURIComponent(searchTerm)}`;
-                        } else {
-                            window.location.href = 'explorer.html'; 
-                        }
-                    }
-                });
-            }
-        });
-    </script>
-
-    <!-- Scripts - Updated order with animations.js -->
     <script src="js/data.js"></script>
-    <script src="js/theme.js"></script>
-    <script src="js/animations.js"></script>
-    <script src="js/navigation.js"></script>
+    <script src="js/layout.js"></script>
     <script src="js/charts.js"></script>
-    <script src="js/gemini_api.js"></script>
-    <script src="js/main.js"></script>
+    <script src="js/comparison_page.js"></script>
 </body>
 </html>

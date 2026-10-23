@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Buying Used - Hackintosh Laptop Guide</title>
+    <meta name="description" content="Where to buy a used Hackintosh laptop and what to check before you pay.">
+    <meta name="theme-color" content="#4A90E2">
+    <script>try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme: dark)').matches))document.documentElement.classList.add('dark')}catch(e){}</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+    <div id="site-header"></div>
+
+    <main id="main" class="page">
+        <h1 class="page-title">Buying a used laptop</h1>
+        <p class="page-lead">The best Hackintosh laptops are 2018–2020 business machines, which are now cheap second-hand. Here's where to look and how to avoid a dud.</p>
+
+        <div class="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <section class="card p-5 sm:p-6">
+                <h2 class="text-xl font-semibold mb-4">Where to look</h2>
+                <ul class="space-y-3 text-sm">
+                    <li><strong>Refurbishers and off-lease resellers.</strong> <span class="text-gray-600 dark:text-gray-300">Ex-corporate ThinkPads, Latitudes and EliteBooks, usually tested, cleaned and with a short warranty. Often the best value.</span></li>
+                    <li><strong>eBay and similar marketplaces.</strong> <span class="text-gray-600 dark:text-gray-300">Widest choice. Buy from sellers with a returns policy and clear photos of the actual unit.</span></li>
+                    <li><strong>Local classifieds.</strong> <span class="text-gray-600 dark:text-gray-300">Cheapest, and you can test before paying. Bring a USB stick (see the checklist).</span></li>
+                    <li><strong>Manufacturer outlets.</strong> <span class="text-gray-600 dark:text-gray-300">Lenovo, Dell and HP sell refurbished stock with full warranties, though newer models may not be Hackintosh-friendly.</span></li>
+                </ul>
+            </section>
+
+            <section class="card p-5 sm:p-6 lg:col-span-2">
+                <h2 class="text-xl font-semibold mb-4">What to check in the listing</h2>
+                <div class="table-scroll">
+                    <table>
+                        <thead class="text-gray-500 dark:text-gray-400">
+                            <tr><th scope="col">Check</th><th scope="col">Why it matters</th></tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
+                            <tr><td class="font-medium">Exact CPU model</td><td>8th–10th gen Intel is ideal. 11th gen and newer have Iris Xe graphics, which has no macOS acceleration.</td></tr>
+                            <tr><td class="font-medium">Discrete GPU</td><td>NVIDIA dGPUs can't be used and must be disabled. Prefer iGPU-only configurations.</td></tr>
+                            <tr><td class="font-medium">Wi-Fi card</td><td>Replaceable M.2 cards can be swapped for Broadcom. Soldered or CNVi cards limit you to Intel itlwm.</td></tr>
+                            <tr><td class="font-medium">RAM</td><td>Soldered RAM can't be upgraded. Aim for 16&nbsp;GB on those models.</td></tr>
+                            <tr><td class="font-medium">SSD</td><td>Plan to swap known-problem NVMe drives (e.g. Samsung PM981) for a compatible one.</td></tr>
+                            <tr><td class="font-medium">BIOS lock</td><td>Supervisor or Computrace-locked business laptops can be impossible to configure. Ask the seller.</td></tr>
+                            <tr><td class="font-medium">Battery health</td><td>Ask for the wear level. A replacement battery is cheap for some models and painful for others.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="card p-5 sm:p-6 lg:col-span-2">
+                <h2 class="text-xl font-semibold mb-4">In-person test checklist</h2>
+                <ol class="list-decimal pl-5 space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                    <li>Boot into the BIOS and confirm there's no supervisor password. Note the BIOS version.</li>
+                    <li>Boot a Linux live USB and run <code class="px-1 rounded bg-gray-100 dark:bg-gray-700">lspci</code> and <code class="px-1 rounded bg-gray-100 dark:bg-gray-700">lsusb</code> to identify the Wi-Fi card, audio codec and trackpad.</li>
+                    <li>Test every key, the trackpad buttons, all USB ports, the headphone jack and the webcam.</li>
+                    <li>Check the screen for dead pixels, backlight bleed and hinge wobble.</li>
+                    <li>Run on battery for 10 minutes and watch how fast the percentage drops.</li>
+                    <li>Check the charger's wattage matches the original spec.</li>
+                </ol>
+            </section>
+
+            <section class="card p-5 sm:p-6">
+                <h2 class="text-xl font-semibold mb-4">Good shortlists</h2>
+                <p class="text-sm text-gray-700 dark:text-gray-300 mb-4">These are well-documented, widely available used, and run macOS well:</p>
+                <ul id="shortlist" class="space-y-2 text-sm"></ul>
+                <a href="explorer.html?priority=budget" class="btn-primary mt-5 w-full">See all budget picks</a>
+            </section>
+        </div>
+    </main>
+
+    <div id="site-footer"></div>
+
+    <script src="js/data.js"></script>
+    <script src="js/layout.js"></script>
+    <script>
+        document.getElementById('shortlist').innerHTML = LaptopDB.all()
+            .filter(l => l.priority.includes('budget') || l.priority.includes('ease'))
+            .sort((a, b) => b.score - a.score)
+            .slice(0, 5)
+            .map(l => `<li class="flex justify-between gap-3"><a class="font-medium text-primary dark:text-blue-300 hover:underline" href="laptop_detail.html?id=${encodeURIComponent(l.id)}">${UI.escape(l.name)}</a><span class="tabular-nums text-gray-500 dark:text-gray-400">${l.score.toFixed(1)}</span></li>`)
+            .join('');
+    </script>
+</body>
+</html>

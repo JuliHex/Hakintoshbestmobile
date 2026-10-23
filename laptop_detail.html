@@ -1,253 +1,31 @@
 <!DOCTYPE html>
-<html lang="en" class="">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laptop Details - Hackintosh Guide</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Laptop Details - Hackintosh Laptop Guide</title>
+    <meta name="description" content="Hackintosh compatibility details: hardware, macOS support, known issues and install guides.">
+    <meta name="theme-color" content="#4A90E2">
+    <script>try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme: dark)').matches))document.documentElement.classList.add('dark')}catch(e){}</script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/animations.css">
-    <style>
-        /* Base styles (Light Mode) */
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #F8F9FA;
-            color: #212529;
-            transition: background-color 0.3s, color 0.3s;
-        }
-        .bg-primary { background-color: #4A90E2; }
-        .text-primary { color: #4A90E2; }
-        .border-primary { border-color: #4A90E2; }
-        .bg-secondary { background-color: #f0f4f8; }
-        .text-dark { color: #212529; }
-        .text-medium { color: #495057; }
-        .text-light { color: #adb5bd; }
-        .card-shadow { box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
-        .nav-link { transition: color 0.2s, border-color 0.2s; padding-top: 0.5rem; padding-bottom: 0.5rem; }
-        .nav-link.active { color: #4A90E2; border-bottom-width: 2px; border-color: #4A90E2; }
-        .nav-link:not(.active) { border-bottom-width: 2px; border-color: transparent; }
-        .chart-container { position: relative; width: 100%; max-width: 450px; margin-left: auto; margin-right: auto; height: 300px; max-height: 350px; }
-        @media (min-width: 768px) { .chart-container { height: 320px; } }
-
-        /* Dark Mode Styles */
-        .dark body {
-            background-color: #1a202c;
-            color: #e2e8f0;
-        }
-        .dark .bg-white { background-color: #2d3748; }
-        .dark .text-dark { color: #e2e8f0; }
-        .dark .text-medium { color: #a0aec0; }
-        .dark .text-light { color: #718096; }
-        .dark .bg-secondary { background-color: #2d3748; }
-        .dark .card-shadow { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3), 0 2px 4px -2px rgba(0,0,0,0.2); }
-        .dark .border-primary { border-color: #63b3ed; }
-        .dark .text-primary { color: #63b3ed; }
-        .dark .bg-primary { background-color: #3182ce; }
-        .dark .nav-link.active { color: #63b3ed; border-color: #63b3ed; }
-        .dark #find-bar-header { background-color: #4a5568; border-color: #6b7280; color: #e2e8f0; }
-        .dark #find-bar-header::placeholder { color: #a0aec0; }
-
-        .gemini-output {
-            margin-top: 1rem;
-            padding: 0.75rem;
-            background-color: #e9ecef; 
-            border-radius: 0.375rem; 
-            font-size: 0.875rem; 
-            line-height: 1.5;
-            min-height: 50px;
-            border: 1px solid #dee2e6; 
-        }
-        .dark .gemini-output {
-            background-color: #374151; 
-            border-color: #4b5563; 
-            color: #d1d5db; 
-        }
-        .gemini-output ul { list-style-type: disc; padding-left: 1.5rem; margin-top: 0.5rem; }
-        .gemini-output li { margin-bottom: 0.25rem; }
-        .gemini-output p { margin-bottom: 0.5rem; }
-        .gemini-output strong { font-weight: 600; }
-
-        .detail-section {
-            background-color: #ffffff;
-            padding: 1.5rem;
-            border-radius: 0.75rem;
-            margin-bottom: 2rem;
-        }
-        .dark .detail-section {
-            background-color: #2d3748;
-        }
-        .detail-section h3 {
-            font-size: 1.25rem; 
-            font-weight: 600; 
-            margin-bottom: 0.75rem; 
-            color: #4A90E2; 
-        }
-        .dark .detail-section h3 {
-            color: #63b3ed; 
-        }
-        .detail-section ul {
-            list-style-type: disc;
-            list-style-position: inside;
-            font-size: 0.875rem; 
-            color: #495057; 
-            display: flex;
-            flex-direction: column;
-            gap: 0.25rem;
-        }
-        .dark .detail-section ul {
-            color: #a0aec0; 
-        }
-
-        /* Animations */
-        @keyframes slide-in-right {
-            0% {
-                opacity: 0;
-                transform: translateX(10px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-        @keyframes fade-in {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-        @keyframes slide-up {
-            0% {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .slide-in-right {
-            animation: slide-in-right 0.5s ease-out forwards;
-        }
-        .fade-in {
-            animation: fade-in 0.5s ease-out forwards;
-        }
-        .slide-up {
-            animation: slide-up 0.5s ease-out forwards;
-        }
-
-        .loading-spinner {
-            border: 2px solid transparent;
-            border-top: 2px solid #4A90E2;
-            border-radius: 50%;
-            width: 1rem;
-            height: 1rem;
-            animation: spin 0.6s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-    </style>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
 </head>
-<body class="text-dark" data-page-id="laptop-detail">
+<body>
+    <div id="site-header"></div>
 
-    <header class="bg-white shadow-md sticky top-0 z-40 slide-in-right">
-        <nav class="container mx-auto px-6 py-2 flex justify-between items-center">
-            <a href="index.html" class="text-xl font-bold text-primary">Hackintosh Laptop Guide</a>
-            <div class="flex items-center">
-                <div class="relative mr-4">
-                    <input type="search" id="find-bar-header" placeholder="Find a laptop..." class="px-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-primary focus:border-primary dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
-                </div>
-                <div class="hidden md:flex space-x-3 lg:space-x-4 mr-4">
-                    <a href="index.html" class="nav-link text-sm lg:text-base">Home</a>
-                    <a href="explorer.html" class="nav-link text-sm lg:text-base">Explorer</a>
-                    <a href="build_guide.html" class="nav-link text-sm lg:text-base">Laptop Builds</a>
-                    <a href="components.html" class="nav-link text-sm lg:text-base">Components</a>
-                    <a href="essentials.html" class="nav-link text-sm lg:text-base">Essentials</a>
-                    <a href="buy_used.html" class="nav-link text-sm lg:text-base">Buy Used</a>
-                    <a href="troubleshooting.html" class="nav-link text-sm lg:text-base">Troubleshoot</a>
-                </div>
-                <button id="theme-toggle" aria-label="Toggle theme" title="Toggle dark mode" class="text-xl">
-                    ☀️
-                </button>
-                <button id="mobile-menu-button" class="md:hidden focus:outline-none ml-2">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
-                </button>
-            </div>
-        </nav>
-        <div id="mobile-menu" class="hidden md:hidden bg-white">
-            <a href="index.html" class="block py-2 px-6 text-sm nav-link">Home</a>
-            <a href="explorer.html" class="block py-2 px-6 text-sm nav-link">Laptop Explorer</a>
-            <a href="build_guide.html" class="block py-2 px-6 text-sm nav-link">Laptop Builds</a>
-            <a href="components.html" class="block py-2 px-6 text-sm nav-link">Component Checker</a>
-            <a href="essentials.html" class="block py-2 px-6 text-sm nav-link">The Essentials</a>
-            <a href="buy_used.html" class="block py-2 px-6 text-sm nav-link">Where to Buy Used</a>
-            <a href="troubleshooting.html" class="block py-2 px-6 text-sm nav-link">Troubleshooting Guide</a>
-        </div>
-    </header>
-
-    <main class="container mx-auto p-4 md:p-8 fade-in">
-        <div id="laptop-detail-content" class="container mx-auto">
-            <!-- Dynamic content will be inserted here -->
-        </div>
-
-        <div id="laptop-details" class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
-            <!-- Left Column -->
-            <div class="space-y-6">
-                <section class="detail-section" id="hardware-details">
-                    <h3>Hardware Details</h3>
-                    <div class="space-y-4" id="hardware-content"></div>
-                </section>
-
-                <section class="detail-section" id="display-details">
-                    <h3>Display Features</h3>
-                    <div class="space-y-4" id="display-content"></div>
-                </section>
-
-                <section class="detail-section" id="battery-details">
-                    <h3>Battery Information</h3>
-                    <div class="space-y-4" id="battery-content"></div>
-                </section>
-            </div>
-
-            <!-- Right Column -->
-            <div class="space-y-6">
-                <section class="detail-section" id="macos-details">
-                    <h3>macOS Compatibility</h3>
-                    <div class="space-y-4" id="macos-content"></div>
-                </section>
-
-                <section class="detail-section" id="known-issues">
-                    <h3>Known Issues</h3>
-                    <div class="space-y-4" id="issues-content"></div>
-                </section>
-
-                <section class="detail-section" id="ports-details">
-                    <h3>Ports</h3>
-                    <div class="space-y-4" id="ports-content"></div>
-                </section>
-            </div>
-        </div>
+    <main id="main" class="page">
+        <a href="explorer.html" class="inline-flex items-center text-sm font-medium text-primary dark:text-blue-300 hover:underline">&larr; Back to Explorer</a>
+        <div id="laptop-detail" class="mt-4"></div>
     </main>
 
-    <footer class="text-center py-8 border-t dark:border-gray-700 fade-in">
-        <p class="text-sm text-medium">&copy; <span id="current-year"></span> Hackintosh Laptop Guide. For educational purposes only.</p>
-    </footer>
-    
-    <!-- External JavaScript files - ORDER MATTERS! -->
+    <div id="site-footer"></div>
+
     <script src="js/data.js"></script>
-    <script src="js/theme.js"></script>
-    <script src="js/animations.js"></script>
-    <script src="js/navigation.js"></script>
+    <script src="js/layout.js"></script>
     <script src="js/charts.js"></script>
-    <script src="js/gemini_api.js"></script>
     <script src="js/laptop_detail_page.js"></script>
-    <script src="js/main.js"></script>
 </body>
 </html>

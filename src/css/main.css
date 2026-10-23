@@ -3,21 +3,243 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+
   body {
-    @apply bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100;
+    @apply bg-gray-50 text-gray-900 font-sans antialiased transition-colors duration-200;
+    @apply dark:bg-gray-900 dark:text-gray-100;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-primary ring-offset-2 ring-offset-white dark:ring-offset-gray-900;
+  }
+
+  [hidden] {
+    display: none !important;
   }
 }
 
 @layer components {
-  .nav-link {
-    @apply px-3 py-2 rounded-md text-sm font-medium transition-colors;
-  }
-  
-  .nav-link.active {
-    @apply text-primary border-b-2 border-primary;
+  /* Layout */
+  .page {
+    @apply container mx-auto px-4 sm:px-6 py-8 md:py-12;
   }
 
-  .card-shadow {
-    @apply shadow-md hover:shadow-lg transition-shadow duration-200;
+  .page-title {
+    @apply text-3xl md:text-4xl font-bold tracking-tight;
+  }
+
+  .page-lead {
+    @apply mt-3 text-base md:text-lg text-gray-600 dark:text-gray-300 max-w-3xl;
+  }
+
+  .card {
+    @apply bg-white dark:bg-gray-800 rounded-xl shadow-sm ring-1 ring-gray-200 dark:ring-gray-700;
+  }
+
+  .section-title {
+    @apply text-lg font-semibold mb-3 text-gray-900 dark:text-white;
+  }
+
+  /* Header / navigation */
+  .nav-link {
+    @apply px-3 py-2 rounded-md text-sm font-medium whitespace-nowrap text-gray-700 dark:text-gray-300 transition-colors;
+    @apply hover:text-primary hover:bg-gray-100 dark:hover:bg-gray-700/60;
+  }
+
+  .nav-link.active {
+    @apply text-primary bg-blue-50 dark:bg-gray-700 dark:text-blue-300;
+  }
+
+  .mobile-nav-link {
+    @apply block px-4 py-3 rounded-lg text-base font-medium text-gray-800 dark:text-gray-200;
+    @apply hover:bg-gray-100 dark:hover:bg-gray-700;
+  }
+
+  .mobile-nav-link.active {
+    @apply text-primary bg-blue-50 dark:bg-gray-700 dark:text-blue-300;
+  }
+
+  .icon-btn {
+    @apply inline-flex items-center justify-center w-10 h-10 rounded-lg text-gray-700 dark:text-gray-200;
+    @apply hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors;
+  }
+
+  /* Form controls */
+  .input {
+    @apply w-full px-3 py-2.5 text-base sm:text-sm rounded-lg border border-gray-300 bg-white text-gray-900;
+    @apply placeholder-gray-400 focus:border-primary focus:ring-1 focus:ring-primary;
+    @apply dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400;
+  }
+
+  .label {
+    @apply block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5;
+  }
+
+  /* Buttons */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg font-semibold text-sm;
+    @apply transition-colors disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-primary {
+    @apply btn bg-primary text-white hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-500;
+  }
+
+  .btn-secondary {
+    @apply btn bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600;
+  }
+
+  .btn-lg {
+    @apply px-6 py-3 text-base;
+  }
+
+  /* Toggle chips (filters, tabs). Active state is driven by aria-pressed / aria-selected. */
+  .chip {
+    @apply inline-flex items-center px-3.5 py-2 rounded-full text-sm font-medium border transition-colors;
+    @apply border-gray-300 bg-white text-gray-700 hover:border-primary hover:text-primary;
+    @apply dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:border-blue-400 dark:hover:text-blue-300;
+  }
+
+  .chip[aria-pressed="true"],
+  .chip[aria-selected="true"] {
+    @apply bg-primary border-primary text-white hover:text-white dark:bg-blue-600 dark:border-blue-600 dark:hover:text-white;
+  }
+
+  .tag {
+    @apply inline-block px-2.5 py-0.5 text-xs font-medium rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900/60 dark:text-blue-200;
+  }
+
+  .badge-unverified {
+    @apply inline-block align-middle ml-1.5 px-1.5 py-px text-[0.65rem] font-semibold uppercase tracking-wide rounded;
+    @apply bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-200;
+  }
+
+  /* Score bar */
+  .score-track {
+    @apply h-2 w-full rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden;
+  }
+
+  .score-fill {
+    @apply h-full rounded-full;
+  }
+
+  .score-excellent { @apply bg-green-500; }
+  .score-good { @apply bg-blue-500; }
+  .score-average { @apply bg-yellow-500; }
+  .score-poor { @apply bg-red-500; }
+
+  /* Compatibility status dots */
+  .status-dot {
+    @apply inline-block flex-none w-3 h-3 mt-1.5 rounded-full;
+  }
+
+  .status-dot.good { @apply bg-green-500; }
+  .status-dot.mid { @apply bg-yellow-500; }
+  .status-dot.bad { @apply bg-red-500; }
+
+  /* Spec lists (detail + compare pages) */
+  .spec-list {
+    @apply divide-y divide-gray-100 dark:divide-gray-700;
+  }
+
+  .spec-row {
+    @apply py-2.5 sm:grid sm:grid-cols-3 sm:gap-4;
+  }
+
+  .spec-row dt {
+    @apply text-sm font-medium text-gray-500 dark:text-gray-400;
+  }
+
+  .spec-row dd {
+    @apply mt-0.5 sm:mt-0 sm:col-span-2 text-sm text-gray-900 dark:text-gray-100 break-words;
+  }
+
+  /* Long-form guide content */
+  .prose-guide h2 {
+    @apply text-2xl font-bold mt-10 mb-4 scroll-mt-24;
+  }
+
+  .prose-guide h3 {
+    @apply text-lg font-semibold mt-6 mb-2;
+  }
+
+  .prose-guide p,
+  .prose-guide li {
+    @apply text-gray-700 dark:text-gray-300 leading-relaxed;
+  }
+
+  .prose-guide p {
+    @apply mb-4;
+  }
+
+  .prose-guide ul {
+    @apply list-disc pl-6 mb-4 space-y-1.5;
+  }
+
+  .prose-guide ol {
+    @apply list-decimal pl-6 mb-4 space-y-1.5;
+  }
+
+  .prose-guide a {
+    @apply text-primary dark:text-blue-300 underline underline-offset-2 hover:no-underline;
+  }
+
+  .prose-guide code {
+    @apply px-1 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-sm font-mono break-words;
+  }
+
+  .callout {
+    @apply p-4 rounded-lg border-l-4 mb-6 text-sm;
+  }
+
+  .callout-info {
+    @apply bg-blue-50 border-blue-400 text-blue-900 dark:bg-blue-900/30 dark:text-blue-100;
+  }
+
+  .callout-warn {
+    @apply bg-amber-50 border-amber-400 text-amber-900 dark:bg-amber-900/30 dark:text-amber-100;
+  }
+
+  .callout p,
+  .callout li {
+    @apply text-inherit;
+  }
+
+  /* Tables that scroll sideways on small screens instead of stretching the page */
+  .table-scroll {
+    @apply overflow-x-auto -mx-4 sm:mx-0;
+  }
+
+  .table-scroll table {
+    @apply min-w-full text-sm;
+  }
+
+  .table-scroll th,
+  .table-scroll td {
+    @apply px-4 py-2.5 text-left align-top;
+  }
+}
+
+@layer utilities {
+  .animate-in {
+    animation: fade-up 0.4s ease-out both;
+  }
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-in {
+      animation: none;
+    }
+
+    * {
+      transition-duration: 0s !important;
+    }
   }
 }
