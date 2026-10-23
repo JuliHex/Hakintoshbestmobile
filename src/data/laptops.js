@@ -75,13 +75,6 @@ export const laptopData = {
                 rating: "Excellent",
                 resources: ["GitHub guides available", "Active forum support", "Multiple successful builds documented"]
             },
-            guides: {
-                installation: "https://github.com/EETagent/T480-OpenCore-Hackintosh",
-                additional: [
-                    "https://github.com/valnoxy/t480-oc",
-                    "https://github.com/zexry619/Thinkpad-T480-Hackintosh-Dualboot"
-                ]
-            },
             thermals: {
                 idleTemp: "35-40°C",
                 loadTemp: "75-85°C",
@@ -417,10 +410,6 @@ export const laptopData = {
             communitySupport: {
                 rating: "Good",
                 resources: ["Several GitHub guides", "Active forum support", "Multiple success stories"]
-            },
-            guides: {
-                installation: "https://github.com/bavariancake/XPS9570-macOS",
-                additional: ["https://github.com/xxxzc/xps15-9570-macos"]
             },
             thermals: {
                 idleTemp: "40-45°C",
@@ -929,10 +918,6 @@ export const laptopData = {
                 rating: "Good",
                 resources: ["Several GitHub guides", "Active forum threads", "Good documentation available"]
             },
-            guides: {
-                installation: "https://github.com/jlempen/MateBook-X-Pro-2020-OpenCore",
-                additional: []
-            },
             thermals: {
                 idleTemp: "35-40°C",
                 loadTemp: "75-85°C",
@@ -996,10 +981,6 @@ export const laptopData = {
             communitySupport: {
                 rating: "Good",
                 resources: ["GitHub repositories available", "Forum support threads", "Regular updates from community"]
-            },
-            guides: {
-                installation: "https://github.com/daliansky/XiaoMi-Pro-Hackintosh",
-                additional: []
             },
             thermals: {
                 idleTemp: "35-45°C",
@@ -1501,10 +1482,6 @@ export const laptopData = {
                 rating: "Excellent",
                 resources: ["Many public OpenCore EFIs", "Long-running forum threads", "Popular r/hackintosh model"]
             },
-            guides: {
-                installation: "https://dortania.github.io/OpenCore-Install-Guide/config-laptop.plist/kaby-lake.html",
-                additional: ["https://github.com/the-darkvoid/XPS9360-macOS"]
-            },
             thermals: {
                 idleTemp: "35-45°C",
                 loadTemp: "80-90°C",
@@ -1570,10 +1547,6 @@ export const laptopData = {
             communitySupport: {
                 rating: "Excellent",
                 resources: ["Detailed public OpenCore repository", "Active ThinkPad Hackintosh community"]
-            },
-            guides: {
-                installation: "https://github.com/tylernguyen/x1c6-hackintosh",
-                additional: ["https://github.com/Colton-Ko/macOS-ThinkPad-X1C6"]
             },
             thermals: {
                 idleTemp: "35-45°C",
@@ -1641,10 +1614,6 @@ export const laptopData = {
             communitySupport: {
                 rating: "Very Good",
                 resources: ["Several public OpenCore EFIs", "Shares most config with T480/X1C6"]
-            },
-            guides: {
-                installation: "https://dortania.github.io/OpenCore-Install-Guide/config-laptop.plist/coffee-lake.html",
-                additional: []
             },
             thermals: {
                 idleTemp: "35-45°C",
@@ -1742,11 +1711,7 @@ export const laptopData = {
             dgpu: "NVIDIA GeForce MX150 on some models (must be disabled)",
             wifiBluetooth: "Intel Dual Band Wireless-AC 8265",
             audioCodec: "Realtek ALC294",
-            trackpad: "ELAN1200 I2C HID",
-            guides: {
-                installation: "https://github.com/VortexisTV/Asus-Zenbook-UX331-Hackintosh",
-                additional: []
-            }
+            trackpad: "ELAN1200 I2C HID"
         },
         source: "community",
         needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
@@ -1834,11 +1799,7 @@ export const laptopData = {
             },
             displayFeatures: { type: "IPS", brightness: "250 nits" },
             knownIssues: ["WiFi swap recommended", "Power management tuning"],
-            wifiBluetooth: "Intel Dual Band Wireless-AC 8265",
-            guides: {
-                installation: "https://github.com/domamaric/t470-thinkpad-hackintosh",
-                additional: []
-            }
+            wifiBluetooth: "Intel Dual Band Wireless-AC 8265"
         },
         source: "community",
         needsVerification: ["details.macosSupport", "details.minMacosSupport", "details.maxMacosSupport", "details.chartData"]
@@ -3463,10 +3424,6 @@ export const laptopData = {
             communitySupport: {
                 rating: "Very Good",
                 resources: ["Two public OpenCore repositories", "Shares much of its setup with the X1 Carbon Gen 6"]
-            },
-            guides: {
-                installation: "https://github.com/aidanchandra/x1c7-hackintosh",
-                additional: ["https://github.com/mamunaco/x1c7-opencore-hackintosh"]
             }
         },
         needsVerification: ["details.ram", "details.weight", "details.chartData"]
@@ -3504,10 +3461,6 @@ export const laptopData = {
             communitySupport: {
                 rating: "Moderate",
                 resources: ["Public OpenCore EFI for Monterey"]
-            },
-            guides: {
-                installation: "https://github.com/Dugganclock/Dell-Latitude-5400-Hackintosh-OpenCore",
-                additional: []
             }
         },
         needsVerification: ["details.trackpad", "details.ports", "details.chartData"]
@@ -3541,10 +3494,6 @@ export const laptopData = {
             communitySupport: {
                 rating: "Good",
                 resources: ["Public OpenCore EFI (Monterey)", "Community notes for newer macOS versions"]
-            },
-            guides: {
-                installation: "https://github.com/1nferious/Dell-XPS-15-7590-MacOS-Monterey--12.0.1--Hackintosh",
-                additional: []
             }
         },
         needsVerification: ["details.maxMacosSupport", "details.ram", "details.ports", "details.chartData"]
@@ -3583,10 +3532,6 @@ export const laptopData = {
             communitySupport: {
                 rating: "Good",
                 resources: ["Several public OpenCore repositories"]
-            },
-            guides: {
-                installation: "https://github.com/hieplpvip/XPS9500-Hackintosh",
-                additional: []
             }
         },
         needsVerification: ["details.maxMacosSupport", "details.screenResolution", "details.ports", "details.chartData"]
@@ -3619,10 +3564,6 @@ export const laptopData = {
             communitySupport: {
                 rating: "Good",
                 resources: ["Maintained OpenCore repository"]
-            },
-            guides: {
-                installation: "https://github.com/XXCoreRangerX/Hackintosh-HP-EliteBook-840-G4",
-                additional: []
             }
         },
         needsVerification: ["details.ram", "details.storage", "details.chartData"]
@@ -3655,10 +3596,6 @@ export const laptopData = {
             communitySupport: {
                 rating: "Moderate",
                 resources: ["Public OpenCore repositories (830 G6, close to the 840 G6)"]
-            },
-            guides: {
-                installation: "https://github.com/tookdes/HP-Elitebook-830-G6-Hackintosh",
-                additional: ["https://github.com/Dan1912/HP-Elitebook-830-G6-OSX86"]
             }
         },
         needsVerification: ["details.maxMacosSupport", "details.trackpad", "details.chartData"]
@@ -3690,10 +3627,6 @@ export const laptopData = {
             communitySupport: {
                 rating: "Very Good",
                 resources: ["Detailed OpenCore guide with BIOS settings and post-install steps"]
-            },
-            guides: {
-                installation: "https://github.com/simprecicchiani/ThinkPad-T460s-macOS-OpenCore",
-                additional: []
             }
         },
         needsVerification: ["details.trackpad", "details.chartData"]
@@ -3723,10 +3656,6 @@ export const laptopData = {
             communitySupport: {
                 rating: "Moderate",
                 resources: ["Older Clover-based repository"]
-            },
-            guides: {
-                installation: "https://github.com/syscl/XPS9350-macOS",
-                additional: []
             }
         },
         needsVerification: ["details.audioCodec", "details.trackpad", "details.maxMacosSupport", "details.chartData"]
@@ -3760,10 +3689,6 @@ export const laptopData = {
             communitySupport: {
                 rating: "Excellent",
                 resources: ["One of the most popular laptop Hackintosh repositories"]
-            },
-            guides: {
-                installation: "https://github.com/daliansky/XiaoMi-Pro-Hackintosh",
-                additional: []
             }
         },
         needsVerification: ["details.dgpu", "details.chartData"]

@@ -75,15 +75,6 @@ function PortSummary({ ports }) {
     );
 }
 
-function linkLabel(url) {
-    try {
-        const u = new URL(url);
-        return u.hostname === 'github.com' ? `GitHub: ${u.pathname.slice(1)}` : u.hostname + u.pathname.replace(/\/$/, '');
-    } catch (e) {
-        return url;
-    }
-}
-
 function NotFound({ id }) {
     useTitle('Laptop not found');
     return (
@@ -111,8 +102,6 @@ function Detail({ laptop }) {
     const keyboard = d.keyboard || {};
     const bios = d.biosVersion || {};
     const community = d.communitySupport || {};
-    const guides = d.guides || {};
-    const guideLinks = [guides.installation, ...(guides.additional || [])].filter(Boolean);
     const dims = d.dimensions ? `${d.dimensions.width} × ${d.dimensions.depth} × ${d.dimensions.height}` : '';
 
     const copyLink = async () => {
@@ -195,31 +184,16 @@ function Detail({ laptop }) {
                     </ul>
                 </Section>
 
-                <Section title="Install guides">
-                    <Link to={`${laptopPath(laptop.id)}/build`} className="block mb-4 rounded-2xl p-3 bg-blue-500/10 ring-1 ring-blue-500/25 hover:bg-blue-500/15 transition-colors">
+                <Section title="Build guide">
+                    <Link to={`${laptopPath(laptop.id)}/build`} className="block rounded-2xl p-3 bg-blue-500/10 ring-1 ring-blue-500/25 hover:bg-blue-500/15 transition-colors">
                         <span className="font-semibold text-blue-800 dark:text-blue-200">Step-by-step build guide for this laptop</span>
-                        <span className="block text-sm text-gray-600 dark:text-gray-300">Every kext, SSDT and config.plist value it needs.</span>
+                        <span className="block text-sm text-gray-600 dark:text-gray-300">Build your own EFI: every kext, SSDT and config.plist value it needs.</span>
                     </Link>
-                    {guideLinks.length ? (
-                        <>
-                            <ul className="space-y-2 text-sm">
-                                {guideLinks.map(url => (
-                                    <li key={url}>
-                                        <a href={url} target="_blank" rel="noopener noreferrer" className="text-blue-700 dark:text-blue-300 hover:underline break-all">
-                                            {linkLabel(url)} <Icon name="external" className="icon w-3.5 h-3.5" />
-                                        </a>
-                                    </li>
-                                ))}
-                            </ul>
-                            {community.rating && <p className="mt-4 text-sm"><span className="text-gray-500 dark:text-gray-400">Community support:</span> <strong>{community.rating}</strong></p>}
-                            {community.resources && (
-                                <ul className="mt-1 list-disc pl-5 text-sm text-gray-600 dark:text-gray-300">
-                                    {community.resources.map(r => <li key={r}>{r}</li>)}
-                                </ul>
-                            )}
-                        </>
-                    ) : (
-                        <p className="text-sm text-gray-600 dark:text-gray-300">No model-specific repository yet. The build guide above covers what this laptop needs.</p>
+                    {community.rating && <p className="mt-4 text-sm"><span className="text-gray-500 dark:text-gray-400">Community support:</span> <strong>{community.rating}</strong></p>}
+                    {community.resources && (
+                        <ul className="mt-1 list-disc pl-5 text-sm text-gray-600 dark:text-gray-300">
+                            {community.resources.map(r => <li key={r}>{r}</li>)}
+                        </ul>
                     )}
                 </Section>
 
