@@ -1,19 +1,29 @@
 {
   "name": "hakintoshbestmobile-main",
   "version": "1.0.0",
-  "description": "HakintoshBestMobile website",
-  "main": "postcss.config.js",
+  "description": "Hackintosh Laptop Guide: a React app for picking a laptop that runs macOS well with OpenCore",
   "scripts": {
-    "dev": "postcss src/css/main.css -o assets/css/styles.css --watch",
-    "build": "postcss src/css/main.css -o assets/css/styles.css"
+    "dev": "vite",
+    "build": "vite build && node scripts/spa-fallback.js",
+    "preview": "vite preview"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@vitejs/plugin-react": "^4.7.0",
     "autoprefixer": "^10.4.21",
     "postcss": "^8.5.4",
-    "postcss-cli": "^11.0.1",
-    "tailwindcss": "^3.4.17"
-  }
+    "tailwindcss": "^3.4.17",
+    "vite": "^6.4.5"
+  },
+  "dependencies": {
+    "@fontsource-variable/inter": "^5.3.0",
+    "chart.js": "^4.6.1",
+    "liquid-glass-react": "^1.1.1",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "react-router": "^7.18.4"
+  },
+  "type": "module"
 }
